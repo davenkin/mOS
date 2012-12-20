@@ -1,6 +1,6 @@
 # Object files
 *.o
-
+target
 # Libraries
 *.lib
 *.a
