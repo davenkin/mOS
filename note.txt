@@ -1,0 +1,7 @@
+-- in maven, artifactId does not have to be the same as the project folder name
+
+-- in parent pom, the sub module is the folder name of the sub project, but not the artifactId of the sub project
+
+-- when run jetty, the context root is set to the artifactId of the web module, but not the final name of the web module
+
+-- when run multi module, we should run mvn install
