@@ -1,4 +1,4 @@
-package me.davenkin.opinions.persistence;
+package davenkin.opinions.persistence;
 
 /**
  * Hello world!
