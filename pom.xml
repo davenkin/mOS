@@ -1,26 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>me.davenkin.opinions.persistence</groupId>
-  <artifactId>OpinionsPersistence</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>OpinionsPersistence</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.10</version>
-      <scope>test</scope>
-    </dependency>
-      <dependency>
-          <groupId>org.hsqldb</groupId>
-          <artifactId>hsqldb</artifactId>
-          <version>2.2.8</version>
-      </dependency>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>me.davenkin.opinions.persistence</groupId>
+    <artifactId>OpinionsPersistence</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>OpinionsPersistence</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.8</version>
+        </dependency>
 
-  </dependencies>
+    </dependencies>
 
     <build>
         <plugins>
@@ -53,21 +53,21 @@
                 </configuration>
 
                 <executions>
-                    <!--<execution>-->
-                        <!--<id>drop-db-before-test-if-any</id>-->
-                        <!--<phase>process-test-resources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>execute</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--&lt;!&ndash; need another database to drop the targeted one &ndash;&gt;-->
-                            <!--<url>jdbc:hsqldb:mem:testOpen</url>-->
-                            <!--<autocommit>true</autocommit>-->
-                            <!--<sqlCommand>DROP SCHEMA testOpen CASCADE</sqlCommand>-->
-                            <!--&lt;!&ndash; ignore error when database is not avaiable &ndash;&gt;-->
-                            <!--<onError>continue</onError>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
+                    <execution>
+                    <id>drop-db-before-test-if-any</id>
+                    <phase>process-test-resources</phase>
+                    <goals>
+                    <goal>execute</goal>
+                    </goals>
+                    <configuration>
+                    <!-- need another database to drop the targeted one -->
+                    <url>jdbc:hsqldb:mem:testOpen</url>
+                    <autocommit>true</autocommit>
+                    <sqlCommand>DROP SCHEMA testOpen CASCADE</sqlCommand>
+                    <!-- ignore error when database is not avaiable -->
+                    <onError>continue</onError>
+                    </configuration>
+                    </execution>
 
                     <execution>
                         <id>create-db</id>
@@ -108,7 +108,9 @@
                             <url>jdbc:hsqldb:mem:testOpen</url>
                             <autocommit>true</autocommit>
                             <printResultSet>true</printResultSet>
-                            <sqlCommand>SELECT * FROM INFORMATION_SCHEMA.SYSTEM_COLUMNS WHERE TABLE_NAME NOT LIKE 'SYSTEM_%'</sqlCommand>
+                            <sqlCommand>SELECT * FROM INFORMATION_SCHEMA.SYSTEM_COLUMNS WHERE TABLE_NAME NOT LIKE
+                                'SYSTEM_%'
+                            </sqlCommand>
                         </configuration>
                     </execution>
 
