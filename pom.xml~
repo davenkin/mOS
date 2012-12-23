@@ -17,7 +17,7 @@
        
     </dependencies>
        <modules>
-        <module>opinions-persistence</module>
+        <module>OpinionsPersistence</module>
     <module>opinions-war</module>
   </modules>
 </project>
