@@ -8,7 +8,8 @@ package davenkin.opinions.domain;
  * To change this template use File | Settings | File Templates.
  */
 public class SurveyOptionCount {
+    private Long id;
+    private String option;
     private Long surveyId;
-    private Long optionId;
     private Long count;
 }
