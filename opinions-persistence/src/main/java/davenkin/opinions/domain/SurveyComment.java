@@ -10,7 +10,9 @@ import java.sql.Timestamp;
  * To change this template use File | Settings | File Templates.
  */
 public class SurveyComment {
-    private String comment;
-    private Timestamp timestamp;
-    private User user;
+    private Long id;
+    private String content;
+    private Long surveyId;
+    private User commentUser;
+    private Timestamp createdTime;
 }

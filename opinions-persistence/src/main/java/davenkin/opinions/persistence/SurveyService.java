@@ -1,7 +1,7 @@
 package davenkin.opinions.persistence;
 
+import davenkin.opinions.domain.SurveyTag;
 import davenkin.opinions.domain.Survey;
-import davenkin.opinions.domain.SurveyCategory;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface SurveyService {
-    public List<Survey> findSurveysByCategory(SurveyCategory category);
+    public List<Survey> findSurveysByCategory(SurveyTag category);
     public Survey findSurveyById(Long surveyId);
     public void takeSurvey(Long surveyId, String surveyOption );
 }

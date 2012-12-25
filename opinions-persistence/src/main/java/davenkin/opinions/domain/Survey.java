@@ -11,11 +11,13 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Survey {
-    private Long surveyId;
-    private String surveyDescription;
-    private List<SurveyCategory> surveyCategories;
+    private Long id;
+    private String content;
+    private User creatingUser;
     private Timestamp createdTime;
     private boolean canMultipleChecked;
-    private List<SurveyOption> options;
-    private List<SurveyComment> comments;
+    private SurveyCategory surveyCategory;
+    private List<SurveyTag> surveyTags;
+    private List<SurveyOptionCount> surveyOptions;
+    private List<SurveyComment> surveyComments;
 }
