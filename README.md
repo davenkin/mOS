@@ -27,7 +27,25 @@ a tag used by many surveys
 a category used by only one survey
 a category used by many surveys
 
-find all surveys
+find all surveys:
+SELECT ID * FROM SURVEY;
+
+
+find the user who created the survey:
+SELECT * FROM USER WHERE ID = USER_ID;
+
+find the category for the survey:
+SELECT NAME FROM CATEGORY WHERE ID = USER_ID;
+
+find the tags for the survey:
+SELECT NAME FROM TAG WHERE ID IN (SELECT TAG_ID FROM SURVEY_TAG WHERE SURVEY_ID = ?);
+
+find the comments for the survey:
+SELECT * FROM COMMENT WHERE SURVEY_ID = ?
+
+find the options for the survey:
+SELECT * FROM SURVEY_OPTION_COUNT WHERE SURVEY_ID = ?
+
 find all surveys created by a specific user
 find all surveys with a specific tag
 find all surveys with a specific category
