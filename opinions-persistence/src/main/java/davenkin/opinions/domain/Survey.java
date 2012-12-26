@@ -16,8 +16,8 @@ public class Survey {
     private User creatingUser;
     private Timestamp createdTime;
     private boolean canMultipleChecked;
-    private SurveyCategory surveyCategory;
-    private List<SurveyTag> surveyTags;
-    private List<SurveyOptionCount> surveyOptions;
+    private String surveyCategory;
+    private List<String> surveyTags;
+    private List<SurveyOption> surveyOptions;
     private List<SurveyComment> surveyComments;
 }

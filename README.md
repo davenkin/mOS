@@ -3,6 +3,8 @@ Persistence layer for Opinions
 
 This is the persistence layer project for Opinions, a survay web site.
 
+user vote should be anonymous
+
 use Hibernate,contains serveice layer and DAO layer.
 
 a user can register/login using email address and password
@@ -24,3 +26,13 @@ a tag used by many surveys
 
 a category used by only one survey
 a category used by many surveys
+
+find all surveys
+find all surveys created by a specific user
+find all surveys with a specific tag
+find all surveys with a specific category
+for a survey, find it's related options
+find all the tags that's related to a given survey
+vote for one option of a survey
+find all the surveys created during the last week
+find all the surveys created during the last month

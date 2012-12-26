@@ -7,7 +7,7 @@ package davenkin.opinions.domain;
  * Time: 8:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SurveyOptionCount {
+public class SurveyOption {
     private Long id;
     private String option;
     private Long surveyId;
