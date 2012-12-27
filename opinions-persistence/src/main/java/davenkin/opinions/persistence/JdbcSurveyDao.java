@@ -3,8 +3,11 @@ package davenkin.opinions.persistence;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.domain.SurveyOption;
+import davenkin.opinions.domain.User;
+import org.apache.log4j.Logger;
 
-import java.sql.Date;
+import javax.sql.DataSource;
+import java.sql.*;
 import java.util.List;
 
 /**
@@ -15,7 +18,14 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class JdbcSurveyDao  implements  SurveyDao{
-    public Survey findSurveyById(Long surveyId) {
+    private DataSource dataSource;
+
+    public JdbcSurveyDao(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public Survey findSurveyById(Long surveyId)  {
+
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -51,7 +61,43 @@ public class JdbcSurveyDao  implements  SurveyDao{
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public User findUserById(Long userId) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            System.out.println(connection.hashCode());
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM USER WHERE ID = ?");
+            preparedStatement.setLong(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                String name = resultSet.getString("NAME");
+                Logger.getLogger(this.getClass()).info(name);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }  finally {
+
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+        }
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public void takeSurvey(Long surveyId, Long optionId) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void removeSurvey(Long surveyId) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void removeComment(Long commentId) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

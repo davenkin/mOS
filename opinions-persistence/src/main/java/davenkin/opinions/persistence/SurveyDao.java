@@ -1,9 +1,6 @@
 package davenkin.opinions.persistence;
 
-import davenkin.opinions.domain.SurveyComment;
-import davenkin.opinions.domain.SurveyOption;
-import davenkin.opinions.domain.SurveyTag;
-import davenkin.opinions.domain.Survey;
+import davenkin.opinions.domain.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -27,6 +24,11 @@ public interface SurveyDao {
     public List<String> findTagsForSurvey(Long surveyId);
     public List<SurveyOption> findOptionsForSurvey(Long surveyId);
     public List<SurveyComment> findCommentsForSurvey(Long surveyId);
+    public User findUserById(Long userId);
 
     public void takeSurvey(Long surveyId, Long optionId);
+
+    public void removeSurvey(Long surveyId);
+    public void removeComment(Long commentId);
+
 }
