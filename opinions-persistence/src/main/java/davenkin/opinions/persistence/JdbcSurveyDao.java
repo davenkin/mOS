@@ -17,14 +17,16 @@ import java.util.List;
  * Time: 10:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class JdbcSurveyDao  implements  SurveyDao{
+public class JdbcSurveyDao implements SurveyDao {
     private DataSource dataSource;
+    private final Logger logger = Logger.getLogger(this.getClass());
+    ;
 
     public JdbcSurveyDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public Survey findSurveyById(Long surveyId)  {
+    public Survey findSurveyById(Long surveyId) {
 
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -65,18 +67,29 @@ public class JdbcSurveyDao  implements  SurveyDao{
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            System.out.println(connection.hashCode());
+            logger.info("Use connection: " + connection.hashCode());
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM USER WHERE ID = ?");
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            while (resultSet.next()) {
+                long id = resultSet.getLong("ID");
                 String name = resultSet.getString("NAME");
-                Logger.getLogger(this.getClass()).info(name);
+                String email = resultSet.getString("EMAIL");
+                String password = resultSet.getString("PASSWORD");
+                Timestamp register_time = resultSet.getTimestamp("REGISTER_TIME");
+                User user = new User(id);
+                user.setName(name);
+                user.setEmail(email);
+                user.setPassword(password);
+                user.setRegisterTime(register_time);
+                logger.info("Load User: ID = " + id + ", Name = " + name);
+                return user;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }  finally {
+        } finally {
 
             if (connection != null) {
                 try {
