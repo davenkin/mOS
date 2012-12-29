@@ -67,6 +67,13 @@ public class JdbcSurveyDao implements SurveyDao
 
     public List<SurveyOption> findOptionsForSurvey(Long surveyId)
     {
+        try
+        {
+           return jdbcTemplate.queryForList("SELECT * FROM SURVEY_OPTION_COUNT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new SurveyOptionRowMapper());
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -91,7 +98,14 @@ public class JdbcSurveyDao implements SurveyDao
 
     public String findSurveyTagById(Long tagId)
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        try
+        {
+            return jdbcTemplate.queryForObject("SELECT NAME FROM TAG WHERE ID = ?", new Object[]{tagId}, String.class);
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
     }
 
     public String findCategoryById(Long catId)

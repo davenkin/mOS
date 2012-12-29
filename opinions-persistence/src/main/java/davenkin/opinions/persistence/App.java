@@ -1,9 +1,11 @@
 package davenkin.opinions.persistence;
 
+import davenkin.opinions.domain.SurveyOption;
 import davenkin.opinions.domain.User;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Hello world!
@@ -27,11 +29,11 @@ public class App
         User userById = jdbcSurveyDao.findUserById(2L);
         System.out.println(userById.getEmail());
 
-//        List<SurveyOption> optionsForSurvey = jdbcSurveyDao.findOptionsForSurvey(3L);
-//        System.out.println(optionsForSurvey.size());
-//
-//        String surveyTagById = jdbcSurveyDao.findSurveyTagById(3L);
-//        System.out.println(surveyTagById);
+        List<SurveyOption> optionsForSurvey = jdbcSurveyDao.findOptionsForSurvey(3L);
+        System.out.println(optionsForSurvey.size());
+
+        String surveyTagById = jdbcSurveyDao.findSurveyTagById(3L);
+        System.out.println(surveyTagById);
 //
 //        List<String> tagsForSurvey = jdbcSurveyDao.findTagsForSurvey(3L);
 //        System.out.println(tagsForSurvey.size());

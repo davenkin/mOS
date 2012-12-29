@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DavenkinJdbcTemplate
 {
@@ -18,7 +20,7 @@ public class DavenkinJdbcTemplate
         this.dataSource = dataSource;
     }
 
-    public <T> T queryForObject(String sql, Object[] objects, JdbcResultSetExtractor<T> extractor) throws DataAccessException
+    public <T> List<T> queryForList(String sql, Object[] objects, JdbcResultSetRowMapper<T> mapper) throws DataAccessException
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -28,14 +30,19 @@ public class DavenkinJdbcTemplate
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql);
-            logger.info(preparedStatement);
             populatePreparedStatement(preparedStatement, objects);
+            logger.info(preparedStatement);
             resultSet = preparedStatement.executeQuery();
             connection.commit();
-            return extractor.extract(resultSet);
+            List<T> list = new ArrayList<T>();
+            while (resultSet.next())
+            {
+                list.add(mapper.map(resultSet));
+            }
+            return list;
         } catch (Exception e)
         {
-            return rollbackAndThrowException(connection);
+            rollbackAndThrowException(connection);
         } finally
         {
             try
@@ -47,9 +54,80 @@ public class DavenkinJdbcTemplate
             }
 
         }
+        return null;
+
     }
 
-    private <T> T rollbackAndThrowException(Connection connection) throws DataAccessException
+    public <T> T queryForObject(String sql, Object[] objects, Class<T> type) throws DataAccessException
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(sql);
+            populatePreparedStatement(preparedStatement, objects);
+            logger.info(preparedStatement);
+            resultSet = preparedStatement.executeQuery();
+            connection.commit();
+            while (resultSet.next())
+            {
+                return type.cast(resultSet.getObject(1));
+            }
+        } catch (Exception e)
+        {
+            rollbackAndThrowException(connection);
+        } finally
+        {
+            try
+            {
+                closeResources(resultSet, preparedStatement, connection);
+            } catch (Exception e)
+            {
+                logger.error("Couldn't close database resources.");
+            }
+
+        }
+        return null;
+    }
+
+
+    public <T> T queryForObject(String sql, Object[] objects, JdbcResultSetExtractor<T> extractor) throws DataAccessException
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(sql);
+            populatePreparedStatement(preparedStatement, objects);
+            logger.info(preparedStatement);
+            resultSet = preparedStatement.executeQuery();
+            connection.commit();
+            return extractor.extract(resultSet);
+        } catch (Exception e)
+        {
+            rollbackAndThrowException(connection);
+        } finally
+        {
+            try
+            {
+                closeResources(resultSet, preparedStatement, connection);
+            } catch (Exception e)
+            {
+                logger.error("Couldn't close database resources.");
+            }
+
+        }
+        return null;
+    }
+
+
+    private void rollbackAndThrowException(Connection connection) throws DataAccessException
     {
         logger.error("Couldn't execute query, trying to rollback.");
         if (connection != null)
