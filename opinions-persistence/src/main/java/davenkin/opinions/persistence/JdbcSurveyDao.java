@@ -1,9 +1,6 @@
 package davenkin.opinions.persistence;
 
-import davenkin.opinions.domain.Survey;
-import davenkin.opinions.domain.SurveyComment;
-import davenkin.opinions.domain.SurveyOption;
-import davenkin.opinions.domain.User;
+import davenkin.opinions.domain.*;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
@@ -65,7 +62,29 @@ public class JdbcSurveyDao implements SurveyDao
 
     public List<String> findTagsForSurvey(Long surveyId)
     {
+        List<String> tags = new ArrayList<String>();
+        try
+        {
+            ResultSet rs = queryForResultSet("SELECT TAG_ID FROM SURVEY_TAG WHERE SURVEY_ID = ?", surveyId);
+            while (rs.next())
+            {
+                long tagId = rs.getLong("TAG_ID");
+                tags.add(findSurveyTagById(tagId));
+            }
+            return tags;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e)
+        {
+            logger.error("Cannot load tags for survey[" + surveyId + "].");
+        } finally
+        {
+            closeResources();
+        }
+
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     public List<SurveyOption> findOptionsForSurvey(Long surveyId)
@@ -134,6 +153,32 @@ public class JdbcSurveyDao implements SurveyDao
         return null;
     }
 
+    public String findSurveyTagById(Long tagId)
+    {
+        try
+        {
+            ResultSet resultSet = queryForResultSet("SELECT NAME FROM TAG WHERE ID = ?", tagId);
+            while (resultSet.next())
+            {
+                return resultSet.getString("NAME");
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e)
+        {
+            logger.error("Cannot find tag[" + tagId + "]");
+        } finally
+        {
+            closeResources();
+
+        }
+
+        return null;
+
+    }
+
     public void takeSurvey(Long surveyId, Long optionId)
     {
         //To change body of implemented methods use File | Settings | File Templates.
@@ -151,12 +196,23 @@ public class JdbcSurveyDao implements SurveyDao
 
     private ResultSet queryForResultSet(String sql, Object... objects) throws SQLException
     {
-        connection = dataSource.getConnection();
-        logger.info("Use connection: " + connection.hashCode());
-        preparedStatement = connection.prepareStatement(sql);
-        populatePreparedStatement(objects);
-        logger.info(preparedStatement.toString());
-        resultSet = preparedStatement.executeQuery();
+        try
+        {
+            connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
+            logger.info("Use connection: " + connection.hashCode());
+            preparedStatement = connection.prepareStatement(sql);
+            populatePreparedStatement(objects);
+            logger.info(preparedStatement.toString());
+            resultSet = preparedStatement.executeQuery();
+            connection.commit();
+        } catch (SQLException e)
+        {
+            if (connection != null)
+            {
+                connection.rollback();
+            }
+        }
         return resultSet;
 
     }

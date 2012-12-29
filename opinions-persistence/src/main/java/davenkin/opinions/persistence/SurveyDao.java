@@ -25,6 +25,7 @@ public interface SurveyDao {
     public List<SurveyOption> findOptionsForSurvey(Long surveyId);
     public List<SurveyComment> findCommentsForSurvey(Long surveyId);
     public User findUserById(Long userId);
+    public String findSurveyTagById(Long tagId);
 
     public void takeSurvey(Long surveyId, Long optionId);
 

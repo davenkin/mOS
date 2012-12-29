@@ -32,6 +32,13 @@ public class App
         List<SurveyOption> optionsForSurvey = jdbcSurveyDao.findOptionsForSurvey(3L);
         System.out.println(optionsForSurvey.size());
 
+        String surveyTagById = jdbcSurveyDao.findSurveyTagById(3L);
+        System.out.println(surveyTagById);
+
+        List<String> tagsForSurvey = jdbcSurveyDao.findTagsForSurvey(3L);
+        System.out.println(tagsForSurvey.size());
+        System.out.println(tagsForSurvey.get(0));
+
 
     }
 }
