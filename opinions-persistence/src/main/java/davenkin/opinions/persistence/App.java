@@ -1,9 +1,9 @@
 package davenkin.opinions.persistence;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -22,11 +22,14 @@ public class App
         dataSource.setMaxActive(3);
         dataSource.setMaxIdle(2);
         dataSource.setInitialSize(2);
-        SurveyDao jdbcSurveyDao = new JdbcSurveyDao(dataSource);
+        JdbcSurveyDao jdbcSurveyDao = new JdbcSurveyDao(dataSource);
         for(int index =0; index<6;index++)
         {
         jdbcSurveyDao.findUserById(2L);
         }
+
+        List<Map<String,Object>> mapList = jdbcSurveyDao.queryForListOfMap("SELECT * FROM USER WHERE NAME = ?", "tom");
+        System.out.println(mapList.size());
 
 
     }

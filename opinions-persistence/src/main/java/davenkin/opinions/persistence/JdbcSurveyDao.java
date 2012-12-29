@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class JdbcSurveyDao implements SurveyDao
 {
     private DataSource dataSource;
     private final Logger logger = Logger.getLogger(this.getClass());
-    ;
+
 
     public JdbcSurveyDao(DataSource dataSource)
     {
@@ -77,27 +79,46 @@ public class JdbcSurveyDao implements SurveyDao
 
     public User findUserById(Long userId)
     {
-//        return queryForListOfMapS(userId, null);
+//        return queryForListOfMap(userId, null);
         return null;
     }
 
-    private List<Map> queryForListOfMapS(Long userId, PreparedStatement preparedStatement)
+    public List<Map<String, Object>> queryForListOfMap(String sql, Object... objects)
     {
         Connection connection = null;
         ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        ArrayList<Map<String, Object>> mapArrayList = new ArrayList<Map<String, Object>>();
         try
         {
             connection = dataSource.getConnection();
             logger.info("Use connection: " + connection.hashCode());
-            preparedStatement = connection.prepareStatement("SELECT * FROM USER WHERE ID = ?");
-            preparedStatement.setLong(1, userId);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next())
+            preparedStatement = connection.prepareStatement(sql);
+            int index = 1;
+            for (Object object : objects)
             {
-//                return createUser(resultSet);
+                preparedStatement.setObject(index, object);
+                index++;
             }
+            System.out.println(preparedStatement.toString());
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(3);
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            while (resultSet.next())
+        {
+            HashMap<String, Object> hashMap = new HashMap<String, Object>();;
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++)
+            {
+                String columnName = metaData.getColumnName(columnIndex);
+                hashMap.put(columnName, resultSet.getObject(columnName));
+            }
+            mapArrayList.add(hashMap);
+        }
 
             closeResources(connection, resultSet, preparedStatement);
+            return mapArrayList;
         } catch (SQLException e)
         {
             e.printStackTrace();
