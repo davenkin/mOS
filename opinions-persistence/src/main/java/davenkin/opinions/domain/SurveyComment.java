@@ -14,7 +14,7 @@ public class SurveyComment
     private Long id;
     private String content;
     private Long surveyId;
-    private User commentUser;
+    private Long userId;
     private Timestamp createdTime;
 
     public SurveyComment(Long id)
@@ -47,14 +47,14 @@ public class SurveyComment
         this.surveyId = surveyId;
     }
 
-    public User getCommentUser()
+    public Long getUserId()
     {
-        return commentUser;
+        return userId;
     }
 
-    public void setCommentUser(User commentUser)
+    public void setUserId(Long userId)
     {
-        this.commentUser = commentUser;
+        this.userId = userId;
     }
 
     public Timestamp getCreatedTime()

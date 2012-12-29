@@ -47,6 +47,33 @@ public class DavenkinJdbcTemplate
         return null;
 
     }
+  public <T> List<T> queryForList(String sql, Object[] objects, Class<T> type) throws DataAccessException
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            connection = createConnection();
+            preparedStatement = createPreparedStatement(sql, objects, connection);
+            resultSet = preparedStatement.executeQuery();
+            connection.commit();
+            List<T> list = new ArrayList<T>();
+            while (resultSet.next())
+            {
+                list.add(type.cast(resultSet.getObject(1)));
+            }
+            return list;
+        } catch (Exception e)
+        {
+            rollbackAndThrowException(connection);
+        } finally
+        {
+            closeResources(resultSet, preparedStatement, connection);
+        }
+        return null;
+
+    }
 
     public <T> T queryForObject(String sql, Object[] objects, Class<T> type) throws DataAccessException
     {

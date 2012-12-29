@@ -1,5 +1,6 @@
 package davenkin.opinions.persistence;
 
+import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.domain.SurveyOption;
 import davenkin.opinions.domain.User;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -35,16 +36,17 @@ public class App
         String surveyTagById = jdbcSurveyDao.findSurveyTagById(3L);
         System.out.println(surveyTagById);
 //
-//        List<String> tagsForSurvey = jdbcSurveyDao.findTagsForSurvey(3L);
-//        System.out.println(tagsForSurvey.size());
-//        System.out.println(tagsForSurvey.get(0));
-//
-//        List<SurveyComment> commentsForSurvey = jdbcSurveyDao.findCommentsForSurvey(1L);
-//        System.out.println(commentsForSurvey.size());
-//        System.out.println(commentsForSurvey.get(1).getContent());
-//
+        List<String> tagsForSurvey = jdbcSurveyDao.findTagsForSurvey(3L);
+        System.out.println(tagsForSurvey.size());
+        System.out.println(tagsForSurvey.get(0));
+
         String categoryById = jdbcSurveyDao.findCategoryById(3L);
         System.out.println(categoryById);
+
+        List<SurveyComment> commentsForSurvey = jdbcSurveyDao.findCommentsForSurvey(1L);
+        System.out.println(commentsForSurvey.size());
+        System.out.println(commentsForSurvey.get(1).getContent());
+
 
 
     }

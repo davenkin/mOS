@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +63,19 @@ public class JdbcSurveyDao implements SurveyDao
 
     public List<String> findTagsForSurvey(Long surveyId)
     {
+        try
+        {
+            List<Integer> tagIds = jdbcTemplate.queryForList("SELECT TAG_ID FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{surveyId}, Integer.class);
+            ArrayList<String> strings = new ArrayList<String>();
+            for(Integer anInt : tagIds)
+            {
+                strings.add(jdbcTemplate.queryForObject("SELECT NAME FROM TAG WHERE ID = ?", new Object[]{anInt},String.class));
+            }
+            return strings;
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -79,6 +93,13 @@ public class JdbcSurveyDao implements SurveyDao
 
     public List<SurveyComment> findCommentsForSurvey(Long surveyId)
     {
+        try
+        {
+         return   jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new CommentRowMapper());
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
