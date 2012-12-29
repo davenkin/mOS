@@ -18,7 +18,7 @@ public class DavenkinJdbcTemplate
         this.dataSource = dataSource;
     }
 
-    public <T> T queryForObject(String sql, Object[] objects, JdbcResultSetExtractor<T> extractor) throws DataLoadingException
+    public <T> T queryForObject(String sql, Object[] objects, JdbcResultSetExtractor<T> extractor) throws DataAccessException
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -35,40 +35,50 @@ public class DavenkinJdbcTemplate
             return extractor.extract(resultSet);
         } catch (Exception e)
         {
-            logger.error("Couldn't execute query, trying to rollback.");
-            if (connection != null)
-            {
-                try
-                {
-                    connection.rollback();
-                } catch (SQLException ee)
-                {
-                    logger.error("Couldn't rollback.");
-                }
-            }
-            throw new DataLoadingException();
+            return rollbackAndThrowException(connection);
         } finally
         {
             try
             {
-                if (resultSet != null)
-                {
-                    resultSet.close();
-                }
-                if (preparedStatement != null)
-                {
-                    preparedStatement.close();
-                }
-                if (connection != null)
-                {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                }
+                closeResources(resultSet, preparedStatement, connection);
             } catch (Exception e)
             {
                 logger.error("Couldn't close database resources.");
             }
 
+        }
+    }
+
+    private <T> T rollbackAndThrowException(Connection connection) throws DataAccessException
+    {
+        logger.error("Couldn't execute query, trying to rollback.");
+        if (connection != null)
+        {
+            try
+            {
+                connection.rollback();
+            } catch (SQLException ee)
+            {
+                logger.error("Couldn't rollback.");
+            }
+        }
+        throw new DataAccessException();
+    }
+
+    private void closeResources(ResultSet resultSet, PreparedStatement preparedStatement, Connection connection) throws SQLException
+    {
+        if (resultSet != null)
+        {
+            resultSet.close();
+        }
+        if (preparedStatement != null)
+        {
+            preparedStatement.close();
+        }
+        if (connection != null)
+        {
+            connection.setAutoCommit(true);
+            connection.close();
         }
     }
 

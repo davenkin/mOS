@@ -80,7 +80,7 @@ public class JdbcSurveyDao implements SurveyDao
         try
         {
             return jdbcTemplate.queryForObject("SELECT * FROM USER", null, new UserExtractor());
-        } catch (DataLoadingException e)
+        } catch (DataAccessException e)
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
