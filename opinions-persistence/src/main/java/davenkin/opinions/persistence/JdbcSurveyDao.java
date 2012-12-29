@@ -9,9 +9,7 @@ import org.apache.log4j.Logger;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +22,9 @@ public class JdbcSurveyDao implements SurveyDao
 {
     private DataSource dataSource;
     private final Logger logger = Logger.getLogger(this.getClass());
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private ResultSet resultSet;
 
 
     public JdbcSurveyDao(DataSource dataSource)
@@ -69,97 +70,68 @@ public class JdbcSurveyDao implements SurveyDao
 
     public List<SurveyOption> findOptionsForSurvey(Long surveyId)
     {
+        try
+        {
+            ResultSet rs = queryForResultSet("SELECT * FROM SURVEY_OPTION_COUNT WHERE SURVEY_ID = ?", surveyId);
+            return createSurveyOptions(rs);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e)
+        {
+            logger.error("Cannot load options for survey[" + surveyId + "].");
+        } finally
+        {
+            closeResources();
+        }
+
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private List<SurveyOption> createSurveyOptions(ResultSet rs) throws SQLException
+    {
+        List<SurveyOption> surveyOptions = new ArrayList<SurveyOption>();
+        while (rs.next())
+        {
+            SurveyOption surveyOption = new SurveyOption(rs.getLong("ID"));
+            surveyOption.setCount(rs.getLong("OPTION_COUNT"));
+            String option = rs.getString("SURVEY_OPTION");
+            surveyOption.setOption(option);
+            long surveyId = rs.getLong("SURVEY_ID");
+            surveyOption.setSurveyId(surveyId);
+            surveyOptions.add(surveyOption);
+            logger.info("Added option <" + option + "> for survey[" + surveyId + "].");
+        }
+        return surveyOptions;
     }
 
     public List<SurveyComment> findCommentsForSurvey(Long surveyId)
     {
+
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public User findUserById(Long userId)
     {
-//        return queryForListOfMap(userId, null);
-        return null;
-    }
-
-    public List<Map<String, Object>> queryForListOfMap(String sql, Object... objects)
-    {
-        Connection connection = null;
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatement = null;
-        ArrayList<Map<String, Object>> mapArrayList = new ArrayList<Map<String, Object>>();
         try
         {
-            connection = dataSource.getConnection();
-            logger.info("Use connection: " + connection.hashCode());
-            preparedStatement = connection.prepareStatement(sql);
-            int index = 1;
-            for (Object object : objects)
-            {
-                preparedStatement.setObject(index, object);
-                index++;
-            }
-            System.out.println(preparedStatement.toString());
-            resultSet = preparedStatement.executeQuery();
-            resultSet.setFetchSize(3);
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int columnCount = metaData.getColumnCount();
+            ResultSet resultSet = queryForResultSet("SELECT * FROM USER WHERE ID = ?", userId);
+            User user = createUser(resultSet);
+            return user;
 
-            while (resultSet.next())
-        {
-            HashMap<String, Object> hashMap = new HashMap<String, Object>();;
-            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++)
-            {
-                String columnName = metaData.getColumnName(columnIndex);
-                hashMap.put(columnName, resultSet.getObject(columnName));
-            }
-            mapArrayList.add(hashMap);
-        }
-
-            closeResources(connection, resultSet, preparedStatement);
-            return mapArrayList;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (Exception e)
         {
-            e.printStackTrace();
+            logger.error("Cannot find user[" + userId + "]");
+        } finally
+        {
+            closeResources();
+
         }
 
         return null;
-    }
-
-    private User createUser(ResultSet resultSet) throws SQLException
-    {
-        long id = resultSet.getLong("ID");
-        String name = resultSet.getString("NAME");
-        String email = resultSet.getString("EMAIL");
-        String password = resultSet.getString("PASSWORD");
-        Timestamp register_time = resultSet.getTimestamp("REGISTER_TIME");
-        User user = new User(id);
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRegisterTime(register_time);
-        logger.info("Load User: ID = " + id + ", Name = " + name);
-        return user;
-    }
-
-    private void closeResources(Connection connection, ResultSet resultSet, PreparedStatement preparedStatement) throws SQLException
-    {
-        if (resultSet != null)
-        {
-            resultSet.close();
-        }
-        if (preparedStatement != null)
-        {
-            preparedStatement.close();
-        }
-        if (connection != null)
-        {
-            connection.close();
-        }
     }
 
     public void takeSurvey(Long surveyId, Long optionId)
@@ -176,4 +148,72 @@ public class JdbcSurveyDao implements SurveyDao
     {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    private ResultSet queryForResultSet(String sql, Object... objects) throws SQLException
+    {
+        connection = dataSource.getConnection();
+        logger.info("Use connection: " + connection.hashCode());
+        preparedStatement = connection.prepareStatement(sql);
+        populatePreparedStatement(objects);
+        logger.info(preparedStatement.toString());
+        resultSet = preparedStatement.executeQuery();
+        return resultSet;
+
+    }
+
+    private void populatePreparedStatement(Object... objects) throws SQLException
+    {
+        int index = 1;
+        for (Object object : objects)
+        {
+            preparedStatement.setObject(index, object);
+            index++;
+        }
+    }
+
+    private User createUser(ResultSet resultSet) throws SQLException
+    {
+        User user = null;
+        while (resultSet.next())
+        {
+            long id = resultSet.getLong("ID");
+            String name = resultSet.getString("NAME");
+            String email = resultSet.getString("EMAIL");
+            String password = resultSet.getString("PASSWORD");
+            Timestamp register_time = resultSet.getTimestamp("REGISTER_TIME");
+            user = new User(id);
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setRegisterTime(register_time);
+            logger.info("Load User: ID = " + id + ", Name = " + name);
+        }
+        return user;
+    }
+
+    private void closeResources()
+    {
+        try
+        {
+            if (resultSet != null)
+            {
+                resultSet.close();
+            }
+            if (preparedStatement != null)
+            {
+                preparedStatement.close();
+            }
+            if (connection != null)
+            {
+                connection.close();
+            }
+        } catch (Exception e)
+        {
+            logger.warn("Not able to close database resources");
+            e.printStackTrace();
+        }
+
+    }
+
+
 }

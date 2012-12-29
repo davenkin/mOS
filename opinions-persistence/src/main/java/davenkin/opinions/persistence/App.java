@@ -1,9 +1,11 @@
 package davenkin.opinions.persistence;
 
+import davenkin.opinions.domain.SurveyOption;
+import davenkin.opinions.domain.User;
 import org.apache.commons.dbcp.BasicDataSource;
 
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Hello world!
@@ -11,7 +13,7 @@ import java.util.Map;
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws SQLException
     {
         System.out.println( "Hello World!" );
         BasicDataSource dataSource = new BasicDataSource();
@@ -22,14 +24,13 @@ public class App
         dataSource.setMaxActive(3);
         dataSource.setMaxIdle(2);
         dataSource.setInitialSize(2);
-        JdbcSurveyDao jdbcSurveyDao = new JdbcSurveyDao(dataSource);
-        for(int index =0; index<6;index++)
-        {
-        jdbcSurveyDao.findUserById(2L);
-        }
 
-        List<Map<String,Object>> mapList = jdbcSurveyDao.queryForListOfMap("SELECT * FROM USER WHERE NAME = ?", "tom");
-        System.out.println(mapList.size());
+        JdbcSurveyDao jdbcSurveyDao = new JdbcSurveyDao(dataSource);
+        User userById = jdbcSurveyDao.findUserById(2L);
+        System.out.println(userById.getEmail());
+
+        List<SurveyOption> optionsForSurvey = jdbcSurveyDao.findOptionsForSurvey(3L);
+        System.out.println(optionsForSurvey.size());
 
 
     }
