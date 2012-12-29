@@ -126,8 +126,38 @@ public class JdbcSurveyDao implements SurveyDao
 
     public List<SurveyComment> findCommentsForSurvey(Long surveyId)
     {
+        try
+        {
+            ResultSet resultSet = queryForResultSet("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", surveyId);
+            return createCommentsFromResultSet(resultSet);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e)
+        {
+            logger.error("Cannot load comments for survey[" + surveyId + "].");
+        } finally
+        {
+            closeResources();
+        }
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
+
+    }
+
+    private List<SurveyComment> createCommentsFromResultSet(ResultSet resultSet) throws SQLException
+    {
+        List<SurveyComment> comments = new ArrayList<SurveyComment>();
+        while (resultSet.next())
+        {
+            SurveyComment surveyComment = new SurveyComment(resultSet.getLong("ID"));
+            surveyComment.setContent(resultSet.getString("CONTENT"));
+            surveyComment.setCommentUser(findUserById(resultSet.getLong("USER_ID")));
+            surveyComment.setCreatedTime(resultSet.getTimestamp("CREATED_TIME"));
+            surveyComment.setSurveyId(resultSet.getLong("SURVEY_ID"));
+            comments.add(surveyComment);
+        }
+        return comments;
     }
 
     public User findUserById(Long userId)
