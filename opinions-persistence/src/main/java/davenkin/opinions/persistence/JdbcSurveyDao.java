@@ -1,11 +1,13 @@
 package davenkin.opinions.persistence;
 
-import davenkin.opinions.domain.*;
+import davenkin.opinions.domain.Survey;
+import davenkin.opinions.domain.SurveyComment;
+import davenkin.opinions.domain.SurveyOption;
+import davenkin.opinions.domain.User;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,20 +20,18 @@ import java.util.List;
 public class JdbcSurveyDao implements SurveyDao
 {
     private DataSource dataSource;
+    private DavenkinJdbcTemplate jdbcTemplate;
     private final Logger logger = Logger.getLogger(this.getClass());
-    private Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
 
 
     public JdbcSurveyDao(DataSource dataSource)
     {
         this.dataSource = dataSource;
+        jdbcTemplate = new DavenkinJdbcTemplate(dataSource);
     }
 
     public Survey findSurveyById(Long surveyId)
     {
-
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -62,177 +62,41 @@ public class JdbcSurveyDao implements SurveyDao
 
     public List<String> findTagsForSurvey(Long surveyId)
     {
-        List<String> tags = new ArrayList<String>();
-        try
-        {
-            ResultSet rs = queryForResultSet("SELECT TAG_ID FROM SURVEY_TAG WHERE SURVEY_ID = ?", surveyId);
-            while (rs.next())
-            {
-                long tagId = rs.getLong("TAG_ID");
-                tags.add(findSurveyTagById(tagId));
-            }
-            return tags;
-        } catch (SQLException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (Exception e)
-        {
-            logger.error("Cannot load tags for survey[" + surveyId + "].");
-        } finally
-        {
-            closeResources();
-        }
-
         return null;  //To change body of implemented methods use File | Settings | File Templates.
-
     }
 
     public List<SurveyOption> findOptionsForSurvey(Long surveyId)
     {
-        try
-        {
-            ResultSet rs = queryForResultSet("SELECT * FROM SURVEY_OPTION_COUNT WHERE SURVEY_ID = ?", surveyId);
-            return createSurveyOptions(rs);
-        } catch (SQLException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (Exception e)
-        {
-            logger.error("Cannot load options for survey[" + surveyId + "].");
-        } finally
-        {
-            closeResources();
-        }
-
         return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    private List<SurveyOption> createSurveyOptions(ResultSet rs) throws SQLException
-    {
-        List<SurveyOption> surveyOptions = new ArrayList<SurveyOption>();
-        while (rs.next())
-        {
-            SurveyOption surveyOption = new SurveyOption(rs.getLong("ID"));
-            surveyOption.setCount(rs.getLong("OPTION_COUNT"));
-            String option = rs.getString("SURVEY_OPTION");
-            surveyOption.setOption(option);
-            long surveyId = rs.getLong("SURVEY_ID");
-            surveyOption.setSurveyId(surveyId);
-            surveyOptions.add(surveyOption);
-            logger.info("Added option <" + option + "> for survey[" + surveyId + "].");
-        }
-        return surveyOptions;
     }
 
     public List<SurveyComment> findCommentsForSurvey(Long surveyId)
     {
-        try
-        {
-            ResultSet resultSet = queryForResultSet("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", surveyId);
-            return createCommentsFromResultSet(resultSet);
-        } catch (SQLException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (Exception e)
-        {
-            logger.error("Cannot load comments for survey[" + surveyId + "].");
-        } finally
-        {
-            closeResources();
-        }
-
-        return null;
-
-    }
-
-    private List<SurveyComment> createCommentsFromResultSet(ResultSet resultSet) throws SQLException
-    {
-        List<SurveyComment> comments = new ArrayList<SurveyComment>();
-        while (resultSet.next())
-        {
-            SurveyComment surveyComment = new SurveyComment(resultSet.getLong("ID"));
-            surveyComment.setContent(resultSet.getString("CONTENT"));
-            surveyComment.setCommentUser(findUserById(resultSet.getLong("USER_ID")));
-            surveyComment.setCreatedTime(resultSet.getTimestamp("CREATED_TIME"));
-            surveyComment.setSurveyId(resultSet.getLong("SURVEY_ID"));
-            comments.add(surveyComment);
-        }
-        return comments;
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public User findUserById(Long userId)
     {
         try
         {
-            ResultSet resultSet = queryForResultSet("SELECT * FROM USER WHERE ID = ?", userId);
-            User user = createUser(resultSet);
-            return user;
-
-        } catch (SQLException e)
+            return jdbcTemplate.queryForObject("SELECT * FROM USER", null, new UserExtractor());
+        } catch (DataLoadingException e)
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (Exception e)
-        {
-            logger.error("Cannot find user[" + userId + "]");
-        } finally
-        {
-            closeResources();
-
         }
-
         return null;
+
     }
+
 
     public String findSurveyTagById(Long tagId)
     {
-        try
-        {
-            ResultSet resultSet = queryForResultSet("SELECT NAME FROM TAG WHERE ID = ?", tagId);
-            while (resultSet.next())
-            {
-                return resultSet.getString("NAME");
-            }
-
-        } catch (SQLException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (Exception e)
-        {
-            logger.error("Cannot find tag[" + tagId + "]");
-        } finally
-        {
-            closeResources();
-
-        }
-
-        return null;
-
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public String findCategoryById(Long catId)
     {
-        try
-        {
-            ResultSet resultSet = queryForResultSet("SELECT NAME FROM CATEGORY WHERE ID = ?", catId);
-            while (resultSet.next())
-            {
-                return resultSet.getString("NAME");
-            }
-
-        } catch (SQLException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (Exception e)
-        {
-            logger.error("Cannot find category[" + catId + "]");
-        } finally
-        {
-            closeResources();
-
-        }
-
-        return null;
-
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void takeSurvey(Long surveyId, Long optionId)
@@ -249,83 +113,4 @@ public class JdbcSurveyDao implements SurveyDao
     {
         //To change body of implemented methods use File | Settings | File Templates.
     }
-
-    private ResultSet queryForResultSet(String sql, Object... objects) throws SQLException
-    {
-        try
-        {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-            logger.info("Use connection: " + connection.hashCode());
-            preparedStatement = connection.prepareStatement(sql);
-            populatePreparedStatement(objects);
-            logger.info(preparedStatement.toString());
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
-        } catch (SQLException e)
-        {
-            if (connection != null)
-            {
-                connection.rollback();
-            }
-        }
-        return resultSet;
-
-    }
-
-    private void populatePreparedStatement(Object... objects) throws SQLException
-    {
-        int index = 1;
-        for (Object object : objects)
-        {
-            preparedStatement.setObject(index, object);
-            index++;
-        }
-    }
-
-    private User createUser(ResultSet resultSet) throws SQLException
-    {
-        User user = null;
-        while (resultSet.next())
-        {
-            long id = resultSet.getLong("ID");
-            String name = resultSet.getString("NAME");
-            String email = resultSet.getString("EMAIL");
-            String password = resultSet.getString("PASSWORD");
-            Timestamp register_time = resultSet.getTimestamp("REGISTER_TIME");
-            user = new User(id);
-            user.setName(name);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setRegisterTime(register_time);
-            logger.info("Load User: ID = " + id + ", Name = " + name);
-        }
-        return user;
-    }
-
-    private void closeResources()
-    {
-        try
-        {
-            if (resultSet != null)
-            {
-                resultSet.close();
-            }
-            if (preparedStatement != null)
-            {
-                preparedStatement.close();
-            }
-            if (connection != null)
-            {
-                connection.close();
-            }
-        } catch (Exception e)
-        {
-            logger.warn("Not able to close database resources");
-            e.printStackTrace();
-        }
-
-    }
-
-
 }
