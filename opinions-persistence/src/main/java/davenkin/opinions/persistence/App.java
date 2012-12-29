@@ -44,6 +44,9 @@ public class App
         System.out.println(commentsForSurvey.size());
         System.out.println(commentsForSurvey.get(1).getContent());
 
+        String categoryById = jdbcSurveyDao.findCategoryById(3L);
+        System.out.println(categoryById);
+
 
     }
 }

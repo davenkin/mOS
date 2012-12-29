@@ -209,6 +209,32 @@ public class JdbcSurveyDao implements SurveyDao
 
     }
 
+    public String findCategoryById(Long catId)
+    {
+        try
+        {
+            ResultSet resultSet = queryForResultSet("SELECT NAME FROM CATEGORY WHERE ID = ?", catId);
+            while (resultSet.next())
+            {
+                return resultSet.getString("NAME");
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e)
+        {
+            logger.error("Cannot find category[" + catId + "]");
+        } finally
+        {
+            closeResources();
+
+        }
+
+        return null;
+
+    }
+
     public void takeSurvey(Long surveyId, Long optionId)
     {
         //To change body of implemented methods use File | Settings | File Templates.
