@@ -2,10 +2,10 @@ package davenkin.opinions.persistence.dao;
 
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.persistence.extractor.SurveyResultSetRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +28,17 @@ public class JdbcSurveyDao extends AbstractDao implements SurveyDao
 
     public Survey findSurveyById(Long surveyId)
     {
+        try
+        {
+            List<Survey> surveys = jdbcTemplate.queryForList("SELECT SURVEY.*, CATEGORY.NAME AS CATEGORY_NAME FROM SURVEY LEFT JOIN CATEGORY ON SURVEY.CATEGORY_ID = CATEGORY.ID WHERE SURVEY.ID = ?", new Object[]{surveyId}, new SurveyResultSetRowMapper(dataSource));
+            if (surveys.size() > 0)
+            {
+                return surveys.get(0);
+            }
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -55,25 +66,6 @@ public class JdbcSurveyDao extends AbstractDao implements SurveyDao
     {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
-    public List<String> findTagsForSurvey(Long surveyId)
-    {
-        try
-        {
-            List<Integer> tagIds = jdbcTemplate.queryForList("SELECT TAG_ID FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{surveyId}, Integer.class);
-            ArrayList<String> strings = new ArrayList<String>();
-            for (Integer anInt : tagIds)
-            {
-                strings.add(jdbcTemplate.queryForObject("SELECT NAME FROM TAG WHERE ID = ?", new Object[]{anInt}, String.class));
-            }
-            return strings;
-        } catch (DataAccessException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
 
 
     public String findSurveyTagById(Long tagId)

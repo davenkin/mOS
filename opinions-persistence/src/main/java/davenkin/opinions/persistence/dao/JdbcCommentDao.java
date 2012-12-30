@@ -21,7 +21,7 @@ public class JdbcCommentDao extends AbstractDao implements CommentDao
     {
         try
         {
-            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new CommentRowMapper(jdbcUserDao));
+            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new CommentRowMapper(dataSource));
         } catch (DataAccessException e)
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -33,7 +33,7 @@ public class JdbcCommentDao extends AbstractDao implements CommentDao
     {
         try
         {
-            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE USER_ID = ?", new Object[]{userId},new CommentRowMapper(jdbcUserDao));
+            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE USER_ID = ?", new Object[]{userId},new CommentRowMapper(dataSource));
         } catch (DataAccessException e)
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

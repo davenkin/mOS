@@ -21,7 +21,6 @@ public interface SurveyDao {
     public List<Survey> findSurveysByTag(String tag);
     public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate);
 
-    public List<String> findTagsForSurvey(Long surveyId);
     public String findSurveyTagById(Long tagId);
     public String findCategoryById(Long catId);
 

@@ -39,9 +39,9 @@ public class App
         String surveyTagById = jdbcSurveyDao.findSurveyTagById(3L);
         System.out.println(surveyTagById);
 
-        List<String> tagsForSurvey = jdbcSurveyDao.findTagsForSurvey(3L);
-        System.out.println(tagsForSurvey.size());
-        System.out.println(tagsForSurvey.get(0));
+//        List<String> tagsForSurvey = jdbcSurveyDao.findTagsForSurvey(3L);
+//        System.out.println(tagsForSurvey.size());
+//        System.out.println(tagsForSurvey.get(0));
 
         String categoryById = jdbcSurveyDao.findCategoryById(3L);
         System.out.println(categoryById);

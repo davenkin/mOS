@@ -49,7 +49,8 @@ public class DavenkinJdbcTemplate
         return null;
 
     }
-  public <T> List<T> queryForList(String sql, Object[] objects, Class<T> type) throws DataAccessException
+
+    public <T> List<T> queryForList(String sql, Object[] objects, Class<T> type) throws DataAccessException
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -129,14 +130,24 @@ public class DavenkinJdbcTemplate
     {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         populatePreparedStatement(preparedStatement, objects);
-        logger.info(preparedStatement);
+        logger.info(extractSqlString(preparedStatement));
         return preparedStatement;
+    }
+
+    private String extractSqlString(PreparedStatement preparedStatement)
+    {
+        String statementString = preparedStatement.toString();
+        if (!statementString.contains(":"))
+            return null;
+
+        return statementString.substring(statementString.indexOf(":") + 1);
     }
 
     private Connection createConnection() throws SQLException
     {
         Connection connection = dataSource.getConnection();
         connection.setAutoCommit(false);
+        logger.info("User connection[" + connection.hashCode() + "]");
         return connection;
     }
 

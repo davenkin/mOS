@@ -3,6 +3,7 @@ package davenkin.opinions.persistence.mapper;
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.persistence.dao.JdbcUserDao;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -10,10 +11,10 @@ public class CommentRowMapper implements JdbcResultSetRowMapper<SurveyComment>
 {
     private JdbcUserDao jdbcUserDao;
 
-    public CommentRowMapper(JdbcUserDao jdbcUserDao)
+    public CommentRowMapper(DataSource dataSource)
     {
         super();
-        this.jdbcUserDao = jdbcUserDao;
+        jdbcUserDao = new JdbcUserDao(dataSource);
     }
 
     public SurveyComment map(ResultSet rs) throws SQLException
