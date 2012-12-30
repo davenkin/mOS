@@ -28,6 +28,5 @@ public interface SurveyDao {
     public void takeSurvey(Long surveyId, Long optionId);
 
     public void removeSurvey(Long surveyId);
-    public void removeComment(Long commentId);
 
 }

@@ -41,4 +41,9 @@ public class JdbcCommentDao extends AbstractDao implements CommentDao
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public void removeComment(Long commentId)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 }

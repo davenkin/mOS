@@ -1,9 +1,7 @@
 package davenkin.opinions.persistence.dao;
 
 import davenkin.opinions.domain.Survey;
-import davenkin.opinions.domain.SurveyOption;
 import davenkin.opinions.persistence.DataAccessException;
-import davenkin.opinions.persistence.mapper.SurveyOptionRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Date;
@@ -112,8 +110,4 @@ public class JdbcSurveyDao extends AbstractDao implements SurveyDao
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void removeComment(Long commentId)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

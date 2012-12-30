@@ -8,4 +8,6 @@ public interface CommentDao
 {
     List<SurveyComment> findCommentsForSurvey(Long surveyId);
     List<SurveyComment> findCommentsFromUser(Long userId);
+    public void removeComment(Long commentId);
+
 }
