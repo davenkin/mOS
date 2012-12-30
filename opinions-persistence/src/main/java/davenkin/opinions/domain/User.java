@@ -14,6 +14,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private Timestamp registerTime;
 
     public User(Long userId) {
         this.userId = userId;
@@ -56,5 +57,4 @@ public class User {
         this.registerTime = registerTime;
     }
 
-    private Timestamp registerTime;
 }

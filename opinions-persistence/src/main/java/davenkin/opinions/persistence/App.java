@@ -6,7 +6,6 @@ import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.dao.JdbcSurveyDao;
 import davenkin.opinions.persistence.dao.JdbcUserDao;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -28,7 +27,6 @@ public class App
         dataSource.setMaxActive(3);
         dataSource.setMaxIdle(2);
         dataSource.setInitialSize(2);
-        JdbcTemplate jdbcTemplate = null;
 
         JdbcSurveyDao jdbcSurveyDao = new JdbcSurveyDao(dataSource);
         JdbcUserDao jdbcUserDao = new JdbcUserDao(dataSource);
@@ -55,4 +53,5 @@ public class App
 
 
     }
+
 }

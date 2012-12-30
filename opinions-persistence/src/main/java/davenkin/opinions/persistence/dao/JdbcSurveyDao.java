@@ -4,10 +4,8 @@ import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.domain.SurveyOption;
 import davenkin.opinions.persistence.DataAccessException;
-import davenkin.opinions.persistence.DavenkinJdbcTemplate;
 import davenkin.opinions.persistence.mapper.CommentRowMapper;
 import davenkin.opinions.persistence.mapper.SurveyOptionRowMapper;
-import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.Date;
@@ -21,17 +19,12 @@ import java.util.List;
  * Time: 10:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class JdbcSurveyDao implements SurveyDao
+public class JdbcSurveyDao extends AbstractDao implements SurveyDao
 {
-    private DataSource dataSource;
-    private DavenkinJdbcTemplate jdbcTemplate;
-    private final Logger logger = Logger.getLogger(this.getClass());
-
 
     public JdbcSurveyDao(DataSource dataSource)
     {
-        this.dataSource = dataSource;
-        jdbcTemplate = new DavenkinJdbcTemplate(dataSource);
+        super(dataSource);
     }
 
     public Survey findSurveyById(Long surveyId)
