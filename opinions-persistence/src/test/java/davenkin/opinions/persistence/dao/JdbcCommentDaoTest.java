@@ -7,7 +7,9 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class JdbcCommentDaoTest
@@ -36,5 +38,13 @@ public class JdbcCommentDaoTest
     {
         Long noCommentId = 123L;
         assertTrue(commentDao.findCommentsForSurvey(noCommentId).size() == 0);
+    }
+
+    @Test
+    public void testFindCommentFromUser()
+    {
+        List<SurveyComment> comments = commentDao.findCommentsFromUser(3L);
+        assertTrue(comments.size() == 2);
+        assertThat(comments.get(0).getContent(), is("How time flies! 4 years!"));
     }
 }

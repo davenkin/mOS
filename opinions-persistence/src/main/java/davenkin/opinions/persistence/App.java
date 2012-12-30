@@ -3,10 +3,7 @@ package davenkin.opinions.persistence;
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.domain.SurveyOption;
 import davenkin.opinions.domain.User;
-import davenkin.opinions.persistence.dao.CommentDao;
-import davenkin.opinions.persistence.dao.JdbcCommentDao;
-import davenkin.opinions.persistence.dao.JdbcSurveyDao;
-import davenkin.opinions.persistence.dao.JdbcUserDao;
+import davenkin.opinions.persistence.dao.*;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import java.sql.SQLException;
@@ -35,7 +32,8 @@ public class App
         User userById = jdbcUserDao.findUserById(2L);
         System.out.println(userById.getEmail());
 
-        List<SurveyOption> optionsForSurvey = jdbcSurveyDao.findOptionsForSurvey(3L);
+        JdbcSurveyOptionDao jdbcSurveyOptionDao = new JdbcSurveyOptionDao(dataSource);
+        List<SurveyOption> optionsForSurvey = jdbcSurveyOptionDao.findOptionsForSurvey(3L);
         System.out.println(optionsForSurvey.size());
 
         String surveyTagById = jdbcSurveyDao.findSurveyTagById(3L);

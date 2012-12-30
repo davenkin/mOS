@@ -29,4 +29,16 @@ public class JdbcCommentDao extends AbstractDao implements CommentDao
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public List<SurveyComment> findCommentsFromUser(Long userId)
+    {
+        try
+        {
+            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE USER_ID = ?", new Object[]{userId},new CommentRowMapper(jdbcUserDao));
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 }
