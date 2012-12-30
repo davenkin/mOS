@@ -41,7 +41,7 @@ public class DavenkinJdbcTemplate
             return list;
         } catch (Exception e)
         {
-            rollbackAndThrowException(connection);
+            rollbackAndThrowException(connection, e);
         } finally
         {
             closeResources(resultSet, preparedStatement, connection);
@@ -69,7 +69,7 @@ public class DavenkinJdbcTemplate
             return list;
         } catch (Exception e)
         {
-            rollbackAndThrowException(connection);
+            rollbackAndThrowException(connection, e);
         } finally
         {
             closeResources(resultSet, preparedStatement, connection);
@@ -95,7 +95,7 @@ public class DavenkinJdbcTemplate
             }
         } catch (Exception e)
         {
-            rollbackAndThrowException(connection);
+            rollbackAndThrowException(connection, e);
         } finally
         {
             closeResources(resultSet, preparedStatement, connection);
@@ -117,7 +117,7 @@ public class DavenkinJdbcTemplate
             return extractor.extract(resultSet);
         } catch (Exception e)
         {
-            rollbackAndThrowException(connection);
+            rollbackAndThrowException(connection, e);
         } finally
         {
             closeResources(resultSet, preparedStatement, connection);
@@ -151,7 +151,7 @@ public class DavenkinJdbcTemplate
         return connection;
     }
 
-    private void rollbackAndThrowException(Connection connection) throws DataAccessException
+    private void rollbackAndThrowException(Connection connection, Exception e) throws DataAccessException
     {
         logger.error("Couldn't execute query, trying to rollback.");
         if (connection != null)
@@ -164,7 +164,7 @@ public class DavenkinJdbcTemplate
                 logger.error("Couldn't rollback.");
             }
         }
-        throw new DataAccessException();
+        throw new DataAccessException(e);
     }
 
 
