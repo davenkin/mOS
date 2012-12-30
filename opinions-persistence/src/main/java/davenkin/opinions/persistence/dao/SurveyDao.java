@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence;
+package davenkin.opinions.persistence.dao;
 
 import davenkin.opinions.domain.*;
 

@@ -3,7 +3,9 @@ package davenkin.opinions.persistence;
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.domain.SurveyOption;
 import davenkin.opinions.domain.User;
+import davenkin.opinions.persistence.dao.JdbcSurveyDao;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,6 +27,7 @@ public class App
         dataSource.setMaxActive(3);
         dataSource.setMaxIdle(2);
         dataSource.setInitialSize(2);
+        JdbcTemplate jdbcTemplate = null;
 
         JdbcSurveyDao jdbcSurveyDao = new JdbcSurveyDao(dataSource);
         User userById = jdbcSurveyDao.findUserById(2L);
@@ -35,7 +38,7 @@ public class App
 
         String surveyTagById = jdbcSurveyDao.findSurveyTagById(3L);
         System.out.println(surveyTagById);
-//
+
         List<String> tagsForSurvey = jdbcSurveyDao.findTagsForSurvey(3L);
         System.out.println(tagsForSurvey.size());
         System.out.println(tagsForSurvey.get(0));
@@ -46,7 +49,7 @@ public class App
         List<SurveyComment> commentsForSurvey = jdbcSurveyDao.findCommentsForSurvey(1L);
         System.out.println(commentsForSurvey.size());
         System.out.println(commentsForSurvey.get(1).getContent());
-
+        System.out.println(commentsForSurvey.get(1).getUser().getName());
 
 
     }
