@@ -23,7 +23,6 @@ public interface SurveyDao {
 
     public List<String> findTagsForSurvey(Long surveyId);
     public List<SurveyOption> findOptionsForSurvey(Long surveyId);
-    public List<SurveyComment> findCommentsForSurvey(Long surveyId);
     public String findSurveyTagById(Long tagId);
     public String findCategoryById(Long catId);
 

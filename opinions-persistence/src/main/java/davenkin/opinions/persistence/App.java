@@ -3,6 +3,8 @@ package davenkin.opinions.persistence;
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.domain.SurveyOption;
 import davenkin.opinions.domain.User;
+import davenkin.opinions.persistence.dao.CommentDao;
+import davenkin.opinions.persistence.dao.JdbcCommentDao;
 import davenkin.opinions.persistence.dao.JdbcSurveyDao;
 import davenkin.opinions.persistence.dao.JdbcUserDao;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -45,8 +47,9 @@ public class App
 
         String categoryById = jdbcSurveyDao.findCategoryById(3L);
         System.out.println(categoryById);
+        CommentDao commentDao = new JdbcCommentDao(dataSource);
 
-        List<SurveyComment> commentsForSurvey = jdbcSurveyDao.findCommentsForSurvey(1L);
+        List<SurveyComment> commentsForSurvey = commentDao.findCommentsForSurvey(1L);
         System.out.println(commentsForSurvey.size());
         System.out.println(commentsForSurvey.get(1).getContent());
         System.out.println(commentsForSurvey.get(1).getUser().getName());
