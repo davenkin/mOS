@@ -4,6 +4,7 @@ import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.domain.SurveyOption;
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.dao.JdbcSurveyDao;
+import davenkin.opinions.persistence.dao.JdbcUserDao;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -30,7 +31,8 @@ public class App
         JdbcTemplate jdbcTemplate = null;
 
         JdbcSurveyDao jdbcSurveyDao = new JdbcSurveyDao(dataSource);
-        User userById = jdbcSurveyDao.findUserById(2L);
+        JdbcUserDao jdbcUserDao = new JdbcUserDao(dataSource);
+        User userById = jdbcUserDao.findUserById(2L);
         System.out.println(userById.getEmail());
 
         List<SurveyOption> optionsForSurvey = jdbcSurveyDao.findOptionsForSurvey(3L);

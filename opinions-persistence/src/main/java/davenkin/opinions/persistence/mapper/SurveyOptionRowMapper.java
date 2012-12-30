@@ -1,6 +1,7 @@
-package davenkin.opinions.persistence;
+package davenkin.opinions.persistence.mapper;
 
 import davenkin.opinions.domain.SurveyOption;
+import davenkin.opinions.persistence.mapper.JdbcResultSetRowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -3,8 +3,10 @@ package davenkin.opinions.persistence.dao;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.domain.SurveyOption;
-import davenkin.opinions.domain.User;
-import davenkin.opinions.persistence.*;
+import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.persistence.DavenkinJdbcTemplate;
+import davenkin.opinions.persistence.mapper.CommentRowMapper;
+import davenkin.opinions.persistence.mapper.SurveyOptionRowMapper;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
@@ -96,29 +98,12 @@ public class JdbcSurveyDao implements SurveyDao
     {
         try
         {
-            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new CommentRowMapper(this));
+            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new CommentRowMapper(new JdbcUserDao(dataSource)));
         } catch (DataAccessException e)
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public User findUserById(Long userId)
-    {
-        try
-        {
-            List<User> users = jdbcTemplate.queryForList("SELECT * FROM USER WHERE ID = ?", new Object[]{userId}, new UserRowMapper());
-            if (users.size() > 0)
-            {
-                return users.get(0);
-            }
-        } catch (DataAccessException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;
-
     }
 
 

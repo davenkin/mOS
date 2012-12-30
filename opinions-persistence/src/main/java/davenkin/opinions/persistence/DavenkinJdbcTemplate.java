@@ -1,5 +1,7 @@
 package davenkin.opinions.persistence;
 
+import davenkin.opinions.persistence.mapper.JdbcResultSetExtractor;
+import davenkin.opinions.persistence.mapper.JdbcResultSetRowMapper;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;

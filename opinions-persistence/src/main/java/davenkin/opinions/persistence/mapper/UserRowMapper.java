@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence;
+package davenkin.opinions.persistence.mapper;
 
 import davenkin.opinions.domain.User;
 
