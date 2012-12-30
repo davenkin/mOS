@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.extractor;
+package davenkin.opinions.persistence.mapper;
 
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.dao.*;

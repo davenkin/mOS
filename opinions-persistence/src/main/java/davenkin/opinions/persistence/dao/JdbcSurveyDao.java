@@ -2,7 +2,7 @@ package davenkin.opinions.persistence.dao;
 
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.DataAccessException;
-import davenkin.opinions.persistence.extractor.SurveyResultSetRowMapper;
+import davenkin.opinions.persistence.mapper.SurveyResultSetRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Date;
