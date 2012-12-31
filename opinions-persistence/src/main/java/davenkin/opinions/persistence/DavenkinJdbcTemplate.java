@@ -145,7 +145,11 @@ public class DavenkinJdbcTemplate
 
     private Connection createConnection() throws SQLException
     {
+        long before = System.currentTimeMillis();
         Connection connection = dataSource.getConnection();
+        long after = System.currentTimeMillis();
+        long interval = after - before;
+        logger.info("Connection[" + connection.hashCode() + "] created in " +interval+" milliseconds" );
         connection.setAutoCommit(false);
         logger.info("User connection[" + connection.hashCode() + "]");
         return connection;
