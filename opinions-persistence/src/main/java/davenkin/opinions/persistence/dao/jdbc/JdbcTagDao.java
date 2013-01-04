@@ -1,15 +1,14 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.persistence.DataAccessException;
-import davenkin.opinions.persistence.dao.SurveyTagDao;
-import davenkin.opinions.persistence.dao.jdbc.AbstractJdbcDao;
+import davenkin.opinions.persistence.dao.TagDao;
 
 import javax.sql.DataSource;
 import java.util.List;
 
-public class JdbcSurveyTagDao extends AbstractJdbcDao implements SurveyTagDao
+public class JdbcTagDao extends AbstractJdbcDao implements TagDao
 {
-    public JdbcSurveyTagDao(DataSource dataSource)
+    public JdbcTagDao(DataSource dataSource)
     {
         super(dataSource);
     }

@@ -3,8 +3,8 @@ package davenkin.opinions.persistence.dao.jdbc.mapper;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.dao.*;
 import davenkin.opinions.persistence.dao.jdbc.JdbcCommentDao;
-import davenkin.opinions.persistence.dao.jdbc.JdbcSurveyOptionDao;
-import davenkin.opinions.persistence.dao.jdbc.JdbcSurveyTagDao;
+import davenkin.opinions.persistence.dao.jdbc.JdbcOptionDao;
+import davenkin.opinions.persistence.dao.jdbc.JdbcTagDao;
 import davenkin.opinions.persistence.dao.jdbc.JdbcUserDao;
 
 import javax.sql.DataSource;
@@ -16,15 +16,15 @@ public class SurveyResultSetRowMapper implements JdbcResultSetRowMapper<Survey>
 
     private CommentDao commentDao;
     private UserDao userDao;
-    private SurveyOptionDao surveyOptionDao;
-    private SurveyTagDao surveyTagDao;
+    private OptionDao optionDao;
+    private TagDao tagDao;
 
     public SurveyResultSetRowMapper(DataSource dataSource)
     {
         commentDao = new JdbcCommentDao(dataSource);
         userDao = new JdbcUserDao(dataSource);
-        surveyOptionDao = new JdbcSurveyOptionDao(dataSource);
-        surveyTagDao = new JdbcSurveyTagDao(dataSource);
+        optionDao = new JdbcOptionDao(dataSource);
+        tagDao = new JdbcTagDao(dataSource);
     }
 
     public Survey map(ResultSet rs) throws SQLException
@@ -36,9 +36,9 @@ public class SurveyResultSetRowMapper implements JdbcResultSetRowMapper<Survey>
         survey.setSurveyCategory(rs.getString("CATEGORY_NAME"));
         survey.setCanMultipleChecked(rs.getString("IS_MULTI_OPTIONS").equals("Y"));
         survey.setCreatingUser(userDao.findUserById(rs.getLong("USER_ID")));
-        survey.setOptions(surveyOptionDao.findOptionsForSurvey(id));
+        survey.setOptions(optionDao.findOptionsForSurvey(id));
         survey.setComments(commentDao.findCommentsForSurvey(id));
-        survey.setSurveyTags(surveyTagDao.findTagsForSurvey(id));
+        survey.setSurveyTags(tagDao.findTagsForSurvey(id));
 
         return survey;
     }

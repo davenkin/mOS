@@ -2,7 +2,7 @@ package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.Option;
 import davenkin.opinions.persistence.DataSourceUtil;
-import davenkin.opinions.persistence.dao.SurveyOptionDao;
+import davenkin.opinions.persistence.dao.OptionDao;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,12 +14,12 @@ import static org.junit.Assert.assertTrue;
 
 public class JdbcSurveyOptionDaoTest
 {
-    private SurveyOptionDao optionDao;
+    private OptionDao optionDao;
 
     @Before
     public void setUp() throws Exception
     {
-        optionDao = new JdbcSurveyOptionDao(DataSourceUtil.createDataSource());
+        optionDao = new JdbcOptionDao(DataSourceUtil.createDataSource());
     }
 
 

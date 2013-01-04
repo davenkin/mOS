@@ -1,3 +1,5 @@
+import davenkin.opinions.domain.CategoryEnum;
+
 /**
  * Created with IntelliJ IDEA.
  * User: davenkin
@@ -8,5 +10,10 @@
 public class App {
     public static void main(String[] args){
         System.out.println(Thread.getAllStackTraces().keySet().size());
+        String name = CategoryEnum.SCI.name();
+        System.out.println(name);
+        String s = CategoryEnum.SCI.toString();
+        System.out.println(s);
     }
+
 }

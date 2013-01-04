@@ -1,8 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.persistence.DataSourceUtil;
-import davenkin.opinions.persistence.dao.SurveyTagDao;
-import davenkin.opinions.persistence.dao.jdbc.JdbcSurveyTagDao;
+import davenkin.opinions.persistence.dao.TagDao;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,19 +14,19 @@ import static org.junit.Assert.assertTrue;
 public class JdbcSurveyTagDaoTest
 {
 
-    private SurveyTagDao surveyTagDao;
+    private TagDao tagDao;
 
     @Before
     public void setUp() throws Exception
     {
-        surveyTagDao = new JdbcSurveyTagDao(DataSourceUtil.createDataSource());
+        tagDao = new JdbcTagDao(DataSourceUtil.createDataSource());
     }
 
 
     @Test
     public void findAllTagsForSurvey()
     {
-        List<String> tags = surveyTagDao.findTagsForSurvey(9l);
+        List<String> tags = tagDao.findTagsForSurvey(9l);
         assertTrue(tags.size() == 3);
         assertThat(tags.get(0), is("city"));
     }
@@ -36,6 +35,6 @@ public class JdbcSurveyTagDaoTest
     public void shouldReturnEmptyListWhenNoTagsExistForSurvey()
     {
         long noTagSurvey = 4L;
-        assertTrue(surveyTagDao.findTagsForSurvey(noTagSurvey).size() == 0);
+        assertTrue(tagDao.findTagsForSurvey(noTagSurvey).size() == 0);
     }
 }

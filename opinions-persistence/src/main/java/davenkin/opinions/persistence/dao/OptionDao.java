@@ -4,7 +4,7 @@ import davenkin.opinions.domain.Option;
 
 import java.util.List;
 
-public interface SurveyOptionDao
+public interface OptionDao
 {
     List<Option> findOptionsForSurvey(Long surveyId);
 }
