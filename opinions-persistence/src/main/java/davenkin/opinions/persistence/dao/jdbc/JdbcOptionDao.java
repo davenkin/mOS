@@ -19,7 +19,7 @@ public class JdbcOptionDao extends AbstractJdbcDao implements OptionDao
     {
         try
         {
-            return jdbcTemplate.queryForList("SELECT * FROM SURVEY_OPTION_COUNT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new SurveyOptionRowMapper());
+            return jdbcTemplate.queryForList("SELECT * FROM SURVEY_OPTION WHERE SURVEY_ID = ?", new Object[]{surveyId}, new SurveyOptionRowMapper());
         } catch (DataAccessException e)
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

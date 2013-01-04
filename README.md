@@ -44,7 +44,7 @@ find the comments for the survey:
 SELECT * FROM COMMENT WHERE SURVEY_ID = ?
 
 find the options for the survey:
-SELECT * FROM SURVEY_OPTION_COUNT WHERE SURVEY_ID = ?
+SELECT * FROM SURVEY_OPTION WHERE SURVEY_ID = ?
 
 find all surveys created by a specific user
 find all surveys with a specific tag
