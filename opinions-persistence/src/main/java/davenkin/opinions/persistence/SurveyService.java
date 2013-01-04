@@ -26,5 +26,5 @@ public interface SurveyService {
 
     public void addCommentToSurvey(long surveyId, String comment);
 
-    public void takeSurvey(long surveyId,String option);
+    public void takeSurvey(long surveyId, long optionId);
 }
