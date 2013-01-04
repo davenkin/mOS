@@ -1,7 +1,8 @@
-package davenkin.opinions.persistence;
+package davenkin.opinions.persistence.dao.jdbc;
 
-import davenkin.opinions.persistence.mapper.JdbcResultSetExtractor;
-import davenkin.opinions.persistence.mapper.JdbcResultSetRowMapper;
+import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.persistence.dao.jdbc.mapper.JdbcResultSetExtractor;
+import davenkin.opinions.persistence.dao.jdbc.mapper.JdbcResultSetRowMapper;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;

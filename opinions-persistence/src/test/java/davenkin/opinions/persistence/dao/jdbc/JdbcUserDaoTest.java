@@ -1,7 +1,9 @@
-package davenkin.opinions.persistence.dao;
+package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.DataSourceUtil;
+import davenkin.opinions.persistence.dao.UserDao;
+import davenkin.opinions.persistence.dao.jdbc.JdbcUserDao;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;

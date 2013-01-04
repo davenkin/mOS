@@ -1,8 +1,9 @@
-package davenkin.opinions.persistence.dao;
+package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.DataAccessException;
-import davenkin.opinions.persistence.mapper.SurveyResultSetRowMapper;
+import davenkin.opinions.persistence.dao.SurveyDao;
+import davenkin.opinions.persistence.dao.jdbc.mapper.SurveyResultSetRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Date;
@@ -15,7 +16,7 @@ import java.util.List;
  * Time: 10:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class JdbcSurveyDao extends AbstractDao implements SurveyDao
+public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
 {
 
     private JdbcUserDao jdbcUserDao;

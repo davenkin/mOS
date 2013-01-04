@@ -1,8 +1,11 @@
-package davenkin.opinions.persistence.mapper;
+package davenkin.opinions.persistence.dao.jdbc.mapper;
 
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.dao.*;
-import davenkin.opinions.persistence.mapper.JdbcResultSetRowMapper;
+import davenkin.opinions.persistence.dao.jdbc.JdbcCommentDao;
+import davenkin.opinions.persistence.dao.jdbc.JdbcSurveyOptionDao;
+import davenkin.opinions.persistence.dao.jdbc.JdbcSurveyTagDao;
+import davenkin.opinions.persistence.dao.jdbc.JdbcUserDao;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;

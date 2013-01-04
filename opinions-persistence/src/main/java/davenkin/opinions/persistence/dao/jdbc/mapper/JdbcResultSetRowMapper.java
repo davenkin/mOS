@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.mapper;
+package davenkin.opinions.persistence.dao.jdbc.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

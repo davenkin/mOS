@@ -1,13 +1,14 @@
-package davenkin.opinions.persistence.dao;
+package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.persistence.DataAccessException;
-import davenkin.opinions.persistence.mapper.CommentRowMapper;
+import davenkin.opinions.persistence.dao.CommentDao;
+import davenkin.opinions.persistence.dao.jdbc.mapper.CommentRowMapper;
 
 import javax.sql.DataSource;
 import java.util.List;
 
-public class JdbcCommentDao extends AbstractDao implements CommentDao
+public class JdbcCommentDao extends AbstractJdbcDao implements CommentDao
 {
     private JdbcUserDao jdbcUserDao;
 

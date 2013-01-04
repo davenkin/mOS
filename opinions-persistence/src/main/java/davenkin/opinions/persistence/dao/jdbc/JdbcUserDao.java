@@ -1,13 +1,14 @@
-package davenkin.opinions.persistence.dao;
+package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.DataAccessException;
-import davenkin.opinions.persistence.mapper.UserRowMapper;
+import davenkin.opinions.persistence.dao.UserDao;
+import davenkin.opinions.persistence.dao.jdbc.mapper.UserRowMapper;
 
 import javax.sql.DataSource;
 import java.util.List;
 
-public class JdbcUserDao extends AbstractDao implements UserDao
+public class JdbcUserDao extends AbstractJdbcDao implements UserDao
 {
 
     public JdbcUserDao(DataSource dataSource)

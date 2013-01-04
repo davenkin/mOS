@@ -1,7 +1,8 @@
-package davenkin.opinions.persistence.dao;
+package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.SurveyComment;
 import davenkin.opinions.persistence.DataSourceUtil;
+import davenkin.opinions.persistence.dao.jdbc.JdbcCommentDao;
 import org.junit.Before;
 import org.junit.Test;
 
