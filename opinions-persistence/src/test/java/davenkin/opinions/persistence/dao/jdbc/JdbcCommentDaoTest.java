@@ -1,8 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
-import davenkin.opinions.domain.SurveyComment;
+import davenkin.opinions.domain.Comment;
 import davenkin.opinions.persistence.DataSourceUtil;
-import davenkin.opinions.persistence.dao.jdbc.JdbcCommentDao;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +26,7 @@ public class JdbcCommentDaoTest
     @Test
     public void testFindCommentsForSurvey() throws Exception
     {
-        List<SurveyComment> comments = commentDao.findCommentsForSurvey(1L);
+        List<Comment> comments = commentDao.findCommentsForSurvey(1L);
         assertTrue(comments.size() == 3);
         assertEquals(comments.get(0).getContent(), "How time flies! 4 years!");
         assertEquals(comments.get(1).getUser().getName(), "davenkin");
@@ -44,7 +43,7 @@ public class JdbcCommentDaoTest
     @Test
     public void testFindCommentFromUser()
     {
-        List<SurveyComment> comments = commentDao.findCommentsFromUser(3L);
+        List<Comment> comments = commentDao.findCommentsFromUser(3L);
         assertTrue(comments.size() == 2);
         assertThat(comments.get(0).getContent(), is("How time flies! 4 years!"));
     }

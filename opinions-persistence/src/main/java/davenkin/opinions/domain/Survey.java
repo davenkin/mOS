@@ -18,8 +18,8 @@ public class Survey {
     private boolean canMultipleChecked;
     private String surveyCategory;
     private List<String> surveyTags;
-    private List<SurveyOption> surveyOptions;
-    private List<SurveyComment> surveyComments;
+    private List<Option> options;
+    private List<Comment> comments;
 
     public Survey(Long id)
     {
@@ -91,23 +91,23 @@ public class Survey {
         this.surveyTags = surveyTags;
     }
 
-    public List<SurveyOption> getSurveyOptions()
+    public List<Option> getOptions()
     {
-        return surveyOptions;
+        return options;
     }
 
-    public void setSurveyOptions(List<SurveyOption> surveyOptions)
+    public void setOptions(List<Option> options)
     {
-        this.surveyOptions = surveyOptions;
+        this.options = options;
     }
 
-    public List<SurveyComment> getSurveyComments()
+    public List<Comment> getComments()
     {
-        return surveyComments;
+        return comments;
     }
 
-    public void setSurveyComments(List<SurveyComment> surveyComments)
+    public void setComments(List<Comment> comments)
     {
-        this.surveyComments = surveyComments;
+        this.comments = comments;
     }
 }

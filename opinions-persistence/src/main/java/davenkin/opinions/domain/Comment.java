@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * Time: 8:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SurveyComment
+public class Comment
 {
     private Long id;
     private String content;
@@ -17,7 +17,7 @@ public class SurveyComment
     private User user;
     private Timestamp createdTime;
 
-    public SurveyComment(Long id)
+    public Comment(Long id)
     {
         this.id = id;
     }

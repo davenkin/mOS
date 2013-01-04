@@ -1,6 +1,6 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
-import davenkin.opinions.domain.SurveyComment;
+import davenkin.opinions.domain.Comment;
 import davenkin.opinions.persistence.DataAccessException;
 import davenkin.opinions.persistence.dao.CommentDao;
 import davenkin.opinions.persistence.dao.jdbc.mapper.CommentRowMapper;
@@ -18,7 +18,7 @@ public class JdbcCommentDao extends AbstractJdbcDao implements CommentDao
         jdbcUserDao = new JdbcUserDao(dataSource);
     }
 
-    public List<SurveyComment> findCommentsForSurvey(Long surveyId)
+    public List<Comment> findCommentsForSurvey(Long surveyId)
     {
         try
         {
@@ -30,7 +30,7 @@ public class JdbcCommentDao extends AbstractJdbcDao implements CommentDao
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public List<SurveyComment> findCommentsFromUser(Long userId)
+    public List<Comment> findCommentsFromUser(Long userId)
     {
         try
         {

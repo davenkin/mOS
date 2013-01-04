@@ -1,18 +1,18 @@
 package davenkin.opinions.persistence.dao.jdbc.mapper;
 
-import davenkin.opinions.domain.SurveyOption;
+import davenkin.opinions.domain.Option;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SurveyOptionRowMapper implements JdbcResultSetRowMapper<SurveyOption>
+public class SurveyOptionRowMapper implements JdbcResultSetRowMapper<Option>
 {
-    public SurveyOption map(ResultSet rs) throws SQLException
+    public Option map(ResultSet rs) throws SQLException
     {
-        SurveyOption surveyOption = new SurveyOption(rs.getLong("ID"));
-        surveyOption.setCount(rs.getLong("OPTION_COUNT"));
-        surveyOption.setOption(rs.getString("SURVEY_OPTION"));
-        surveyOption.setSurveyId(rs.getLong("SURVEY_ID"));
-        return surveyOption;
+        Option option = new Option(rs.getLong("ID"));
+        option.setCount(rs.getLong("OPTION_COUNT"));
+        option.setOption(rs.getString("SURVEY_OPTION"));
+        option.setSurveyId(rs.getLong("SURVEY_ID"));
+        return option;
     }
 }

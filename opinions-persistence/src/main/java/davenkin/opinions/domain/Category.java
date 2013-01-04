@@ -7,7 +7,7 @@ package davenkin.opinions.domain;
  * Time: 8:52 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SurveyCategory {
+public class Category {
     private Long id;
     private String categoryName;
 }

@@ -1,9 +1,8 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
-import davenkin.opinions.domain.SurveyOption;
+import davenkin.opinions.domain.Option;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.dao.SurveyOptionDao;
-import davenkin.opinions.persistence.dao.jdbc.JdbcSurveyOptionDao;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +26,7 @@ public class JdbcSurveyOptionDaoTest
     @Test
     public void testFindOptionsForSurvey() throws Exception
     {
-        List<SurveyOption> options = optionDao.findOptionsForSurvey(1L);
+        List<Option> options = optionDao.findOptionsForSurvey(1L);
         assertTrue(options.size() == 3);
         assertThat(options.get(0).getOption(), is("More than 10 years"));
     }

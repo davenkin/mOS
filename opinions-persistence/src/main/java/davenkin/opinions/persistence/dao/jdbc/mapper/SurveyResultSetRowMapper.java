@@ -36,8 +36,8 @@ public class SurveyResultSetRowMapper implements JdbcResultSetRowMapper<Survey>
         survey.setSurveyCategory(rs.getString("CATEGORY_NAME"));
         survey.setCanMultipleChecked(rs.getString("IS_MULTI_OPTIONS").equals("Y"));
         survey.setCreatingUser(userDao.findUserById(rs.getLong("USER_ID")));
-        survey.setSurveyOptions(surveyOptionDao.findOptionsForSurvey(id));
-        survey.setSurveyComments(commentDao.findCommentsForSurvey(id));
+        survey.setOptions(surveyOptionDao.findOptionsForSurvey(id));
+        survey.setComments(commentDao.findCommentsForSurvey(id));
         survey.setSurveyTags(surveyTagDao.findTagsForSurvey(id));
 
         return survey;

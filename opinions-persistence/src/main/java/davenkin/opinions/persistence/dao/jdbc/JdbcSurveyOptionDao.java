@@ -1,6 +1,6 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
-import davenkin.opinions.domain.SurveyOption;
+import davenkin.opinions.domain.Option;
 import davenkin.opinions.persistence.DataAccessException;
 import davenkin.opinions.persistence.dao.SurveyOptionDao;
 import davenkin.opinions.persistence.dao.jdbc.mapper.SurveyOptionRowMapper;
@@ -15,7 +15,7 @@ public class JdbcSurveyOptionDao extends AbstractJdbcDao implements SurveyOption
         super(dataSource);
     }
 
-    public List<SurveyOption> findOptionsForSurvey(Long surveyId)
+    public List<Option> findOptionsForSurvey(Long surveyId)
     {
         try
         {

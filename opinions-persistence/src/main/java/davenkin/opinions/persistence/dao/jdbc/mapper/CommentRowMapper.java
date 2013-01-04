@@ -1,13 +1,13 @@
 package davenkin.opinions.persistence.dao.jdbc.mapper;
 
-import davenkin.opinions.domain.SurveyComment;
+import davenkin.opinions.domain.Comment;
 import davenkin.opinions.persistence.dao.jdbc.JdbcUserDao;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CommentRowMapper implements JdbcResultSetRowMapper<SurveyComment>
+public class CommentRowMapper implements JdbcResultSetRowMapper<Comment>
 {
     private JdbcUserDao jdbcUserDao;
 
@@ -17,13 +17,13 @@ public class CommentRowMapper implements JdbcResultSetRowMapper<SurveyComment>
         jdbcUserDao = new JdbcUserDao(dataSource);
     }
 
-    public SurveyComment map(ResultSet rs) throws SQLException
+    public Comment map(ResultSet rs) throws SQLException
     {
-        SurveyComment surveyComment = new SurveyComment(rs.getLong("ID"));
-        surveyComment.setContent(rs.getString("CONTENT"));
-        surveyComment.setCreatedTime(rs.getTimestamp("CREATED_TIME"));
-        surveyComment.setSurveyId(rs.getLong("SURVEY_ID"));
-        surveyComment.setUser(jdbcUserDao.findUserById(rs.getLong("USER_ID")));
-        return surveyComment;
+        Comment comment = new Comment(rs.getLong("ID"));
+        comment.setContent(rs.getString("CONTENT"));
+        comment.setCreatedTime(rs.getTimestamp("CREATED_TIME"));
+        comment.setSurveyId(rs.getLong("SURVEY_ID"));
+        comment.setUser(jdbcUserDao.findUserById(rs.getLong("USER_ID")));
+        return comment;
     }
 }
