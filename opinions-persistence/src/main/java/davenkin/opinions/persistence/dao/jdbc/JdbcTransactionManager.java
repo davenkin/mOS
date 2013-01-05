@@ -1,5 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
+import org.apache.log4j.Logger;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -7,6 +9,7 @@ import java.sql.SQLException;
 public class JdbcTransactionManager
 {
     private DataSource dataSource;
+    private Logger logger = Logger.getLogger(JdbcTransactionManager.class);
 
     public JdbcTransactionManager(DataSource dataSource)
     {
@@ -31,6 +34,7 @@ public class JdbcTransactionManager
     public final void rollback() throws SQLException
     {
         getConnection().rollback();
+        logger.info("Rolling back.");
     }
 
     public final void close() throws SQLException

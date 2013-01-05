@@ -16,24 +16,35 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao
         super(dataSource);
     }
 
-    public void addUser(String name, String email, String password)
+    public void addUser(String name, String email, String password) throws DataAccessException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        jdbcTemplate.update("INSERT INTO USER (NAME, EMAIL, PASSWORD) VALUES (?, ?, ?)", new Object[]{name, email, password});
     }
 
-    public void deleteUser(int userId)
+    public void deleteUser(Long userId) throws DataAccessException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+       jdbcTemplate.update("DELETE FROM USER WHERE ID = ?", new Object[]{userId});
     }
 
-    public void updateUser(int userId, String name, String email, String password)
+    public void updateUser(Long userId, String name, String email, String password) throws DataAccessException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        jdbcTemplate.update("UPDATE USER SET NAME=?, EMAIL=?, PASSWORD=? WHERE ID = ?", new Object[]{name, email, password, userId});
     }
 
     public User findUserById(Long userId) throws DataAccessException
     {
         List<User> users = jdbcTemplate.queryForList("SELECT * FROM USER WHERE ID = ?", new Object[]{userId}, new UserRowMapper());
+        if (users.size() > 0)
+        {
+            return users.get(0);
+        }
+
+        return null;
+    }
+
+    public User findUserByName(String name) throws DataAccessException
+    {
+        List<User> users = jdbcTemplate.queryForList("SELECT * FROM USER WHERE NAME = ?", new Object[]{name}, new UserRowMapper());
         if (users.size() > 0)
         {
             return users.get(0);

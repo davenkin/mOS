@@ -23,6 +23,26 @@ public class DavenkinJdbcTemplate
         this.dataSource = dataSource;
     }
 
+    public void update(String sql, Object[] objects) throws DataAccessException
+    {
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            connection = getConnection();
+            preparedStatement = createPreparedStatement(sql, objects, connection);
+            preparedStatement.executeUpdate();
+
+        } catch (Exception e)
+        {
+            throw new DataAccessException(e);
+        } finally
+        {
+            closeResources(resultSet, preparedStatement);
+        }
+    }
+
     public <T> List<T> queryForList(String sql, Object[] objects, JdbcResultSetRowMapper<T> mapper) throws DataAccessException
     {
         Connection connection;
@@ -31,7 +51,6 @@ public class DavenkinJdbcTemplate
         try
         {
             connection = getConnection();
-            connection.setReadOnly(true);
             preparedStatement = createPreparedStatement(sql, objects, connection);
             resultSet = preparedStatement.executeQuery();
             List<T> list = new ArrayList<T>();
@@ -57,7 +76,6 @@ public class DavenkinJdbcTemplate
         try
         {
             connection = getConnection();
-            connection.setReadOnly(true);
             preparedStatement = createPreparedStatement(sql, objects, connection);
             resultSet = preparedStatement.executeQuery();
             connection.commit();
