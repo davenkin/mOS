@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc.mapper;
 
 import davenkin.opinions.domain.Survey;
+import davenkin.opinions.persistence.DataAccessException;
 import davenkin.opinions.persistence.dao.*;
 import davenkin.opinions.persistence.dao.jdbc.JdbcCommentDao;
 import davenkin.opinions.persistence.dao.jdbc.JdbcOptionDao;
@@ -35,7 +36,13 @@ public class SurveyResultSetRowMapper implements JdbcResultSetRowMapper<Survey>
         survey.setContent(rs.getString("CONTENT"));
         survey.setSurveyCategory(rs.getString("CATEGORY_NAME"));
         survey.setCanMultipleChecked(rs.getString("IS_MULTI_OPTIONS").equals("Y"));
-        survey.setCreatingUser(userDao.findUserById(rs.getLong("USER_ID")));
+        try
+        {
+            survey.setCreatingUser(userDao.findUserById(rs.getLong("USER_ID")));
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         survey.setOptions(optionDao.findOptionsForSurvey(id));
         survey.setComments(commentDao.findCommentsForSurvey(id));
         survey.setSurveyTags(tagDao.findTagsForSurvey(id));

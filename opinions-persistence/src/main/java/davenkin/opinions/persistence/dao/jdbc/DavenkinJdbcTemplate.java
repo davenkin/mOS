@@ -25,15 +25,15 @@ public class DavenkinJdbcTemplate
 
     public <T> List<T> queryForList(String sql, Object[] objects, JdbcResultSetRowMapper<T> mapper) throws DataAccessException
     {
-        Connection connection = null;
+        Connection connection;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try
         {
-            connection = createConnection();
+            connection = getConnection();
+            connection.setReadOnly(true);
             preparedStatement = createPreparedStatement(sql, objects, connection);
             resultSet = preparedStatement.executeQuery();
-            connection.commit();
             List<T> list = new ArrayList<T>();
             while (resultSet.next())
             {
@@ -42,13 +42,11 @@ public class DavenkinJdbcTemplate
             return list;
         } catch (Exception e)
         {
-            rollbackAndThrowException(connection, e);
+            throw new DataAccessException(e);
         } finally
         {
-            closeResources(resultSet, preparedStatement, connection);
+            closeResources(resultSet, preparedStatement);
         }
-        return null;
-
     }
 
     public <T> List<T> queryForList(String sql, Object[] objects, Class<T> type) throws DataAccessException
@@ -58,7 +56,8 @@ public class DavenkinJdbcTemplate
         ResultSet resultSet = null;
         try
         {
-            connection = createConnection();
+            connection = getConnection();
+            connection.setReadOnly(true);
             preparedStatement = createPreparedStatement(sql, objects, connection);
             resultSet = preparedStatement.executeQuery();
             connection.commit();
@@ -73,7 +72,7 @@ public class DavenkinJdbcTemplate
             rollbackAndThrowException(connection, e);
         } finally
         {
-            closeResources(resultSet, preparedStatement, connection);
+            closeResources(resultSet, preparedStatement);
         }
         return null;
 
@@ -86,7 +85,7 @@ public class DavenkinJdbcTemplate
         ResultSet resultSet = null;
         try
         {
-            connection = createConnection();
+            connection = getConnection();
             preparedStatement = createPreparedStatement(sql, objects, connection);
             resultSet = preparedStatement.executeQuery();
             connection.commit();
@@ -99,7 +98,7 @@ public class DavenkinJdbcTemplate
             rollbackAndThrowException(connection, e);
         } finally
         {
-            closeResources(resultSet, preparedStatement, connection);
+            closeResources(resultSet, preparedStatement);
         }
         return null;
     }
@@ -111,7 +110,7 @@ public class DavenkinJdbcTemplate
         ResultSet resultSet = null;
         try
         {
-            connection = createConnection();
+            connection = getConnection();
             preparedStatement = createPreparedStatement(sql, objects, connection);
             resultSet = preparedStatement.executeQuery();
             connection.commit();
@@ -121,7 +120,7 @@ public class DavenkinJdbcTemplate
             rollbackAndThrowException(connection, e);
         } finally
         {
-            closeResources(resultSet, preparedStatement, connection);
+            closeResources(resultSet, preparedStatement);
         }
         return null;
     }
@@ -144,31 +143,19 @@ public class DavenkinJdbcTemplate
         return statementString.substring(statementString.indexOf(":") + 1);
     }
 
-    private Connection createConnection() throws SQLException
+    private Connection getConnection() throws SQLException
     {
         long before = System.currentTimeMillis();
-        Connection connection = dataSource.getConnection();
+        Connection connection = SingleThreadDataSourceUtils.getConnection(dataSource);
         long after = System.currentTimeMillis();
         long interval = after - before;
-        logger.info("Connection[" + connection.hashCode() + "] created in " +interval+" milliseconds" );
-        connection.setAutoCommit(false);
+        logger.info("Connection[" + connection.hashCode() + "] created in " + interval + " milliseconds");
         logger.info("User connection[" + connection.hashCode() + "]");
         return connection;
     }
 
     private void rollbackAndThrowException(Connection connection, Exception e) throws DataAccessException
     {
-        logger.error("Couldn't execute query, trying to rollback.");
-        if (connection != null)
-        {
-            try
-            {
-                connection.rollback();
-            } catch (SQLException ee)
-            {
-                logger.error("Couldn't rollback.");
-            }
-        }
         throw new DataAccessException(e);
     }
 
@@ -185,7 +172,7 @@ public class DavenkinJdbcTemplate
         }
     }
 
-    private void closeResources(ResultSet resultSet, PreparedStatement preparedStatement, Connection connection)
+    private void closeResources(ResultSet resultSet, PreparedStatement preparedStatement)
     {
         try
         {
@@ -197,11 +184,7 @@ public class DavenkinJdbcTemplate
             {
                 preparedStatement.close();
             }
-            if (connection != null)
-            {
-                connection.setAutoCommit(true);
-                connection.close();
-            }
+
         } catch (Exception e)
         {
             logger.error("Couldn't closeResources database resources.");

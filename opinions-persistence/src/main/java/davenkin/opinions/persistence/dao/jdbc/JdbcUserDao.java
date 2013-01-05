@@ -16,20 +16,29 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao
         super(dataSource);
     }
 
-    public User findUserById(Long userId)
+    public void addUser(String name, String email, String password)
     {
-        try
-        {
-            List<User> users = jdbcTemplate.queryForList("SELECT * FROM USER WHERE ID = ?", new Object[]{userId}, new UserRowMapper());
-            if (users.size() > 0)
-            {
-                return users.get(0);
-            }
-        } catch (DataAccessException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
+    public void deleteUser(int userId)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void updateUser(int userId, String name, String email, String password)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public User findUserById(Long userId) throws DataAccessException
+    {
+        List<User> users = jdbcTemplate.queryForList("SELECT * FROM USER WHERE ID = ?", new Object[]{userId}, new UserRowMapper());
+        if (users.size() > 0)
+        {
+            return users.get(0);
+        }
+
+        return null;
     }
 }

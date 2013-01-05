@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc.mapper;
 
 import davenkin.opinions.domain.Comment;
+import davenkin.opinions.persistence.DataAccessException;
 import davenkin.opinions.persistence.dao.jdbc.JdbcUserDao;
 
 import javax.sql.DataSource;
@@ -23,7 +24,13 @@ public class CommentRowMapper implements JdbcResultSetRowMapper<Comment>
         comment.setContent(rs.getString("CONTENT"));
         comment.setCreatedTime(rs.getTimestamp("CREATED_TIME"));
         comment.setSurveyId(rs.getLong("SURVEY_ID"));
-        comment.setUser(jdbcUserDao.findUserById(rs.getLong("USER_ID")));
+        try
+        {
+            comment.setUser(jdbcUserDao.findUserById(rs.getLong("USER_ID")));
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         return comment;
     }
 }
