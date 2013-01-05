@@ -18,6 +18,7 @@ public interface SurveyService {
     public List<User> getAllUsers();
     public List<Survey> getAllSurveys();
     public List<Survey> getSurveysByTag(String tag);
+    public List<Survey> getSurveysByCategory(String category);
     public Survey getSurveyById(long surveyId);
 
     public List<Comment> getCommentsForSurvey(long surveyId);
