@@ -7,12 +7,12 @@ import javax.sql.DataSource;
 public class AbstractJdbcDao
 {
     protected DataSource dataSource;
-    protected DavenkinJdbcTemplate jdbcTemplate;
+    protected JdbcTemplate jdbcTemplate;
     protected final Logger logger = Logger.getLogger(this.getClass());
 
     public AbstractJdbcDao(DataSource dataSource)
     {
         this.dataSource = dataSource;
-        this.jdbcTemplate =  new DavenkinJdbcTemplate(dataSource);
+        this.jdbcTemplate =  new JdbcTemplate(dataSource);
     }
 }

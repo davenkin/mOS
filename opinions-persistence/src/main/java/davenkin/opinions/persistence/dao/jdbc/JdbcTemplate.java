@@ -13,58 +13,54 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DavenkinJdbcTemplate
+public class JdbcTemplate
 {
     private DataSource dataSource;
-    private Logger logger = Logger.getLogger(DavenkinJdbcTemplate.class);
+    private Logger logger = Logger.getLogger(JdbcTemplate.class);
 
-    public DavenkinJdbcTemplate(DataSource dataSource)
+    public JdbcTemplate(DataSource dataSource)
     {
         this.dataSource = dataSource;
     }
 
     public void update(String sql, Object[] objects) throws DataAccessException
     {
-        Connection connection;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        doUpdate(sql, objects, new SqlExecutor());
+
+    }
+
+    private void doUpdate(String sql, Object[] objects, SqlExecutor executor) throws DataAccessException
+    {
         try
         {
-            connection = getConnection();
-            preparedStatement = createPreparedStatement(sql, objects, connection);
-            preparedStatement.executeUpdate();
-
+            executor.execute(sql, objects, getConnection());
         } catch (Exception e)
         {
             throw new DataAccessException(e);
         } finally
         {
-            closeResources(resultSet, preparedStatement);
+            executor.releaseResource();
         }
     }
 
+
     public <T> List<T> queryForList(String sql, Object[] objects, JdbcResultSetRowMapper<T> mapper) throws DataAccessException
     {
-        Connection connection;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        SqlExecutor executor = new SqlExecutor();
+        return doQuery(sql, objects, mapper, executor);
+    }
+
+    private <T> List<T> doQuery(String sql, Object[] objects, JdbcResultSetRowMapper<T> mapper, SqlExecutor executor) throws DataAccessException
+    {
         try
         {
-            connection = getConnection();
-            preparedStatement = createPreparedStatement(sql, objects, connection);
-            resultSet = preparedStatement.executeQuery();
-            List<T> list = new ArrayList<T>();
-            while (resultSet.next())
-            {
-                list.add(mapper.map(resultSet));
-            }
-            return list;
+          return  executor.execute(sql, objects, getConnection(), mapper);
         } catch (Exception e)
         {
             throw new DataAccessException(e);
         } finally
         {
-            closeResources(resultSet, preparedStatement);
+            executor.releaseResource();
         }
     }
 
@@ -87,12 +83,11 @@ public class DavenkinJdbcTemplate
             return list;
         } catch (Exception e)
         {
-            rollbackAndThrowException(connection, e);
+            throw new DataAccessException(e);
         } finally
         {
             closeResources(resultSet, preparedStatement);
         }
-        return null;
 
     }
 
@@ -113,7 +108,7 @@ public class DavenkinJdbcTemplate
             }
         } catch (Exception e)
         {
-            rollbackAndThrowException(connection, e);
+            throw new DataAccessException(e);
         } finally
         {
             closeResources(resultSet, preparedStatement);
@@ -135,12 +130,11 @@ public class DavenkinJdbcTemplate
             return extractor.extract(resultSet);
         } catch (Exception e)
         {
-            rollbackAndThrowException(connection, e);
+            throw new DataAccessException(e);
         } finally
         {
             closeResources(resultSet, preparedStatement);
         }
-        return null;
     }
 
 
@@ -170,11 +164,6 @@ public class DavenkinJdbcTemplate
         logger.info("Connection[" + connection.hashCode() + "] created in " + interval + " milliseconds");
         logger.info("User connection[" + connection.hashCode() + "]");
         return connection;
-    }
-
-    private void rollbackAndThrowException(Connection connection, Exception e) throws DataAccessException
-    {
-        throw new DataAccessException(e);
     }
 
 
