@@ -49,7 +49,7 @@ public class SurveyResultSetRowMapper implements JdbcResultSetRowMapper<Survey>
         survey.setCreatedTime(rs.getTimestamp("CREATED_TIME"));
         survey.setContent(rs.getString("CONTENT"));
         survey.setSurveyCategory(categoryEnumMap.get(rs.getString("CATEGORY_NAME")));
-        survey.setCanMultipleChecked(rs.getString("IS_MULTI_OPTIONS").equals("Y"));
+        survey.setCanMultipleChecked(rs.getString("MUL_OPT").equals("Y"));
         try
         {
             survey.setCreatingUser(userDao.findUserById(rs.getLong("USER_ID")));

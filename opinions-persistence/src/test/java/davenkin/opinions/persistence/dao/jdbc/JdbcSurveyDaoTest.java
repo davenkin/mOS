@@ -35,7 +35,7 @@ public class JdbcSurveyDaoTest
         assertThat(surveyById.getCreatingUser().getName(), is("davenkin"));
         assertTrue(surveyById.getOptions().size() == 3);
         assertThat(surveyById.getOptions().get(0).getOption(), is("More than 10 years"));
-        assertTrue(surveyById.getSurveyTags().size() == 2);
+        assertTrue(surveyById.getSurveyTags().size() == 1);
         assertThat(surveyById.getSurveyTags().get(0), is("computer"));
     }
 
