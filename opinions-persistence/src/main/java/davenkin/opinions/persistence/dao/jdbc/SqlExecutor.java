@@ -19,18 +19,40 @@ public class SqlExecutor
     {
         try
         {
-            preparedStatement = connection.prepareStatement(sql);
-            populateStatement(parameters);
+            createPreparedStatement(connection, sql, parameters);
+
             if (preparedStatement.execute())
             {
-                resultSet = preparedStatement.getResultSet();
-                callBack.callBack(resultSet);
+                callBackOnResultSet(callBack);
             }
         } finally
         {
             releaseResource();
         }
     }
+
+    private void createPreparedStatement(Connection connection, String sql, Object[] parameters) throws SQLException
+    {
+        preparedStatement = connection.prepareStatement(sql);
+        populateStatement(parameters);
+        logger.info("Executing SQL: " + extractSqlString());
+    }
+
+    private void callBackOnResultSet(ResultSetCallBack callBack) throws SQLException
+    {
+        resultSet = preparedStatement.getResultSet();
+        callBack.callBack(resultSet);
+    }
+
+    private String extractSqlString()
+    {
+        String statementString = preparedStatement.toString();
+        if (!statementString.contains(":"))
+            return null;
+
+        return statementString.substring(statementString.indexOf(":") + 1);
+    }
+
 
     public void releaseResource()
     {

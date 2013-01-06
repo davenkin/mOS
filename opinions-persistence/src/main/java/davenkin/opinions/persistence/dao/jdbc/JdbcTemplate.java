@@ -23,7 +23,6 @@ public class JdbcTemplate
         this.dataSource = dataSource;
     }
 
-
     public void update(String sql, Object[] objects) throws DataAccessException
     {
         doExecute(sql, objects, null);
@@ -43,7 +42,6 @@ public class JdbcTemplate
         ArrayList<T> list = new ArrayList<T>();
         doExecute(sql, objects, new TypeCallBack(list, type));
         return list;
-
     }
 
 

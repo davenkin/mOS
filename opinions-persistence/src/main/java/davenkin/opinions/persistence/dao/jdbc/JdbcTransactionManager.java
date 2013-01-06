@@ -23,18 +23,23 @@ public class JdbcTransactionManager
 
     public final void start() throws SQLException
     {
-        getConnection().setAutoCommit(false);
+        Connection connection = getConnection();
+        connection.setAutoCommit(false);
+        logger.info("Started transaction on connection[" + connection.hashCode() + "]");
     }
 
     public final void commit() throws SQLException
     {
-        getConnection().commit();
+        Connection connection = getConnection();
+        connection.commit();
+        logger.info("Committed transaction on connection[" + connection.hashCode() + "]");
     }
 
     public final void rollback() throws SQLException
     {
-        getConnection().rollback();
-        logger.info("Rolling back.");
+        Connection connection = getConnection();
+        connection.rollback();
+        logger.info("Rolled back transaction on connection[" + connection.hashCode() + "]");
     }
 
     public final void close() throws SQLException
@@ -42,6 +47,7 @@ public class JdbcTransactionManager
         Connection connection = getConnection();
         connection.setAutoCommit(true);
         connection.setReadOnly(false);
+        logger.info("Try to close and remove connection[" + connection.hashCode() + "] from current thread[" + Thread.currentThread().getId() + "]");
         connection.close();
         SingleThreadDataSourceUtils.removeCurrentConnection();
     }

@@ -76,7 +76,6 @@ public class JdbcUserDaoTest
         {
             jdbcTransactionManager.rollback();
         }
-        jdbcTransactionManager.commit();
         jdbcTransactionManager.close();
         User userByName = jdbcUserDao.findUserByName(userName);
         assertNull(userByName);
