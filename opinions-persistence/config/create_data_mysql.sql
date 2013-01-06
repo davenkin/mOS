@@ -119,5 +119,8 @@ INSERT INTO COMMENT (CONTENT, SURVEY_ID, USER_ID) VALUES (
 "I am not a saver, 5 computers.", 5, 4
 );
 
+update survey set created_time = '2013-01-03' where id = 1;
+update survey set created_time = '2012-12-03' where id = 2;
+
 
 

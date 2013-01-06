@@ -18,22 +18,14 @@ public interface SurveyDao
 
     public Survey findSurveyById(Long surveyId) throws DataAccessException;
 
-    public List<Survey> findAllSurveys();
+    public List<Survey> findAllSurveys() throws DataAccessException;
 
-    public List<Survey> findSurveysCreatedByUser(Long userId);
+    public List<Survey> findSurveysCreatedByUser(Long userId) throws DataAccessException;
 
-    public List<Survey> findSurveysByCategory(String category);
+    public List<Survey> findSurveysByCategory(Category category) throws DataAccessException;
 
-    public List<Survey> findSurveysByTag(String tag);
+    public List<Survey> findSurveysByTag(String tag) throws DataAccessException;
 
-    public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate);
-
-    public String findSurveyTagById(Long tagId);
-
-    public String findCategoryById(Long catId);
-
-    public void takeSurvey(Long surveyId, Long optionId);
-
-    public void removeSurvey(Long surveyId);
+    public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate) throws DataAccessException;
 
 }

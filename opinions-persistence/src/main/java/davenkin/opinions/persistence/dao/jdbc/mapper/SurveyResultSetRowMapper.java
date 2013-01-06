@@ -60,7 +60,7 @@ public class SurveyResultSetRowMapper implements JdbcResultSetRowMapper<Survey>
             survey.setSurveyTags(tagDao.findTagsForSurvey(id));
         } catch (DataAccessException e)
         {
-            e.printStackTrace(); 
+            e.printStackTrace();
             return null;
         }
 

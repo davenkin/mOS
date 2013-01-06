@@ -8,6 +8,11 @@ import davenkin.opinions.persistence.dao.SurveyDao;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -46,4 +51,42 @@ public class JdbcSurveyDaoTest
         assertNull(surveyDao.findSurveyById(nonExistSurveyId));
     }
 
+    @Test
+    public void getAllSurveys() throws DataAccessException
+    {
+        List<Survey> allSurveys = surveyDao.findAllSurveys();
+        assertThat(allSurveys.size(), is(9));
+    }
+
+    @Test
+    public void getSurveysCreatedByUser() throws DataAccessException
+    {
+        List<Survey> surveysCreatedByUser = surveyDao.findSurveysCreatedByUser(2L);
+        assertThat(surveysCreatedByUser.size(), is(3));
+    }
+
+    @Test
+    public void getSurveysByCategory() throws DataAccessException
+    {
+        List<Survey> surveysByCategory = surveyDao.findSurveysByCategory(Category.SCIENCE);
+        assertThat(surveysByCategory.size(), is(2));
+    }
+
+    @Test
+    public void getSurveyByTag() throws DataAccessException
+    {
+        List<Survey> surveysByTag = surveyDao.findSurveysByTag("book");
+        assertThat(surveysByTag.size(), is(2));
+    }
+
+    @Test
+    public void getSurveyBetweenDate() throws ParseException, DataAccessException
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        Date fromDate = new Date(dateFormat.parse("12-1-2012").getTime());
+        Date toDate = new Date(dateFormat.parse("1-4-2013").getTime());
+        List<Survey> surveys = surveyDao.findSurveysCreatedBetween(fromDate, toDate);
+        assertThat(surveys.size(), is(2));
+
+    }
 }

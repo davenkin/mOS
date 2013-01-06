@@ -1,5 +1,6 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
+import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.DataAccessException;
 import davenkin.opinions.persistence.dao.SurveyDao;
@@ -7,6 +8,7 @@ import davenkin.opinions.persistence.dao.jdbc.mapper.SurveyResultSetRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,17 +21,18 @@ import java.util.List;
 public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
 {
 
-    private JdbcUserDao jdbcUserDao;
+
+    public static final String BASIC_SURVEY_QUERY = "SELECT SURVEY.*, CATEGORY.NAME AS CATEGORY_NAME FROM SURVEY LEFT JOIN CATEGORY ON SURVEY.CATEGORY_CODE = CATEGORY.CODE";
+    public static final String SURVEY_QUERY_BY_ID = BASIC_SURVEY_QUERY + " WHERE SURVEY.ID = ?";
 
     public JdbcSurveyDao(DataSource dataSource)
     {
         super(dataSource);
-        jdbcUserDao = new JdbcUserDao(dataSource);
     }
 
     public Survey findSurveyById(Long surveyId) throws DataAccessException
     {
-        List<Survey> surveys = jdbcTemplate.queryForList("SELECT SURVEY.*, CATEGORY.NAME AS CATEGORY_NAME FROM SURVEY LEFT JOIN CATEGORY ON SURVEY.CATEGORY_CODE = CATEGORY.CODE WHERE SURVEY.ID = ?", new Object[]{surveyId}, new SurveyResultSetRowMapper(dataSource));
+        List<Survey> surveys = jdbcTemplate.queryForList(SURVEY_QUERY_BY_ID, new Object[]{surveyId}, new SurveyResultSetRowMapper(dataSource));
         if (surveys.size() > 0)
         {
             return surveys.get(0);
@@ -37,64 +40,37 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
         return null;
     }
 
-    public List<Survey> findAllSurveys()
+    public List<Survey> findAllSurveys() throws DataAccessException
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return jdbcTemplate.queryForList(BASIC_SURVEY_QUERY, null, new SurveyResultSetRowMapper(dataSource));
     }
 
-    public List<Survey> findSurveysCreatedByUser(Long userId)
+    public List<Survey> findSurveysCreatedByUser(Long userId) throws DataAccessException
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return jdbcTemplate.queryForList(BASIC_SURVEY_QUERY + " WHERE SURVEY.USER_ID = ?", new Object[]{userId}, new SurveyResultSetRowMapper(dataSource));
     }
 
-    public List<Survey> findSurveysByCategory(String category)
+    public List<Survey> findSurveysByCategory(Category category) throws DataAccessException
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        String code = category.getCode();
+        return jdbcTemplate.queryForList(BASIC_SURVEY_QUERY + " WHERE SURVEY.CATEGORY_CODE = ?", new Object[]{code}, new SurveyResultSetRowMapper(dataSource));
     }
 
-    public List<Survey> findSurveysByTag(String tag)
+    public List<Survey> findSurveysByTag(String tag) throws DataAccessException
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+        ArrayList<Survey> surveys = new ArrayList<Survey>();
+        List<Integer> surveyIds = jdbcTemplate.queryForList("SELECT SURVEY_ID FROM SURVEY_TAG WHERE TAG_NAME = ? ", new Object[]{tag}, Integer.class);
 
-    public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate)
-    {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-
-    public String findSurveyTagById(Long tagId)
-    {
-        try
+        for (Integer id : surveyIds)
         {
-            return jdbcTemplate.queryForObject("SELECT NAME FROM TAG WHERE ID = ?", new Object[]{tagId}, String.class);
-        } catch (DataAccessException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            surveys.add(findSurveyById(new Long(id)));
         }
-        return null;
+        return surveys;
     }
 
-    public String findCategoryById(Long catId)
+    public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate) throws DataAccessException
     {
-        try
-        {
-            return jdbcTemplate.queryForObject("SELECT NAME FROM CATEGORY WHERE ID = ?", new Object[]{catId}, String.class);
-        } catch (DataAccessException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void takeSurvey(Long surveyId, Long optionId)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void removeSurvey(Long surveyId)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
+        return jdbcTemplate.queryForList(BASIC_SURVEY_QUERY + " WHERE SURVEY.CREATED_TIME > ? AND SURVEY.CREATED_TIME < ?", new Object[]{fromDate, toDate}, new SurveyResultSetRowMapper(dataSource));
     }
 
 }
