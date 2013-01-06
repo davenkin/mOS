@@ -1,4 +1,4 @@
-import davenkin.opinions.domain.CategoryEnum;
+import davenkin.opinions.domain.Category;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,9 +10,9 @@ import davenkin.opinions.domain.CategoryEnum;
 public class App {
     public static void main(String[] args){
         System.out.println(Thread.getAllStackTraces().keySet().size());
-        String name = CategoryEnum.SCIENCE.name();
+        String name = Category.SCIENCE.name();
         System.out.println(name);
-        String s = CategoryEnum.SCIENCE.toString();
+        String s = Category.SCIENCE.toString();
         System.out.println(s);
     }
 

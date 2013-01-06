@@ -16,7 +16,7 @@ public class Survey {
     private User creatingUser;
     private Timestamp createdTime;
     private boolean canMultipleChecked;
-    private CategoryEnum surveyCategory;
+    private Category surveyCategory;
     private List<String> surveyTags;
     private List<Option> options;
     private List<Comment> comments;
@@ -71,12 +71,12 @@ public class Survey {
         this.canMultipleChecked = canMultipleChecked;
     }
 
-    public CategoryEnum getSurveyCategory()
+    public Category getSurveyCategory()
     {
         return surveyCategory;
     }
 
-    public void setSurveyCategory(CategoryEnum surveyCategory)
+    public void setSurveyCategory(Category surveyCategory)
     {
         this.surveyCategory = surveyCategory;
     }

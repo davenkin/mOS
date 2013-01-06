@@ -16,7 +16,7 @@ import java.util.List;
 public interface SurveyService {
     public List<Survey> getAllSurveys();
     public List<Survey> getSurveysByTag(String tag);
-    public List<Survey> getSurveysByCategory(String category);
+    public List<Survey> getSurveysByCategory(Category category);
     public Survey getSurveyById(int surveyId);
 
     public List<Comment> getCommentsForSurvey(int surveyId);

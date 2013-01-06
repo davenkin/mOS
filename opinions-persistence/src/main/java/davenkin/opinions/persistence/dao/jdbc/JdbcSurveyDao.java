@@ -34,7 +34,7 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
         {
             return surveys.get(0);
         }
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public List<Survey> findAllSurveys()
