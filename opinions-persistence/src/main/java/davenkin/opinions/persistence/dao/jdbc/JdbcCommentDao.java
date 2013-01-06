@@ -10,41 +10,31 @@ import java.util.List;
 
 public class JdbcCommentDao extends AbstractJdbcDao implements CommentDao
 {
-    private JdbcUserDao jdbcUserDao;
 
     public JdbcCommentDao(DataSource dataSource)
     {
         super(dataSource);
-        jdbcUserDao = new JdbcUserDao(dataSource);
     }
 
-    public List<Comment> findCommentsForSurvey(Long surveyId)
+    public List<Comment> findCommentsForSurvey(Long surveyId) throws DataAccessException
     {
-        try
-        {
-            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new CommentRowMapper(dataSource));
-        } catch (DataAccessException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new CommentRowMapper(dataSource));
     }
 
-    public List<Comment> findCommentsFromUser(Long userId)
+    public List<Comment> findCommentsFromUser(Long userId) throws DataAccessException
     {
-        try
-        {
-            return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE USER_ID = ?", new Object[]{userId},new CommentRowMapper(dataSource));
-        } catch (DataAccessException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE USER_ID = ?", new Object[]{userId}, new CommentRowMapper(dataSource));
     }
 
-    public void removeComment(Long commentId)
+    public void removeComment(Long commentId) throws DataAccessException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        jdbcTemplate.update("DELETE FROM COMMENT WHERE ID = ?", new Object[]{commentId});
+    }
+
+    @Override
+    public void addCommentForSurvey(Long suveyId, Long userId, String content) throws DataAccessException
+    {
+        jdbcTemplate.update("INSERT INTO COMMENT (CONTENT, SURVEY_ID, USER_ID) VALUES (?, ?, ?)", new Object[]{content, suveyId, userId});
     }
 
 }

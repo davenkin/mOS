@@ -1,6 +1,8 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
+import davenkin.opinions.domain.CategoryEnum;
 import davenkin.opinions.domain.Survey;
+import davenkin.opinions.persistence.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.dao.SurveyDao;
 import org.junit.Before;
@@ -21,7 +23,7 @@ public class JdbcSurveyDaoTest
 
 
     @Test
-    public void testFindSurveyById()
+    public void testFindSurveyById() throws DataAccessException
     {
         Survey surveyById = surveyDao.findSurveyById(1L);
         assertNotNull(surveyById);
@@ -29,7 +31,7 @@ public class JdbcSurveyDaoTest
         assertFalse(surveyById.isCanMultipleChecked());
         assertTrue(surveyById.getComments().size() == 3);
         assertThat(surveyById.getComments().get(1).getContent(), is("More than 10 years! I am really an old man."));
-        assertThat(surveyById.getSurveyCategory(), is("Science"));
+        assertThat(surveyById.getSurveyCategory(), is(CategoryEnum.SCIENCE));
         assertThat(surveyById.getCreatingUser().getName(), is("davenkin"));
         assertTrue(surveyById.getOptions().size() == 3);
         assertThat(surveyById.getOptions().get(0).getOption(), is("More than 10 years"));
@@ -38,7 +40,7 @@ public class JdbcSurveyDaoTest
     }
 
     @Test
-    public void shouldReturnNullWhenNoSurveyExist()
+    public void shouldReturnNullWhenNoSurveyExist() throws DataAccessException
     {
         long nonExistSurveyId = 100L;
         assertNull(surveyDao.findSurveyById(nonExistSurveyId));

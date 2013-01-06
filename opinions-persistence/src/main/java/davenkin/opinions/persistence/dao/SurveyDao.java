@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.dao;
 
 import davenkin.opinions.domain.*;
+import davenkin.opinions.persistence.DataAccessException;
 
 import java.sql.Date;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface SurveyDao
 {
 
-    public Survey findSurveyById(Long surveyId);
+    public Survey findSurveyById(Long surveyId) throws DataAccessException;
 
     public List<Survey> findAllSurveys();
 

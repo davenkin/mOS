@@ -9,22 +9,22 @@ package davenkin.opinions.domain;
  */
 public enum CategoryEnum
 {
-    SCI("Science"),
-    ECO("Economy"),
-    CUL("Culture"),
-    POL("Politics"),
-    EDU("Education");
+    SCIENCE("001"),
+    ECONOMY("002"),
+    CULTURE("003"),
+    POLITICS("004"),
+    EDUCATION("005");
 
-    private String name;
+    private String code;
 
-    CategoryEnum(String name)
+    CategoryEnum(String code)
     {
-        this.name = name;
+        this.code = code;
     }
 
-    public String toString()
+    public String getCode()
     {
-        return name;
+        return code;
     }
 
 }

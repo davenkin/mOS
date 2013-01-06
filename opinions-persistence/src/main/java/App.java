@@ -10,9 +10,9 @@ import davenkin.opinions.domain.CategoryEnum;
 public class App {
     public static void main(String[] args){
         System.out.println(Thread.getAllStackTraces().keySet().size());
-        String name = CategoryEnum.SCI.name();
+        String name = CategoryEnum.SCIENCE.name();
         System.out.println(name);
-        String s = CategoryEnum.SCI.toString();
+        String s = CategoryEnum.SCIENCE.toString();
         System.out.println(s);
     }
 

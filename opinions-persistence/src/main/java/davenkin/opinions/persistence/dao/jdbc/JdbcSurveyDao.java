@@ -27,18 +27,12 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
         jdbcUserDao = new JdbcUserDao(dataSource);
     }
 
-    public Survey findSurveyById(Long surveyId)
+    public Survey findSurveyById(Long surveyId) throws DataAccessException
     {
-        try
+        List<Survey> surveys = jdbcTemplate.queryForList("SELECT SURVEY.*, CATEGORY.NAME AS CATEGORY_NAME FROM SURVEY LEFT JOIN CATEGORY ON SURVEY.CATEGORY_ID = CATEGORY.ID WHERE SURVEY.ID = ?", new Object[]{surveyId}, new SurveyResultSetRowMapper(dataSource));
+        if (surveys.size() > 0)
         {
-            List<Survey> surveys = jdbcTemplate.queryForList("SELECT SURVEY.*, CATEGORY.NAME AS CATEGORY_NAME FROM SURVEY LEFT JOIN CATEGORY ON SURVEY.CATEGORY_ID = CATEGORY.ID WHERE SURVEY.ID = ?", new Object[]{surveyId}, new SurveyResultSetRowMapper(dataSource));
-            if (surveys.size() > 0)
-            {
-                return surveys.get(0);
-            }
-        } catch (DataAccessException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return surveys.get(0);
         }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }

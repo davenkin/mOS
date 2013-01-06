@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.Option;
+import davenkin.opinions.persistence.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.dao.OptionDao;
 import org.junit.Before;
@@ -12,7 +13,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class JdbcSurveyOptionDaoTest
+public class JdbcOptionDaoTest
 {
     private OptionDao optionDao;
 
@@ -29,5 +30,14 @@ public class JdbcSurveyOptionDaoTest
         List<Option> options = optionDao.findOptionsForSurvey(1L);
         assertTrue(options.size() == 3);
         assertThat(options.get(0).getOption(), is("More than 10 years"));
+    }
+
+    @Test
+    public void voteForOption() throws DataAccessException
+    {
+        Long previousCount = optionDao.findOption(10l).getCount();
+        optionDao.increaseOptionCount(10l);
+        Long votedCount = optionDao.findOption(10l).getCount();
+        assertTrue((votedCount - previousCount) == 1);
     }
 }

@@ -10,8 +10,8 @@ public class SurveyOptionRowMapper implements JdbcResultSetRowMapper<Option>
     public Option map(ResultSet rs) throws SQLException
     {
         Option option = new Option(rs.getLong("ID"));
-        option.setCount(rs.getLong("OPTION_COUNT"));
-        option.setOption(rs.getString("SURVEY_OPTION"));
+        option.setCount(rs.getLong("COUNT"));
+        option.setOption(rs.getString("CONTENT"));
         option.setSurveyId(rs.getLong("SURVEY_ID"));
         return option;
     }

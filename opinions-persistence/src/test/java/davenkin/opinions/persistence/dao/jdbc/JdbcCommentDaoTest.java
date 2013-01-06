@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.Comment;
+import davenkin.opinions.persistence.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,17 +35,26 @@ public class JdbcCommentDaoTest
     }
 
     @Test
-    public void shouldReturnEmptySetIfNoCommentFound()
+    public void shouldReturnEmptySetIfNoCommentFound() throws DataAccessException
     {
         Long noCommentId = 123L;
         assertTrue(commentDao.findCommentsForSurvey(noCommentId).size() == 0);
     }
 
     @Test
-    public void testFindCommentFromUser()
+    public void testFindCommentFromUser() throws DataAccessException
     {
         List<Comment> comments = commentDao.findCommentsFromUser(3L);
         assertTrue(comments.size() == 2);
         assertThat(comments.get(0).getContent(), is("How time flies! 4 years!"));
+    }
+
+    @Test
+    public void addCommentForSurvey() throws DataAccessException
+    {
+        int previousSize = commentDao.findCommentsForSurvey(9L).size();
+        commentDao.addCommentForSurvey(9L, 2L, "test comment "+ System.currentTimeMillis());
+        int addedSize = commentDao.findCommentsForSurvey(9L).size();
+        assertTrue((addedSize - previousSize) == 1);
     }
 }
