@@ -1,13 +1,11 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.persistence.DataAccessException;
-import davenkin.opinions.persistence.dao.jdbc.mapper.JdbcResultSetExtractor;
 import davenkin.opinions.persistence.dao.jdbc.mapper.JdbcResultSetRowMapper;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,137 +21,71 @@ public class JdbcTemplate
         this.dataSource = dataSource;
     }
 
+
     public void update(String sql, Object[] objects) throws DataAccessException
     {
-        doUpdate(sql, objects, new SqlExecutor());
-
-    }
-
-    private void doUpdate(String sql, Object[] objects, SqlExecutor executor) throws DataAccessException
-    {
-        try
-        {
-            executor.execute(sql, objects, getConnection());
-        } catch (Exception e)
-        {
-            throw new DataAccessException(e);
-        } finally
-        {
-            executor.releaseResource();
-        }
+        doExecute(sql, objects, null);
     }
 
 
-    public <T> List<T> queryForList(String sql, Object[] objects, JdbcResultSetRowMapper<T> mapper) throws DataAccessException
+    public <T> List<T> queryForList(String sql, Object[] objects, final JdbcResultSetRowMapper<T> mapper) throws DataAccessException
     {
-        SqlExecutor executor = new SqlExecutor();
-        return doQuery(sql, objects, mapper, executor);
-    }
-
-    private <T> List<T> doQuery(String sql, Object[] objects, JdbcResultSetRowMapper<T> mapper, SqlExecutor executor) throws DataAccessException
-    {
-        try
+        final ArrayList<T> list = new ArrayList<T>();
+        doExecute(sql, objects, new ResultSetCallBack()
         {
-          return  executor.execute(sql, objects, getConnection(), mapper);
-        } catch (Exception e)
-        {
-            throw new DataAccessException(e);
-        } finally
-        {
-            executor.releaseResource();
-        }
-    }
-
-    public <T> List<T> queryForList(String sql, Object[] objects, Class<T> type) throws DataAccessException
-    {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try
-        {
-            connection = getConnection();
-            preparedStatement = createPreparedStatement(sql, objects, connection);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
-            List<T> list = new ArrayList<T>();
-            while (resultSet.next())
+            @Override
+            public void callBack(ResultSet resultSet) throws SQLException
             {
-                list.add(type.cast(resultSet.getObject(1)));
+                while (resultSet.next())
+                {
+                    list.add(mapper.map(resultSet));
+                }
             }
-            return list;
-        } catch (Exception e)
-        {
-            throw new DataAccessException(e);
-        } finally
-        {
-            closeResources(resultSet, preparedStatement);
-        }
-
+        });
+        return list;
     }
 
-    public <T> T queryForObject(String sql, Object[] objects, Class<T> type) throws DataAccessException
+
+    public <T> List<T> queryForList(String sql, Object[] objects, final Class<T> type) throws DataAccessException
     {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try
+        ArrayList<T> list = new ArrayList<T>();
+
+        doExecute(sql, objects, new ResultSetCallBack()
         {
-            connection = getConnection();
-            preparedStatement = createPreparedStatement(sql, objects, connection);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
-            while (resultSet.next())
+            @Override
+            public void callBack(ResultSet resultSet) throws SQLException
             {
-                return type.cast(resultSet.getObject(1));
+                List<T> list = new ArrayList<T>();
+                while (resultSet.next())
+                {
+                    list.add(type.cast(resultSet.getObject(1)));
+                }
             }
-        } catch (Exception e)
-        {
-            throw new DataAccessException(e);
-        } finally
-        {
-            closeResources(resultSet, preparedStatement);
-        }
-        return null;
+        });
+
+        return list;
+
     }
 
-    public <T> T queryForObject(String sql, Object[] objects, JdbcResultSetExtractor<T> extractor) throws DataAccessException
+
+    public <T> T queryForObject(String sql, Object[] objects, final Class<T> type) throws DataAccessException
     {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try
+        final Object[] object = new Object[1];
+        doExecute(sql, objects, new ResultSetCallBack()
         {
-            connection = getConnection();
-            preparedStatement = createPreparedStatement(sql, objects, connection);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
-            return extractor.extract(resultSet);
-        } catch (Exception e)
-        {
-            throw new DataAccessException(e);
-        } finally
-        {
-            closeResources(resultSet, preparedStatement);
-        }
+
+            @Override
+            public void callBack(ResultSet resultSet) throws SQLException
+            {
+                while (resultSet.next())
+                {
+                    object[0] = type.cast(resultSet.getObject(1));
+                }
+            }
+        });
+        return (T) object[0];
     }
 
-
-    private PreparedStatement createPreparedStatement(String sql, Object[] objects, Connection connection) throws SQLException
-    {
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        populatePreparedStatement(preparedStatement, objects);
-        logger.info(extractSqlString(preparedStatement));
-        return preparedStatement;
-    }
-
-    private String extractSqlString(PreparedStatement preparedStatement)
-    {
-        String statementString = preparedStatement.toString();
-        if (!statementString.contains(":"))
-            return null;
-
-        return statementString.substring(statementString.indexOf(":") + 1);
-    }
 
     private Connection getConnection() throws SQLException
     {
@@ -161,45 +93,22 @@ public class JdbcTemplate
         Connection connection = SingleThreadDataSourceUtils.getConnection(dataSource);
         long after = System.currentTimeMillis();
         long interval = after - before;
-        logger.info("Connection[" + connection.hashCode() + "] created in " + interval + " milliseconds");
-        logger.info("User connection[" + connection.hashCode() + "]");
+        logger.info("Connection[" + connection.hashCode() + "] obtained in " + interval + " milliseconds");
+        logger.info("Use connection[" + connection.hashCode() + "]");
         return connection;
     }
 
 
-    private void populatePreparedStatement(PreparedStatement preparedStatement, Object... objects) throws SQLException
+    private void doExecute(String sql, Object[] objects, ResultSetCallBack callBack) throws DataAccessException
     {
-        if (objects == null)
-            return;
-        int index = 1;
-        for (Object object : objects)
-        {
-            preparedStatement.setObject(index, object);
-            index++;
-        }
-    }
-
-    private void closeResources(ResultSet resultSet, PreparedStatement preparedStatement)
-    {
+        SqlExecutor executor = new SqlExecutor();
         try
         {
-            if (resultSet != null)
-            {
-                resultSet.close();
-            }
-            if (preparedStatement != null)
-            {
-                preparedStatement.close();
-            }
-
+            executor.execute(getConnection(), sql, objects, callBack);
         } catch (Exception e)
         {
-            logger.error("Couldn't closeResources database resources.");
+            throw new DataAccessException(e);
         }
     }
 
-    public void setDataSource(DataSource dataSource)
-    {
-        this.dataSource = dataSource;
-    }
 }

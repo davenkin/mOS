@@ -1,14 +1,11 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
-import davenkin.opinions.persistence.dao.jdbc.mapper.JdbcResultSetRowMapper;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SqlExecutor
 {
@@ -17,25 +14,21 @@ public class SqlExecutor
     private ResultSet resultSet;
     private PreparedStatement preparedStatement;
 
-    public void execute(String sql, Object[] parameters, Connection connection) throws SQLException
+    public void execute(Connection connection, String sql, Object[] parameters, ResultSetCallBack callBack) throws SQLException
     {
-        preparedStatement = connection.prepareStatement(sql);
-        populateStatement(parameters);
-        if (preparedStatement.execute())
+        try
         {
-            resultSet = preparedStatement.getResultSet();
-        }
-    }
-
-    public <T> List<T> execute(String sql, Object[] parameters, Connection connection, JdbcResultSetRowMapper<T> mapper) throws SQLException
-    {
-        execute(sql, parameters, connection);
-        List<T> list = new ArrayList<T>();
-        while (resultSet.next())
+            preparedStatement = connection.prepareStatement(sql);
+            populateStatement(parameters);
+            if (preparedStatement.execute())
+            {
+                resultSet = preparedStatement.getResultSet();
+                callBack.callBack(resultSet);
+            }
+        } finally
         {
-            list.add(mapper.map(resultSet));
+            releaseResource();
         }
-        return list;
     }
 
     public void releaseResource()
