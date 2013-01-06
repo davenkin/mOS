@@ -56,7 +56,7 @@ public class JdbcTemplate
 
     private Connection getConnection() throws SQLException
     {
-        Connection connection = SingleThreadDataSourceUtils.getConnection(dataSource);
+        Connection connection = SingleThreadConnectionFactory.getConnection(dataSource);
         logger.info("Use connection[" + connection.hashCode() + "]");
         return connection;
     }

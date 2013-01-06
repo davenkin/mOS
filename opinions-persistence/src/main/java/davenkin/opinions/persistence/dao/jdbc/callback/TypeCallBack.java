@@ -1,7 +1,5 @@
 package davenkin.opinions.persistence.dao.jdbc.callback;
 
-import davenkin.opinions.persistence.dao.jdbc.callback.ResultSetCallBack;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

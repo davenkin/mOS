@@ -45,7 +45,13 @@ public class SurveyResultSetRowMapper implements JdbcResultSetRowMapper<Survey>
         }
         survey.setOptions(optionDao.findOptionsForSurvey(id));
         survey.setComments(commentDao.findCommentsForSurvey(id));
-        survey.setSurveyTags(tagDao.findTagsForSurvey(id));
+        try
+        {
+            survey.setSurveyTags(tagDao.findTagsForSurvey(id));
+        } catch (DataAccessException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
         return survey;
     }

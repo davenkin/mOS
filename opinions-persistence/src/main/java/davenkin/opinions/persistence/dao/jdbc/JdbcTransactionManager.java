@@ -18,7 +18,7 @@ public class JdbcTransactionManager
 
     private Connection getConnection() throws SQLException
     {
-        return SingleThreadDataSourceUtils.getConnection(dataSource);
+        return SingleThreadConnectionFactory.getConnection(dataSource);
     }
 
     public final void start() throws SQLException
@@ -49,6 +49,6 @@ public class JdbcTransactionManager
         connection.setReadOnly(false);
         logger.info("Try to close and remove connection[" + connection.hashCode() + "] from current thread[" + Thread.currentThread().getId() + "]");
         connection.close();
-        SingleThreadDataSourceUtils.removeCurrentConnection();
+        SingleThreadConnectionFactory.removeCurrentConnection();
     }
 }
