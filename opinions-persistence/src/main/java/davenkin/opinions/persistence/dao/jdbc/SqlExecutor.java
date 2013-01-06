@@ -35,7 +35,7 @@ public class SqlExecutor
     {
         preparedStatement = connection.prepareStatement(sql);
         populateStatement(parameters);
-        logger.info("Executing SQL: " + extractSqlString());
+        logger.info("Executing SQL:" + extractSqlString());
     }
 
     private void callBackOnResultSet(ResultSetCallBack callBack) throws SQLException
