@@ -49,7 +49,6 @@ public class JdbcUserDaoTest
     public void addAndDeleteUser() throws NoSuchAlgorithmException, DataAccessException
     {
         String password = DigestUtils.md5Hex("password");
-        System.out.println(password);
         String userName = "testUserName";
         String email = "testUserEmail@163.com";
         jdbcUserDao.addUser(userName, email, password);
@@ -67,7 +66,6 @@ public class JdbcUserDaoTest
     {
         jdbcTransactionManager.start();
         String password = DigestUtils.md5Hex("password");
-        System.out.println(password);
         String userName = "testUserName";
         String email = "testUserEmail@163.com";
         try
@@ -89,7 +87,6 @@ public class JdbcUserDaoTest
     public void updateUser() throws DataAccessException
     {
         String password = DigestUtils.md5Hex("password");
-        System.out.println(password);
         String userName = "testUserName";
         String newName = "newName";
         String email = "testUserEmail@163.com";

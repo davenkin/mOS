@@ -12,16 +12,23 @@ import java.util.List;
  * Time: 8:20 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface SurveyDao {
+public interface SurveyDao
+{
 
     public Survey findSurveyById(Long surveyId);
+
     public List<Survey> findAllSurveys();
+
     public List<Survey> findSurveysCreatedByUser(Long userId);
+
     public List<Survey> findSurveysByCategory(String category);
+
     public List<Survey> findSurveysByTag(String tag);
+
     public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate);
 
     public String findSurveyTagById(Long tagId);
+
     public String findCategoryById(Long catId);
 
     public void takeSurvey(Long surveyId, Long optionId);
