@@ -1,5 +1,6 @@
-package davenkin.opinions.persistence.dao.jdbc;
+package davenkin.opinions.persistence.jdbc.dao;
 
+import davenkin.opinions.persistence.jdbc.JdbcTemplate;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;

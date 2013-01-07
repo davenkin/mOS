@@ -1,9 +1,9 @@
-package davenkin.opinions.persistence.dao.jdbc;
+package davenkin.opinions.persistence.jdbc.dao;
 
 import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.dao.OptionDao;
-import davenkin.opinions.persistence.dao.jdbc.mapper.SurveyOptionRowMapper;
+import davenkin.opinions.persistence.jdbc.mapper.SurveyOptionRowMapper;
 
 import javax.sql.DataSource;
 import java.util.List;

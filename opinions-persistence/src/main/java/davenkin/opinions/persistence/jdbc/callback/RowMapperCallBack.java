@@ -1,6 +1,6 @@
-package davenkin.opinions.persistence.dao.jdbc.callback;
+package davenkin.opinions.persistence.jdbc.callback;
 
-import davenkin.opinions.persistence.dao.jdbc.mapper.JdbcResultSetRowMapper;
+import davenkin.opinions.persistence.jdbc.mapper.JdbcResultSetRowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

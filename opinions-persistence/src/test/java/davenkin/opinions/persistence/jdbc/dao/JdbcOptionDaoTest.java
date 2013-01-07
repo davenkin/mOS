@@ -1,9 +1,10 @@
-package davenkin.opinions.persistence.dao.jdbc;
+package davenkin.opinions.persistence.jdbc.dao;
 
 import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.dao.OptionDao;
+import davenkin.opinions.persistence.jdbc.dao.JdbcOptionDao;
 import org.junit.Before;
 import org.junit.Test;
 

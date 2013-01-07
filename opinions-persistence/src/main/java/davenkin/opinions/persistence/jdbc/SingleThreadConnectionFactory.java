@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.dao.jdbc;
+package davenkin.opinions.persistence.jdbc;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

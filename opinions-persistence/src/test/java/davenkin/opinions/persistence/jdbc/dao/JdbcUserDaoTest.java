@@ -1,9 +1,11 @@
-package davenkin.opinions.persistence.dao.jdbc;
+package davenkin.opinions.persistence.jdbc.dao;
 
 import davenkin.opinions.domain.User;
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.dao.UserDao;
+import davenkin.opinions.persistence.jdbc.JdbcTransactionManager;
+import davenkin.opinions.persistence.jdbc.dao.JdbcUserDao;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.junit.Before;

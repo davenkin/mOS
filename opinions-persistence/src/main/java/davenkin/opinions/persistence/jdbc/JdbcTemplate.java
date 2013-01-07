@@ -1,10 +1,10 @@
-package davenkin.opinions.persistence.dao.jdbc;
+package davenkin.opinions.persistence.jdbc;
 
 import davenkin.opinions.domain.DataAccessException;
-import davenkin.opinions.persistence.dao.jdbc.callback.ResultSetCallBack;
-import davenkin.opinions.persistence.dao.jdbc.callback.RowMapperCallBack;
-import davenkin.opinions.persistence.dao.jdbc.callback.TypeCallBack;
-import davenkin.opinions.persistence.dao.jdbc.mapper.JdbcResultSetRowMapper;
+import davenkin.opinions.persistence.jdbc.callback.ResultSetCallBack;
+import davenkin.opinions.persistence.jdbc.callback.RowMapperCallBack;
+import davenkin.opinions.persistence.jdbc.callback.TypeCallBack;
+import davenkin.opinions.persistence.jdbc.mapper.JdbcResultSetRowMapper;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;

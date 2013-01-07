@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.dao.jdbc.mapper;
+package davenkin.opinions.persistence.jdbc.mapper;
 
 import davenkin.opinions.domain.Option;
 

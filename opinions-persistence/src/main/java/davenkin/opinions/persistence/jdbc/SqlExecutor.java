@@ -1,6 +1,6 @@
-package davenkin.opinions.persistence.dao.jdbc;
+package davenkin.opinions.persistence.jdbc;
 
-import davenkin.opinions.persistence.dao.jdbc.callback.ResultSetCallBack;
+import davenkin.opinions.persistence.jdbc.callback.ResultSetCallBack;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;

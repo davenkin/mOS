@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.dao.jdbc.mapper;
+package davenkin.opinions.persistence.jdbc.mapper;
 
 import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Survey;
@@ -7,10 +7,10 @@ import davenkin.opinions.persistence.dao.CommentDao;
 import davenkin.opinions.persistence.dao.OptionDao;
 import davenkin.opinions.persistence.dao.TagDao;
 import davenkin.opinions.persistence.dao.UserDao;
-import davenkin.opinions.persistence.dao.jdbc.JdbcCommentDao;
-import davenkin.opinions.persistence.dao.jdbc.JdbcOptionDao;
-import davenkin.opinions.persistence.dao.jdbc.JdbcTagDao;
-import davenkin.opinions.persistence.dao.jdbc.JdbcUserDao;
+import davenkin.opinions.persistence.jdbc.dao.JdbcCommentDao;
+import davenkin.opinions.persistence.jdbc.dao.JdbcOptionDao;
+import davenkin.opinions.persistence.jdbc.dao.JdbcTagDao;
+import davenkin.opinions.persistence.jdbc.dao.JdbcUserDao;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;

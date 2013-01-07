@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.dao.jdbc;
+package davenkin.opinions.persistence.jdbc.dao;
 
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.dao.TagDao;
