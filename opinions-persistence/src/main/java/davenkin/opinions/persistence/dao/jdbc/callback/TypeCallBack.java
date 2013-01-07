@@ -15,7 +15,6 @@ public class TypeCallBack implements ResultSetCallBack
         this.type = type;
     }
 
-    @Override
     public void callBack(ResultSet resultSet) throws SQLException
     {
         while (resultSet.next())

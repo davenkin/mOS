@@ -1,7 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.Comment;
-import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class JdbcCommentDaoTest
     public void addCommentForSurvey() throws DataAccessException
     {
         int previousSize = commentDao.findCommentsForSurvey(9L).size();
-        commentDao.addCommentForSurvey(9L, 2L, "test comment "+ System.currentTimeMillis());
+        commentDao.addCommentForSurvey(9L, 2L, "test comment " + System.currentTimeMillis());
         int addedSize = commentDao.findCommentsForSurvey(9L).size();
         assertTrue((addedSize - previousSize) == 1);
     }

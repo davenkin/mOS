@@ -2,7 +2,7 @@ package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Survey;
-import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.dao.SurveyDao;
 import org.junit.Before;

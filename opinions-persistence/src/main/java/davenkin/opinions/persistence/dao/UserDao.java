@@ -1,7 +1,7 @@
 package davenkin.opinions.persistence.dao;
 
 import davenkin.opinions.domain.User;
-import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.domain.DataAccessException;
 
 public interface UserDao
 {

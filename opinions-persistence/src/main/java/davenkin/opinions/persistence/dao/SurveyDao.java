@@ -1,7 +1,7 @@
 package davenkin.opinions.persistence.dao;
 
 import davenkin.opinions.domain.*;
-import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.domain.DataAccessException;
 
 import java.sql.Date;
 import java.util.List;

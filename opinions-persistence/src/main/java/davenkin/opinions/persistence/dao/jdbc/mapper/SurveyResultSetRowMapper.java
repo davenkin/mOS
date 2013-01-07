@@ -2,7 +2,7 @@ package davenkin.opinions.persistence.dao.jdbc.mapper;
 
 import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Survey;
-import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.dao.CommentDao;
 import davenkin.opinions.persistence.dao.OptionDao;
 import davenkin.opinions.persistence.dao.TagDao;

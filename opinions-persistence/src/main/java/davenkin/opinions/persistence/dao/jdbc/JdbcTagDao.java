@@ -1,6 +1,6 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
-import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.dao.TagDao;
 
 import javax.sql.DataSource;

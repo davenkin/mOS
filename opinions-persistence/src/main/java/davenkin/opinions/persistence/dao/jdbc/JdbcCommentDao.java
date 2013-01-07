@@ -1,7 +1,7 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
 import davenkin.opinions.domain.Comment;
-import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.dao.CommentDao;
 import davenkin.opinions.persistence.dao.jdbc.mapper.CommentRowMapper;
 

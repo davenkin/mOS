@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence;
+package davenkin.opinions.domain;
 
 public class DataAccessException extends Exception
 {

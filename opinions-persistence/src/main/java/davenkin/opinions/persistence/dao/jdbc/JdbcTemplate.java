@@ -1,6 +1,6 @@
 package davenkin.opinions.persistence.dao.jdbc;
 
-import davenkin.opinions.persistence.DataAccessException;
+import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.dao.jdbc.callback.ResultSetCallBack;
 import davenkin.opinions.persistence.dao.jdbc.callback.RowMapperCallBack;
 import davenkin.opinions.persistence.dao.jdbc.callback.TypeCallBack;

@@ -17,7 +17,6 @@ public class RowMapperCallBack implements ResultSetCallBack
         this.mapper = mapper;
     }
 
-    @Override
     public void callBack(ResultSet resultSet) throws SQLException
     {
 
