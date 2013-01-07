@@ -16,11 +16,11 @@ import java.util.List;
 public interface SurveyDao
 {
 
-    public Survey findSurveyById(Long surveyId) throws DataAccessException;
+    public Survey findSurveyById(long surveyId) throws DataAccessException;
 
     public List<Survey> findAllSurveys() throws DataAccessException;
 
-    public List<Survey> findSurveysCreatedByUser(Long userId) throws DataAccessException;
+    public List<Survey> findSurveysCreatedByUser(long userId) throws DataAccessException;
 
     public List<Survey> findSurveysByCategory(Category category) throws DataAccessException;
 

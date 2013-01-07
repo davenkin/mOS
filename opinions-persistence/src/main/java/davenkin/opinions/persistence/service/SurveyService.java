@@ -17,13 +17,13 @@ public interface SurveyService {
     public List<Survey> getAllSurveys();
     public List<Survey> getSurveysByTag(String tag);
     public List<Survey> getSurveysByCategory(Category category);
-    public Survey getSurveyById(int surveyId);
+    public Survey getSurveyById(long surveyId);
 
-    public List<Comment> getCommentsForSurvey(int surveyId);
+    public List<Comment> getCommentsForSurvey(long surveyId);
 
     public void addSurvey(String content, Category category, boolean isMultiple, List<String> options);
 
-    public void addCommentToSurvey(int surveyId, String comment);
+    public void addCommentToSurvey(long surveyId, String comment);
 
-    public void takeSurvey(int surveyId, int optionId);
+    public void takeSurvey(long surveyId, long optionId);
 }

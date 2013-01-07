@@ -35,9 +35,9 @@ public class JdbcOptionDaoTest
     @Test
     public void voteForOption() throws DataAccessException
     {
-        Long previousCount = optionDao.findOption(10l).getCount();
+        long previousCount = optionDao.findOption(10l).getCount();
         optionDao.increaseOptionCount(10l);
-        Long votedCount = optionDao.findOption(10l).getCount();
+        long votedCount = optionDao.findOption(10l).getCount();
         assertTrue((votedCount - previousCount) == 1);
     }
 }

@@ -9,27 +9,27 @@ package davenkin.opinions.domain;
  */
 public class Option
 {
-    private Long id;
-    private Long surveyId;
+    private long id;
+    private long surveyId;
     private String option;
-    private Long count;
+    private long count;
 
-    public Option(Long id)
+    public Option(long id)
     {
         this.id = id;
     }
 
-    public Long getId()
+    public long getId()
     {
         return id;
     }
 
-    public Long getSurveyId()
+    public long getSurveyId()
     {
         return surveyId;
     }
 
-    public void setSurveyId(Long surveyId)
+    public void setSurveyId(long surveyId)
     {
         this.surveyId = surveyId;
     }
@@ -44,12 +44,12 @@ public class Option
         this.option = option;
     }
 
-    public Long getCount()
+    public long getCount()
     {
         return count;
     }
 
-    public void setCount(Long count)
+    public void setCount(long count)
     {
         this.count = count;
     }

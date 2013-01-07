@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface TagDao
 {
-    public List<String> findTagsForSurvey(Long surveyId) throws DataAccessException;
+    public List<String> findTagsForSurvey(long surveyId) throws DataAccessException;
 
-    public void addTagForSurvey(Long surveyId, String tagName) throws DataAccessException;
+    public void addTagForSurvey(long surveyId, String tagName) throws DataAccessException;
 
     public List<String> findAllTags() throws DataAccessException;
     

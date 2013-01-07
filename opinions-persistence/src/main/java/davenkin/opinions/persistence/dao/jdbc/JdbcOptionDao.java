@@ -15,25 +15,25 @@ public class JdbcOptionDao extends AbstractJdbcDao implements OptionDao
         super(dataSource);
     }
 
-    public List<Option> findOptionsForSurvey(Long surveyId) throws DataAccessException
+    public List<Option> findOptionsForSurvey(long surveyId) throws DataAccessException
     {
         return jdbcTemplate.queryForList("SELECT * FROM SURVEY_OPTION WHERE SURVEY_ID = ?", new Object[]{surveyId}, new SurveyOptionRowMapper());
     }
 
-    @Override
-    public void increaseOptionCount(Long id) throws DataAccessException
+
+    public void increaseOptionCount(long id) throws DataAccessException
     {
         Option option = findOption(id);
         if (option != null)
         {
-            Long count = option.getCount();
+            long count = option.getCount();
             count++;
             jdbcTemplate.update("UPDATE SURVEY_OPTION SET COUNT = ? WHERE ID = ?", new Object[]{count, id});
         }
     }
 
-    @Override
-    public Option findOption(Long id) throws DataAccessException
+
+    public Option findOption(long id) throws DataAccessException
     {
         List<Option> options = jdbcTemplate.queryForList("SELECT * FROM SURVEY_OPTION WHERE ID = ?", new Object[]{id}, new SurveyOptionRowMapper());
         if (options.size() > 0)

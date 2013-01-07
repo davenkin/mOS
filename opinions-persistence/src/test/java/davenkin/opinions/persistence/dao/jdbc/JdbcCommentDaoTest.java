@@ -37,7 +37,7 @@ public class JdbcCommentDaoTest
     @Test
     public void shouldReturnEmptySetIfNoCommentFound() throws DataAccessException
     {
-        Long noCommentId = 123L;
+        long noCommentId = 123L;
         assertTrue(commentDao.findCommentsForSurvey(noCommentId).size() == 0);
     }
 

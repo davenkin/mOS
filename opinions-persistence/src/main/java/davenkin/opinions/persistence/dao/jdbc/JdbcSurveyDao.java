@@ -30,7 +30,7 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
         super(dataSource);
     }
 
-    public Survey findSurveyById(Long surveyId) throws DataAccessException
+    public Survey findSurveyById(long surveyId) throws DataAccessException
     {
         List<Survey> surveys = jdbcTemplate.queryForList(SURVEY_QUERY_BY_ID, new Object[]{surveyId}, new SurveyResultSetRowMapper(dataSource));
         if (surveys.size() > 0)
@@ -45,7 +45,7 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
         return jdbcTemplate.queryForList(BASIC_SURVEY_QUERY, null, new SurveyResultSetRowMapper(dataSource));
     }
 
-    public List<Survey> findSurveysCreatedByUser(Long userId) throws DataAccessException
+    public List<Survey> findSurveysCreatedByUser(long userId) throws DataAccessException
     {
         return jdbcTemplate.queryForList(BASIC_SURVEY_QUERY + " WHERE SURVEY.USER_ID = ?", new Object[]{userId}, new SurveyResultSetRowMapper(dataSource));
     }
@@ -63,7 +63,7 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
 
         for (Integer id : surveyIds)
         {
-            surveys.add(findSurveyById(new Long(id)));
+            surveys.add(findSurveyById(id));
         }
         return surveys;
     }

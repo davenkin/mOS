@@ -13,14 +13,12 @@ public class JdbcTagDao extends AbstractJdbcDao implements TagDao
         super(dataSource);
     }
 
-    @Override
-    public List<String> findTagsForSurvey(Long surveyId) throws DataAccessException
+    public List<String> findTagsForSurvey(long surveyId) throws DataAccessException
     {
         return jdbcTemplate.queryForList("SELECT TAG_NAME FROM SURVEY_TAG  WHERE SURVEY_ID = ?", new Object[]{surveyId}, String.class);
     }
 
-    @Override
-    public void addTagForSurvey(Long surveyId, String tagName) throws DataAccessException
+    public void addTagForSurvey(long surveyId, String tagName) throws DataAccessException
     {
         if (!surveyExist(surveyId))
         {
@@ -34,13 +32,11 @@ public class JdbcTagDao extends AbstractJdbcDao implements TagDao
         }
     }
 
-    @Override
     public List<String> findAllTags() throws DataAccessException
     {
         return jdbcTemplate.queryForList("SELECT NAME FROM TAG", null, String.class);
     }
 
-    @Override
     public void removeTag(String tagName) throws DataAccessException
     {
         removeTagReference(tagName);

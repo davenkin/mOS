@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface OptionDao
 {
-    public List<Option> findOptionsForSurvey(Long surveyId) throws DataAccessException;
+    public List<Option> findOptionsForSurvey(long surveyId) throws DataAccessException;
 
-    public void increaseOptionCount(Long id) throws DataAccessException;
+    public void increaseOptionCount(long id) throws DataAccessException;
 
-    public Option findOption(Long id) throws DataAccessException;
+    public Option findOption(long id) throws DataAccessException;
 }

@@ -16,25 +16,24 @@ public class JdbcCommentDao extends AbstractJdbcDao implements CommentDao
         super(dataSource);
     }
 
-    public List<Comment> findCommentsForSurvey(Long surveyId) throws DataAccessException
+    public List<Comment> findCommentsForSurvey(long surveyId) throws DataAccessException
     {
         return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{surveyId}, new CommentRowMapper(dataSource));
     }
 
-    public List<Comment> findCommentsFromUser(Long userId) throws DataAccessException
+    public List<Comment> findCommentsFromUser(long userId) throws DataAccessException
     {
         return jdbcTemplate.queryForList("SELECT * FROM COMMENT WHERE USER_ID = ?", new Object[]{userId}, new CommentRowMapper(dataSource));
     }
 
-    public void removeComment(Long commentId) throws DataAccessException
+    public void removeComment(long commentId) throws DataAccessException
     {
         jdbcTemplate.update("DELETE FROM COMMENT WHERE ID = ?", new Object[]{commentId});
     }
 
-    @Override
-    public void addCommentForSurvey(Long suveyId, Long userId, String content) throws DataAccessException
+    public void addCommentForSurvey(long surveyId, long userId, String content) throws DataAccessException
     {
-        jdbcTemplate.update("INSERT INTO COMMENT (CONTENT, SURVEY_ID, USER_ID) VALUES (?, ?, ?)", new Object[]{content, suveyId, userId});
+        jdbcTemplate.update("INSERT INTO COMMENT (CONTENT, SURVEY_ID, USER_ID) VALUES (?, ?, ?)", new Object[]{content, surveyId, userId});
     }
 
 }

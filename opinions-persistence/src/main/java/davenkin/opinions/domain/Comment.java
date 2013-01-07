@@ -11,18 +11,18 @@ import java.sql.Timestamp;
  */
 public class Comment
 {
-    private Long id;
+    private long id;
     private String content;
-    private Long surveyId;
+    private long surveyId;
     private User user;
     private Timestamp createdTime;
 
-    public Comment(Long id)
+    public Comment(long id)
     {
         this.id = id;
     }
 
-    public Long getId()
+    public long getId()
     {
         return id;
     }
@@ -37,12 +37,12 @@ public class Comment
         this.content = content;
     }
 
-    public Long getSurveyId()
+    public long getSurveyId()
     {
         return surveyId;
     }
 
-    public void setSurveyId(Long surveyId)
+    public void setSurveyId(long surveyId)
     {
         this.surveyId = surveyId;
     }

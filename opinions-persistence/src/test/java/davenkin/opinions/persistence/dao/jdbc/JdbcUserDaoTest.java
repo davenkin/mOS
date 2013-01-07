@@ -91,7 +91,7 @@ public class JdbcUserDaoTest
         String email = "testUserEmail@163.com";
         String newEmail = "newEmail@163.com";
         jdbcUserDao.addUser(userName, email, password);
-        Long userId = jdbcUserDao.findUserByName(userName).getUserId();
+        long userId = jdbcUserDao.findUserByName(userName).getUserId();
         jdbcUserDao.updateUser(userId, newName, newEmail, password);
         User userById = jdbcUserDao.findUserById(userId);
         assertEquals(newName, userById.getName());

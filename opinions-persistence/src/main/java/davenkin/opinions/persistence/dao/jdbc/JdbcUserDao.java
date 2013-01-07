@@ -21,17 +21,17 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao
         jdbcTemplate.update("INSERT INTO USER (NAME, EMAIL, PASSWORD) VALUES (?, ?, ?)", new Object[]{name, email, password});
     }
 
-    public void deleteUser(Long userId) throws DataAccessException
+    public void deleteUser(long userId) throws DataAccessException
     {
        jdbcTemplate.update("DELETE FROM USER WHERE ID = ?", new Object[]{userId});
     }
 
-    public void updateUser(Long userId, String name, String email, String password) throws DataAccessException
+    public void updateUser(long userId, String name, String email, String password) throws DataAccessException
     {
         jdbcTemplate.update("UPDATE USER SET NAME=?, EMAIL=?, PASSWORD=? WHERE ID = ?", new Object[]{name, email, password, userId});
     }
 
-    public User findUserById(Long userId) throws DataAccessException
+    public User findUserById(long userId) throws DataAccessException
     {
         List<User> users = jdbcTemplate.queryForList("SELECT * FROM USER WHERE ID = ?", new Object[]{userId}, new UserRowMapper());
         if (users.size() > 0)

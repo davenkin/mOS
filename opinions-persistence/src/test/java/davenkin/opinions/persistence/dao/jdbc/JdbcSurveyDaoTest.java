@@ -40,7 +40,7 @@ public class JdbcSurveyDaoTest
         assertThat(surveyById.getCreatingUser().getName(), is("davenkin"));
         assertTrue(surveyById.getOptions().size() == 3);
         assertThat(surveyById.getOptions().get(0).getOption(), is("More than 10 years"));
-        assertTrue(surveyById.getSurveyTags().size() == 1);
+        assertTrue(surveyById.getSurveyTags().size() == 2);
         assertThat(surveyById.getSurveyTags().get(0), is("computer"));
     }
 
@@ -87,6 +87,5 @@ public class JdbcSurveyDaoTest
         Date toDate = new Date(dateFormat.parse("1-4-2013").getTime());
         List<Survey> surveys = surveyDao.findSurveysCreatedBetween(fromDate, toDate);
         assertThat(surveys.size(), is(2));
-
     }
 }

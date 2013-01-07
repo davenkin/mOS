@@ -11,7 +11,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Survey {
-    private Long id;
+    private long id;
     private String content;
     private User creatingUser;
     private Timestamp createdTime;
@@ -21,12 +21,12 @@ public class Survey {
     private List<Option> options;
     private List<Comment> comments;
 
-    public Survey(Long id)
+    public Survey(long id)
     {
         this.id = id;
     }
 
-    public Long getId()
+    public long getId()
     {
         return id;
     }

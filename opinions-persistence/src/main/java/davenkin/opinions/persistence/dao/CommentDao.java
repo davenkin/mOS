@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface CommentDao
 {
-    List<Comment> findCommentsForSurvey(Long surveyId) throws DataAccessException;
+    List<Comment> findCommentsForSurvey(long surveyId) throws DataAccessException;
 
-    List<Comment> findCommentsFromUser(Long userId) throws DataAccessException;
+    List<Comment> findCommentsFromUser(long userId) throws DataAccessException;
 
-    public void removeComment(Long commentId) throws DataAccessException;
-    public void addCommentForSurvey(Long suveyId, Long userId, String content) throws DataAccessException;
+    public void removeComment(long commentId) throws DataAccessException;
+    public void addCommentForSurvey(long surveyId, long userId, String content) throws DataAccessException;
 
 }

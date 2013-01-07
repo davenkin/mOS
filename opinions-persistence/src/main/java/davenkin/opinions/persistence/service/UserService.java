@@ -8,15 +8,15 @@ public interface UserService
 {
     public List<User> getAllUsers();
 
-    public User getUserById(int userId);
+    public User getUserById(long userId);
 
-    public void updateUserName(int userId, String name);
+    public void updateUserName(long userId, String name);
 
-    public void updateUserEmail(int userId, String email);
+    public void updateUserEmail(long userId, String email);
 
-    public void updateUserPassword(int userId, String password);
+    public void updateUserPassword(long userId, String password);
 
-    public void updateUser(int userId, String name, String email, String password);
+    public void updateUser(long userId, String name, String email, String password);
 
     public void addNewUser(String name, String email, String password);
 
