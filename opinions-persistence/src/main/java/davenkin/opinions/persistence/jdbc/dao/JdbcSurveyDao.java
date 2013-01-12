@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.jdbc.dao;
 
 import davenkin.opinions.domain.Category;
+import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.dao.SurveyDao;
@@ -20,8 +21,6 @@ import java.util.List;
  */
 public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
 {
-
-
     public static final String BASIC_SURVEY_QUERY = "SELECT SURVEY.*, CATEGORY.NAME AS CATEGORY_NAME FROM SURVEY LEFT JOIN CATEGORY ON SURVEY.CATEGORY_CODE = CATEGORY.CODE";
     public static final String SURVEY_QUERY_BY_ID = BASIC_SURVEY_QUERY + " WHERE SURVEY.ID = ?";
 
@@ -71,6 +70,18 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
     public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate) throws DataAccessException
     {
         return jdbcTemplate.queryForList(BASIC_SURVEY_QUERY + " WHERE SURVEY.CREATED_TIME > ? AND SURVEY.CREATED_TIME < ?", new Object[]{fromDate, toDate}, new SurveyResultSetRowMapper(dataSource));
+    }
+
+    @Override
+    public void addSurvey(String content, List<Option> options, long userId, boolean isMulOpt, Category category)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void deleteSurvey(long surveyId)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

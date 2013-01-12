@@ -27,5 +27,9 @@ public interface SurveyDao
     public List<Survey> findSurveysByTag(String tag) throws DataAccessException;
 
     public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate) throws DataAccessException;
+    
+    public void addSurvey(String content, List<Option> options, long userId, boolean isMulOpt, Category category);
+
+    public void deleteSurvey(long surveyId);
 
 }

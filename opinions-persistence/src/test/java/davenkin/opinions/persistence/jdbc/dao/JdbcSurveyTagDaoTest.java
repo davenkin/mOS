@@ -65,5 +65,4 @@ public class JdbcSurveyTagDaoTest
         tagDao.addTagForSurvey(120l, "ddd");
     }
 
-    
 }
