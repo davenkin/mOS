@@ -71,7 +71,7 @@ public class JdbcTagDao extends AbstractJdbcDao implements TagDao
 
     private boolean surveyExist(long surveyId) throws DataAccessException
     {
-        Integer existingId = jdbcTemplate.queryForObject("SELECT ID FROM SURVEY WHERE ID = ?", new Object[]{surveyId}, Integer.class);
+        Long existingId = jdbcTemplate.queryForObject("SELECT ID FROM SURVEY WHERE ID = ?", new Object[]{surveyId}, Long.class);
         return null != existingId;
 
     }

@@ -59,9 +59,9 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
     public List<Survey> findSurveysByTag(String tag) throws DataAccessException
     {
         ArrayList<Survey> surveys = new ArrayList<Survey>();
-        List<Integer> surveyIds = jdbcTemplate.queryForList("SELECT SURVEY_ID FROM SURVEY_TAG WHERE TAG_NAME = ? ", new Object[]{tag}, Integer.class);
+        List<Long> surveyIds = jdbcTemplate.queryForList("SELECT SURVEY_ID FROM SURVEY_TAG WHERE TAG_NAME = ? ", new Object[]{tag}, Long.class);
 
-        for (Integer id : surveyIds)
+        for (Long id : surveyIds)
         {
             surveys.add(findSurveyById(id));
         }
