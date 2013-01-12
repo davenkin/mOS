@@ -53,9 +53,11 @@ public class JdbcTransactionManager
     public final void close()
     {
         Connection connection = null;
+        int connectionId;
         try
         {
             connection = getConnection();
+            connectionId = connection.hashCode();
             connection.setAutoCommit(true);
             connection.setReadOnly(false);
             connection.close();
@@ -64,6 +66,6 @@ public class JdbcTransactionManager
         {
             throw new RuntimeException("Couldn't close connection[" + connection + "].", e);
         }
-        logger.info("Close and remove connection[" + connection.hashCode() + "] from current thread[" + Thread.currentThread().getId() + "]");
+        logger.info("Close and remove connection[" + connectionId + "] from current thread[" + Thread.currentThread().getId() + "]");
     }
 }
