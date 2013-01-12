@@ -1,9 +1,9 @@
-package davenkin.opinions.persistence.service;
+package davenkin.opinions.persistence.service.jdbc;
 
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.dao.TagDao;
 import davenkin.opinions.persistence.jdbc.dao.JdbcTagDao;
-import davenkin.opinions.persistence.service.jdbc.JdbcTransactionTemplate;
+import davenkin.opinions.persistence.service.TagService;
 
 import javax.sql.DataSource;
 import java.util.List;

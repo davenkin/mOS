@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.service;
+package davenkin.opinions.persistence.service.jdbc;
 
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
@@ -53,6 +53,7 @@ public class JdbcTagServiceTest
         jdbcTagService.addTagToSurvey(1, tag);
         long after = jdbcTemplate.queryForLong("SELECT COUNT(*) FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{1});
         assertEquals(after, before + 1);
+        jdbcTemplate.update("DELETE FROM TAG WHERE NAME = ?", new Object[]{tag});
     }
 
     @Test
