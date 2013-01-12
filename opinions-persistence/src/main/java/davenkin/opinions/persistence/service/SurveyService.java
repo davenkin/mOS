@@ -1,7 +1,6 @@
 package davenkin.opinions.persistence.service;
 
 import davenkin.opinions.domain.Category;
-import davenkin.opinions.domain.Comment;
 import davenkin.opinions.domain.Survey;
 
 import java.util.List;
@@ -13,17 +12,21 @@ import java.util.List;
  * Time: 8:15 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface SurveyService {
+public interface SurveyService
+{
     public List<Survey> getAllSurveys();
-    public List<Survey> getSurveysByTag(String tag);
-    public List<Survey> getSurveysByCategory(Category category);
-    public Survey getSurveyById(long surveyId);
 
-    public List<Comment> getCommentsForSurvey(long surveyId);
+    public List<Survey> getSurveysByTag(String tag);
+
+    public List<Survey> getSurveysByCategory(Category category);
+
+    public List<Survey> getSurveysCreatedByUser(long userId);
+
+    public Survey getSurveyById(long surveyId);
 
     public void addSurvey(String content, Category category, boolean isMultiple, List<String> options);
 
-    public void addCommentToSurvey(long surveyId, String comment);
-
     public void takeSurvey(long surveyId, long optionId);
+
+    public void removeSurvey(long surveyId);
 }
