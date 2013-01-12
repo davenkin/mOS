@@ -43,6 +43,12 @@ public class JdbcTagDao extends BaseJdbcDao implements TagDao
         jdbcTemplate.update("DELETE FROM TAG WHERE NAME = ?", new Object[]{tagName});
     }
 
+    @Override
+    public void removeTagFromSurvey(long surveyId, String tag) throws DataAccessException
+    {
+        jdbcTemplate.update("DELETE FROM SURVEY_TAG WHERE TAG_NAME = ? AND SURVEY_ID = ?", new Object[]{tag, surveyId});
+    }
+
     private void removeTagReference(String tagName) throws DataAccessException
     {
         jdbcTemplate.update("DELETE FROM SURVEY_TAG WHERE TAG_NAME = ?", new Object[]{tagName});

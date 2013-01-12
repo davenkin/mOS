@@ -23,22 +23,28 @@ public class JdbcTagService implements TagService
     @Override
     public void addTagToSurvey(final long surveyId, final String tag)
     {
-        JdbcTransactionTemplate template = new JdbcTransactionTemplate(dataSource)
+        new JdbcTransactionTemplate(dataSource)
         {
             @Override
             protected void doJob() throws DataAccessException
             {
                 tagDao.addTagForSurvey(surveyId, tag);
             }
-        };
-        template.doJobInTransaction();
+        }.doJobInTransaction();
 
     }
 
     @Override
-    public void removeTagFromSurvey(long surveyId, String tag)
+    public void removeTagFromSurvey(final long surveyId, final String tag)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        new JdbcTransactionTemplate(dataSource)
+        {
+            @Override
+            protected void doJob() throws Exception
+            {
+                tagDao.removeTagFromSurvey(surveyId, tag);
+            }
+        }.doJobInTransaction();
     }
 
     @Override

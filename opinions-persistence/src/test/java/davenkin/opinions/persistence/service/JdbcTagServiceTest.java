@@ -54,4 +54,17 @@ public class JdbcTagServiceTest
         long after = jdbcTemplate.queryForLong("SELECT COUNT(*) FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{1});
         assertEquals(after, before + 1);
     }
+
+    @Test
+    public void removeTagFromSurvey() throws DataAccessException
+    {
+        long before = jdbcTemplate.queryForLong("SELECT COUNT(*) FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{2});
+        String tag = "uniqueTag3";
+        jdbcTagService.addTagToSurvey(2, tag);
+        long after1 = jdbcTemplate.queryForLong("SELECT COUNT(*) FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{2});
+        assertEquals(before, after1 - 1);
+        jdbcTagService.removeTagFromSurvey(2, tag);
+        long after = jdbcTemplate.queryForLong("SELECT COUNT(*) FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{2});
+        assertEquals(before, after);
+    }
 }

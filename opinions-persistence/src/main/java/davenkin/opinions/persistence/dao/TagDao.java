@@ -13,4 +13,6 @@ public interface TagDao
     public void addTagForSurvey(long surveyId, String tagName) throws DataAccessException;
 
     public void removeTag(String tagName) throws DataAccessException;
+    
+    public void removeTagFromSurvey(long surveyId, String tag) throws DataAccessException;
 }
