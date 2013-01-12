@@ -17,6 +17,10 @@ public class Comment
     private User user;
     private Timestamp createdTime;
 
+    public Comment()
+    {
+    }
+
     public Comment(long id)
     {
         this.id = id;

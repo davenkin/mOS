@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CommentService
 {
-    public void addCommentToSurvey(Comment comment);
+    public void addCommentToSurvey(String content, long surveyId, long userId);
 
     public List<Comment> getCommentsForSurvey(long surveyId);
 

@@ -35,20 +35,35 @@ public class JdbcTransactionManager
         logger.info("Committed transaction on connection[" + connection.hashCode() + "]");
     }
 
-    public final void rollback() throws SQLException
+    public final void rollback()
     {
-        Connection connection = getConnection();
-        connection.rollback();
-        logger.info("Rolled back transaction on connection[" + connection.hashCode() + "]");
+        Connection connection = null;
+        try
+        {
+            connection = getConnection();
+            connection.rollback();
+            logger.info("Rolled back transaction on connection[" + connection.hashCode() + "]");
+
+        } catch (SQLException e)
+        {
+            throw new RuntimeException("Couldn't rollback on connection[" + connection + "].", e);
+        }
     }
 
-    public final void close() throws SQLException
+    public final void close()
     {
-        Connection connection = getConnection();
-        connection.setAutoCommit(true);
-        connection.setReadOnly(false);
-        logger.info("Try to close and remove connection[" + connection.hashCode() + "] from current thread[" + Thread.currentThread().getId() + "]");
-        connection.close();
-        SingleThreadConnectionFactory.removeCurrentConnection();
+        Connection connection = null;
+        try
+        {
+            connection = getConnection();
+            connection.setAutoCommit(true);
+            connection.setReadOnly(false);
+            logger.info("Try to close and remove connection[" + connection.hashCode() + "] from current thread[" + Thread.currentThread().getId() + "]");
+            connection.close();
+            SingleThreadConnectionFactory.removeCurrentConnection();
+        } catch (SQLException e)
+        {
+            throw new RuntimeException("Couldn't close connection[" + connection + "].", e);
+        }
     }
 }
