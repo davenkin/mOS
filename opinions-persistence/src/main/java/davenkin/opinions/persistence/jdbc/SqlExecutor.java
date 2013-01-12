@@ -69,7 +69,7 @@ public class SqlExecutor
 
         } catch (Exception e)
         {
-            logger.error("Couldn't closeResources database resources.");
+            logger.error("Couldn't close database resources.");
         }
 
     }

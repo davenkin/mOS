@@ -78,6 +78,7 @@ public class JdbcUserDaoTest
         {
             jdbcTransactionManager.rollback();
         }
+        jdbcTransactionManager.commit();
         jdbcTransactionManager.close();
         User userByName = jdbcUserDao.findUserByName(userName);
         assertNull(userByName);
@@ -100,6 +101,5 @@ public class JdbcUserDaoTest
         assertEquals(newEmail, userById.getEmail());
         jdbcUserDao.deleteUser(userId);
     }
-
 
 }
