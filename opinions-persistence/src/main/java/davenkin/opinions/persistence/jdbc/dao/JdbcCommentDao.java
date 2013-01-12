@@ -8,7 +8,7 @@ import davenkin.opinions.persistence.jdbc.mapper.CommentRowMapper;
 import javax.sql.DataSource;
 import java.util.List;
 
-public class JdbcCommentDao extends AbstractJdbcDao implements CommentDao
+public class JdbcCommentDao extends BaseJdbcDao implements CommentDao
 {
 
     public JdbcCommentDao(DataSource dataSource)

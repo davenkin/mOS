@@ -1,5 +1,3 @@
-import davenkin.opinions.domain.Category;
-
 /**
  * Created with IntelliJ IDEA.
  * User: davenkin
@@ -9,11 +7,11 @@ import davenkin.opinions.domain.Category;
  */
 public class App {
     public static void main(String[] args){
-        System.out.println(Thread.getAllStackTraces().keySet().size());
-        String name = Category.SCIENCE.name();
-        System.out.println(name);
-        String s = Category.SCIENCE.toString();
-        System.out.println(s);
+//        System.out.println(Thread.getAllStackTraces().keySet().size());
+//        String name = Category.SCIENCE.name();
+//        System.out.println(name);
+//        String s = Category.SCIENCE.toString();
+//        System.out.println(s);
     }
 
 }

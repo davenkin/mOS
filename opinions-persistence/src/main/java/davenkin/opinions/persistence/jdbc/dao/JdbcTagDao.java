@@ -6,7 +6,7 @@ import davenkin.opinions.persistence.dao.TagDao;
 import javax.sql.DataSource;
 import java.util.List;
 
-public class JdbcTagDao extends AbstractJdbcDao implements TagDao
+public class JdbcTagDao extends BaseJdbcDao implements TagDao
 {
     public JdbcTagDao(DataSource dataSource)
     {

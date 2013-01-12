@@ -12,6 +12,7 @@ public interface CommentDao
     List<Comment> findCommentsFromUser(long userId) throws DataAccessException;
 
     public void removeComment(long commentId) throws DataAccessException;
+
     public void addCommentForSurvey(long surveyId, long userId, String content) throws DataAccessException;
 
 }

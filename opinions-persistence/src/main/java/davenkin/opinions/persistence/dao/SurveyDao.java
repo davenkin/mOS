@@ -28,8 +28,8 @@ public interface SurveyDao
 
     public List<Survey> findSurveysCreatedBetween(Date fromDate, Date toDate) throws DataAccessException;
     
-    public void addSurvey(String content, List<Option> options, long userId, boolean isMulOpt, Category category);
+    public void addSurvey(String content, List<String> options, long userId, boolean isMulOpt, Category category) throws DataAccessException;
 
-    public void deleteSurvey(long surveyId);
+    public void deleteSurvey(long surveyId) throws DataAccessException;
 
 }

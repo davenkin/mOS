@@ -3,16 +3,13 @@ package davenkin.opinions.persistence.jdbc.dao;
 import davenkin.opinions.domain.Comment;
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
-import davenkin.opinions.persistence.jdbc.dao.JdbcCommentDao;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class JdbcCommentDaoTest
 {
@@ -57,5 +54,15 @@ public class JdbcCommentDaoTest
         commentDao.addCommentForSurvey(9L, 2L, "test comment " + System.currentTimeMillis());
         int addedSize = commentDao.findCommentsForSurvey(9L).size();
         assertTrue((addedSize - previousSize) == 1);
+    }
+    
+    @Test
+    public void removeComment() throws DataAccessException
+    {
+        commentDao.addCommentForSurvey(4l, 1l, "this is a test comment");
+        List<Comment> comments = commentDao.findCommentsForSurvey(4);
+        assertThat(comments.size(), is(1));
+        commentDao.removeComment(comments.get(0).getId());
+        assertThat(commentDao.findCommentsForSurvey(4l).size(), is(0));
     }
 }

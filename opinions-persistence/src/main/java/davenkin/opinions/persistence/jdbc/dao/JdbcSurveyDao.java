@@ -1,9 +1,8 @@
 package davenkin.opinions.persistence.jdbc.dao;
 
 import davenkin.opinions.domain.Category;
-import davenkin.opinions.domain.Option;
-import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.DataAccessException;
+import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.dao.SurveyDao;
 import davenkin.opinions.persistence.jdbc.mapper.SurveyResultSetRowMapper;
 
@@ -19,7 +18,7 @@ import java.util.List;
  * Time: 10:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
+public class JdbcSurveyDao extends BaseJdbcDao implements SurveyDao
 {
     public static final String BASIC_SURVEY_QUERY = "SELECT SURVEY.*, CATEGORY.NAME AS CATEGORY_NAME FROM SURVEY LEFT JOIN CATEGORY ON SURVEY.CATEGORY_CODE = CATEGORY.CODE";
     public static final String SURVEY_QUERY_BY_ID = BASIC_SURVEY_QUERY + " WHERE SURVEY.ID = ?";
@@ -72,16 +71,19 @@ public class JdbcSurveyDao extends AbstractJdbcDao implements SurveyDao
         return jdbcTemplate.queryForList(BASIC_SURVEY_QUERY + " WHERE SURVEY.CREATED_TIME > ? AND SURVEY.CREATED_TIME < ?", new Object[]{fromDate, toDate}, new SurveyResultSetRowMapper(dataSource));
     }
 
-    @Override
-    public void addSurvey(String content, List<Option> options, long userId, boolean isMulOpt, Category category)
+    public void addSurvey(String content, List<String> options, long userId, boolean isMulOpt, Category category) throws DataAccessException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        jdbcTemplate.update("INSERT INTO SURVEY (CONTENT, USER_ID, MUL_OPT, CATEGORY_CODE) VALUES (?, ?, ?, ?)", new Object[]{content, userId,getMulOptString(isMulOpt),category.getCode()});
     }
 
-    @Override
-    public void deleteSurvey(long surveyId)
+    private String getMulOptString(boolean isMulOpt)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        return isMulOpt ? "Y" : "N";
+    }
+
+    public void deleteSurvey(long surveyId) throws DataAccessException
+    {
+        jdbcTemplate.update("DELETE FROM SURVEY WHERE ID = ?", new Object[]{surveyId});
     }
 
 }

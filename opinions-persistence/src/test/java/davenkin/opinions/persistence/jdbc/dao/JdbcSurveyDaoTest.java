@@ -1,17 +1,17 @@
 package davenkin.opinions.persistence.jdbc.dao;
 
 import davenkin.opinions.domain.Category;
-import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.DataAccessException;
+import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.dao.SurveyDao;
-import davenkin.opinions.persistence.jdbc.dao.JdbcSurveyDao;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -88,5 +88,23 @@ public class JdbcSurveyDaoTest
         Date toDate = new Date(dateFormat.parse("1-4-2013").getTime());
         List<Survey> surveys = surveyDao.findSurveysCreatedBetween(fromDate, toDate);
         assertThat(surveys.size(), is(2));
+    }
+
+    @Test
+    public void addNewSurvey() throws DataAccessException
+    {
+        String content = "this is for testing survey";
+        ArrayList<String> options = new ArrayList<String>();
+        options.add("test option 1");
+        options.add("test option 2");
+        options.add("test option 3");
+        List<Survey> beforeAdd = surveyDao.findSurveysCreatedByUser(4);
+        assertThat(beforeAdd.size(), is(0));
+        surveyDao.addSurvey(content, options, 4, true, Category.ECONOMY);
+        List<Survey> afterAdd = surveyDao.findSurveysCreatedByUser(4);
+        assertThat(afterAdd.size(), is(1));
+        Survey survey = afterAdd.get(0);
+        assertThat(survey.getContent(), is(content));
+        surveyDao.deleteSurvey(survey.getId());
     }
 }

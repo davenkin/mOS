@@ -24,7 +24,7 @@ public interface SurveyService
 
     public Survey getSurveyById(long surveyId);
 
-    public void addSurvey(String content, Category category, boolean isMultiple, List<String> options);
+    public void addSurvey(Survey survey);
 
     public void takeSurvey(long surveyId, long optionId);
 

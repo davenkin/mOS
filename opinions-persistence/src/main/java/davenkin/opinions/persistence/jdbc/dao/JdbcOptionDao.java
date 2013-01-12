@@ -8,7 +8,7 @@ import davenkin.opinions.persistence.jdbc.mapper.SurveyOptionRowMapper;
 import javax.sql.DataSource;
 import java.util.List;
 
-public class JdbcOptionDao extends AbstractJdbcDao implements OptionDao
+public class JdbcOptionDao extends BaseJdbcDao implements OptionDao
 {
     public JdbcOptionDao(DataSource dataSource)
     {

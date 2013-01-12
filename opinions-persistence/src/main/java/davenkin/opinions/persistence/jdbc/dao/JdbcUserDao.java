@@ -8,7 +8,7 @@ import davenkin.opinions.persistence.jdbc.mapper.UserRowMapper;
 import javax.sql.DataSource;
 import java.util.List;
 
-public class JdbcUserDao extends AbstractJdbcDao implements UserDao
+public class JdbcUserDao extends BaseJdbcDao implements UserDao
 {
 
     public JdbcUserDao(DataSource dataSource)
