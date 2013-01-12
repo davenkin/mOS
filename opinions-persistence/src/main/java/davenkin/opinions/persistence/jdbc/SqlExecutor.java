@@ -3,10 +3,11 @@ package davenkin.opinions.persistence.jdbc;
 import davenkin.opinions.persistence.jdbc.callback.ResultSetCallBack;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SqlExecutor
 {
@@ -29,6 +30,37 @@ public class SqlExecutor
         {
             releaseResource();
         }
+    }
+
+    public List<Map<String, Object>> execute(Connection connection, String sql, Object[] parameters) throws SQLException
+    {
+        try
+        {
+            createPreparedStatement(connection, sql, parameters);
+            resultSet = preparedStatement.executeQuery();
+            return extractResultSetAsListOfMaps();
+        } finally
+        {
+            releaseResource();
+        }
+    }
+
+    private List<Map<String, Object>> extractResultSetAsListOfMaps() throws SQLException
+    {
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        ArrayList<Map<String, Object>> mapArrayList = new ArrayList<Map<String, Object>>();
+        while (resultSet.next())
+        {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            for (int index = 1; index <= columnCount; index++)
+            {
+                Object object = resultSet.getObject(index);
+                map.put(metaData.getColumnName(index), object);
+            }
+            mapArrayList.add(map);
+        }
+        return mapArrayList;
     }
 
     private void createPreparedStatement(Connection connection, String sql, Object[] parameters) throws SQLException

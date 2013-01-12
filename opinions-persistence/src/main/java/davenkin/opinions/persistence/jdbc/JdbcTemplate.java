@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class JdbcTemplate
 {
@@ -34,6 +35,21 @@ public class JdbcTemplate
         ArrayList<T> list = new ArrayList<T>();
         doExecute(sql, objects, new RowMapperCallBack(list, mapper));
         return list;
+    }
+
+    public long queryForLong(String sql, Object[] objects) throws DataAccessException
+    {
+        try
+        {
+            List<Map<String,Object>> mapList = new SqlExecutor().execute(getConnection(), sql, objects);
+            Map<String, Object> firstMap = mapList.get(0);
+            Object o = firstMap.get(firstMap.keySet().toArray()[0]);
+            return Long.class.cast(o);
+        } catch (Exception e)
+        {
+            throw new DataAccessException(e);
+        }
+
     }
 
 

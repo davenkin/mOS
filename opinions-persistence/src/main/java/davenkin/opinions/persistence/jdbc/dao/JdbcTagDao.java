@@ -50,9 +50,8 @@ public class JdbcTagDao extends AbstractJdbcDao implements TagDao
 
     private boolean tagReferenceExist(String tagName, long surveyId) throws DataAccessException
     {
-        List<String> existingTags = jdbcTemplate.queryForList("SELECT TAG_NAME FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{surveyId}, String.class);
-        return existingTags.contains(tagName);
-
+        long count = jdbcTemplate.queryForLong("SELECT COUNT(TAG_NAME) FROM SURVEY_TAG WHERE SURVEY_ID = ? AND TAG_NAME = ?", new Object[]{surveyId, tagName});
+        return count == 1;
     }
 
     private boolean tagExist(String name) throws DataAccessException
@@ -71,9 +70,8 @@ public class JdbcTagDao extends AbstractJdbcDao implements TagDao
 
     private boolean surveyExist(long surveyId) throws DataAccessException
     {
-        Long existingId = jdbcTemplate.queryForObject("SELECT ID FROM SURVEY WHERE ID = ?", new Object[]{surveyId}, Long.class);
-        return null != existingId;
-
+        long count = jdbcTemplate.queryForLong("SELECT COUNT(*) FROM SURVEY WHERE ID = ? ", new Object[]{surveyId});
+        return count == 1;
     }
 
 }
