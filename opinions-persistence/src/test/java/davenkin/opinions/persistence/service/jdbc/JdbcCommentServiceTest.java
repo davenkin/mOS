@@ -1,11 +1,14 @@
 package davenkin.opinions.persistence.service.jdbc;
 
+import davenkin.opinions.domain.Comment;
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.jdbc.JdbcTemplate;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -46,6 +49,27 @@ public class JdbcCommentServiceTest
 
         long expected = jdbcTemplate.queryForLong("SELECT COUNT(*) FROM COMMENT WHERE USER_ID = ?", new Object[]{2});
         assertEquals(expected, before);
+    }
+
+    @Test
+    public void getCommentsForSurvey()
+    {
+        List<Comment> commentsForSurvey = jdbcCommentService.getCommentsForSurvey(1);
+        assertEquals(3, commentsForSurvey.size());
+        List<Comment> commentsForNonSurvey = jdbcCommentService.getCommentsForSurvey(10);
+        assertEquals(0, commentsForNonSurvey.size());
+    }
+    
+    @Test
+    public void removeComment() throws DataAccessException
+    {
+        jdbcCommentService.addCommentToSurvey("test comment", 2, 1);
+        List<Comment> commentsForSurvey = jdbcCommentService.getCommentsForSurvey(2);
+        assertEquals(1, commentsForSurvey.size());
+        jdbcCommentService.removeCommentFromSurvey(commentsForSurvey.get(0).getId());
+        assertEquals(0, jdbcCommentService.getCommentsForSurvey(2).size());
+        jdbcTemplate.update("DELETE FROM COMMENT WHERE SURVEY_ID = ?", new Object[]{2});
+
     }
 
 }

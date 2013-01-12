@@ -12,6 +12,6 @@ public interface CommentService
 
     public List<Comment> getCommentsFromUser(long userId);
 
-    public void removeCommentFromSurvey(long surveyId, long commentId);
+    public void removeCommentFromSurvey(long commentId);
 
 }

@@ -58,12 +58,12 @@ public class JdbcTransactionManager
             connection = getConnection();
             connection.setAutoCommit(true);
             connection.setReadOnly(false);
-            logger.info("Try to close and remove connection[" + connection.hashCode() + "] from current thread[" + Thread.currentThread().getId() + "]");
             connection.close();
             SingleThreadConnectionFactory.removeCurrentConnection();
         } catch (SQLException e)
         {
             throw new RuntimeException("Couldn't close connection[" + connection + "].", e);
         }
+        logger.info("Close and remove connection[" + connection.hashCode() + "] from current thread[" + Thread.currentThread().getId() + "]");
     }
 }

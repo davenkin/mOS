@@ -7,6 +7,7 @@ import davenkin.opinions.persistence.jdbc.dao.JdbcCommentDao;
 import davenkin.opinions.persistence.service.CommentService;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcCommentService implements CommentService
@@ -40,7 +41,7 @@ public class JdbcCommentService implements CommentService
     @Override
     public List<Comment> getCommentsForSurvey(long surveyId)
     {
-        List<Comment> surveys = null;
+        List<Comment> surveys = new ArrayList<Comment>();
         try
         {
             transactionManager.start();
@@ -59,13 +60,38 @@ public class JdbcCommentService implements CommentService
     @Override
     public List<Comment> getCommentsFromUser(long userId)
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        List<Comment> comments = new ArrayList<Comment>();
+        try
+        {
+            transactionManager.start();
+            comments = commentDao.findCommentsFromUser(userId);
+            transactionManager.commit();
+            return comments;
+        } catch (Exception e)
+        {
+            transactionManager.rollback();
+        } finally
+        {
+            transactionManager.close();
+        }
+        return comments;
     }
 
     @Override
-    public void removeCommentFromSurvey(long surveyId, long commentId)
+    public void removeCommentFromSurvey(long commentId)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        try
+        {
+            transactionManager.start();
+            commentDao.removeComment(commentId);
+            transactionManager.commit();
+        } catch (Exception e)
+        {
+            transactionManager.rollback();
+        } finally
+        {
+            transactionManager.close();
+        }
     }
 
 }
