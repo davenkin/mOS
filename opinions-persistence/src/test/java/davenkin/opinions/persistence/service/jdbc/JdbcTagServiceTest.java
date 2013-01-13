@@ -7,6 +7,8 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static junit.framework.Assert.assertEquals;
 
 public class JdbcTagServiceTest
@@ -67,5 +69,11 @@ public class JdbcTagServiceTest
         jdbcTagService.removeTagFromSurvey(2, tag);
         long after = jdbcTemplate.queryForLong("SELECT COUNT(*) FROM SURVEY_TAG WHERE SURVEY_ID = ?", new Object[]{2});
         assertEquals(before, after);
+    }
+
+    @Test
+    public void getTagsForSurvey(){
+        List<String> tagsForSurvey = jdbcTagService.getTagsForSurvey(9);
+        assertEquals(tagsForSurvey.size(), 3);
     }
 }

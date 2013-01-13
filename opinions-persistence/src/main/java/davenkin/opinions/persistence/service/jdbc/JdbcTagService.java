@@ -6,6 +6,7 @@ import davenkin.opinions.persistence.jdbc.dao.JdbcTagDao;
 import davenkin.opinions.persistence.service.TagService;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTagService implements TagService
@@ -48,8 +49,19 @@ public class JdbcTagService implements TagService
     }
 
     @Override
-    public List<String> getTagsForSurvey(long surveyId)
+    public List<String> getTagsForSurvey(final long surveyId)
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        final List<String>[] tags = (List<String>[]) new ArrayList[1];
+
+        new JdbcTransactionTemplate(dataSource)
+        {
+            @Override
+            protected void doJob() throws Exception
+            {
+                tags[0] = tagDao.findTagsForSurvey(surveyId);
+            }
+
+        }.doJobInTransaction();
+        return tags[0];
     }
 }
