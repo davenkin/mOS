@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.service.jdbc;
+package davenkin.opinions.persistence.jdbc.service;
 
 import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
