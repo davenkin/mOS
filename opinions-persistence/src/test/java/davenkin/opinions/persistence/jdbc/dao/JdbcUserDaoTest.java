@@ -5,7 +5,6 @@ import davenkin.opinions.domain.DataAccessException;
 import davenkin.opinions.persistence.DataSourceUtil;
 import davenkin.opinions.persistence.dao.UserDao;
 import davenkin.opinions.persistence.jdbc.JdbcTransactionManager;
-import davenkin.opinions.persistence.jdbc.dao.JdbcUserDao;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.junit.Before;
@@ -36,7 +35,7 @@ public class JdbcUserDaoTest
         User user = jdbcUserDao.findUserById(3L);
         assertEquals(user.getName(), "kate");
         assertEquals(user.getEmail(), "kate@gmail.com");
-        assertTrue(user.getUserId() == 3L);
+        assertTrue(user.getId() == 3L);
     }
 
     @Test
@@ -58,7 +57,7 @@ public class JdbcUserDaoTest
         assertEquals(userName, user.getName());
         assertEquals(email, user.getEmail());
         assertEquals(password, user.getPassword());
-        jdbcUserDao.deleteUser(user.getUserId());
+        jdbcUserDao.deleteUser(user.getId());
         User userByName = jdbcUserDao.findUserByName(userName);
         assertNull(userByName);
     }
@@ -94,7 +93,7 @@ public class JdbcUserDaoTest
         String email = "testUserEmail@163.com";
         String newEmail = "newEmail@163.com";
         jdbcUserDao.addUser(userName, email, password);
-        long userId = jdbcUserDao.findUserByName(userName).getUserId();
+        long userId = jdbcUserDao.findUserByName(userName).getId();
         jdbcUserDao.updateUser(userId, newName, newEmail, password);
         User userById = jdbcUserDao.findUserById(userId);
         assertEquals(newName, userById.getName());

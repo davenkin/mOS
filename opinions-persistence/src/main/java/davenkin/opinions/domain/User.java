@@ -10,18 +10,18 @@ import java.sql.Timestamp;
  * To change this template use File | Settings | File Templates.
  */
 public class User {
-    private long userId;
+    private long id;
     private String name;
     private String email;
     private String password;
     private Timestamp registerTime;
 
-    public User(long userId) {
-        this.userId = userId;
+    public User(long id) {
+        this.id = id;
     }
 
-    public long getUserId() {
-        return userId;
+    public long getId() {
+        return id;
     }
 
 
