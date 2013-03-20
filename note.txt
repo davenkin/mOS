@@ -5,3 +5,7 @@
 -- when run jetty, the context root is set to the artifactId of the web module, but not the final name of the web module
 
 -- when run multi module, we should run mvn install
+
+The SessionFactory is thread-safe and can be shared; a Ses-
+sion is a single-threaded object.
+
