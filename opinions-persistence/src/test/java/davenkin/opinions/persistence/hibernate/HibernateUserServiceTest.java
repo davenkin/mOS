@@ -31,6 +31,7 @@ public class HibernateUserServiceTest {
     public void test(){
         userService.addNewUser("davenkin","davenkin@163.com","123456");
         assertEquals(1, jdbcTemplate.queryForInt("SELECT COUNT(*) FROM USER"));
+        assertEquals("davenkin", jdbcTemplate.queryForObject("SELECT NAME FROM USER", String.class));
     }
 
 }
