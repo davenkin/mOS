@@ -25,7 +25,7 @@ import static junit.framework.Assert.assertTrue;
  * To change this template use File | Settings | File Templates.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:testHibernateApplicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:testHibernateApplicationContext.xml"})
 @TestExecutionListeners({DirtiesContextTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -38,30 +38,57 @@ public class HibernateUserServiceTest {
     public JdbcTemplate jdbcTemplate;
 
     @Test
-    public void addNewUser(){
+    public void addNewUser() {
         long id = userService.addNewUser("davenkin", "davenkin@163.com", "123456");
-        assertTrue(1L==id);
+        assertTrue(1L == id);
         assertEquals(1, getDbRecordCount());
         assertEquals("davenkin", getNameFromDB());
         assertEquals(DigestUtils.md5Hex("123456"), jdbcTemplate.queryForObject("SELECT PASSWORD FROM USER", String.class));
     }
 
     @Test
-    public void getUserById(){
+    public void getUserById() {
         long id = userService.addNewUser("eudy", "davenkin@163.com", "123456");
         User userById = userService.getUserById(id);
-        assertEquals("eudy",userById.getName());
-        assertEquals("davenkin@163.com",userById.getEmail());
+        assertEquals("eudy", userById.getName());
+        assertEquals("davenkin@163.com", userById.getEmail());
     }
 
     @Test
-    public void updateUserName(){
+    public void updateUserName() {
         long id = userService.addNewUser("oldName", "email", "password");
-        userService.updateUserName(id,"newName");
+        userService.updateUserName(id, "newName");
         User userById = userService.getUserById(id);
-        assertEquals("newName",userById.getName());
+        assertEquals("newName", userById.getName());
     }
 
+    @Test
+    public void updateUserEmail() {
+        long id = userService.addNewUser("name", "oldEmail", "password");
+        userService.updateUserEmail(id, "newEmail");
+        User userById = userService.getUserById(id);
+        assertEquals("newEmail", userById.getEmail());
+    }
+
+    @Test
+    public void updateUserPassword() {
+        long id = userService.addNewUser("name", "email", "oldPassword");
+        userService.updateUserPassword(id, "newPassword");
+        User userById = userService.getUserById(id);
+        assertEquals(DigestUtils.md5Hex("newPassword"), userById.getPassword());
+    }
+
+    @Test
+    public void updateUser() {
+        long id = userService.addNewUser("oldName", "oldEmail", "oldPassword");
+        userService.updateUser(id, "newName", "newEmail", "newPassword");
+        User userById = userService.getUserById(id);
+
+        assertEquals("newName", userById.getName());
+        assertEquals("newEmail", userById.getEmail());
+        assertEquals(DigestUtils.md5Hex("newPassword"), userById.getPassword());
+
+    }
 
     private String getNameFromDB() {
         return jdbcTemplate.queryForObject("SELECT NAME FROM USER", String.class);

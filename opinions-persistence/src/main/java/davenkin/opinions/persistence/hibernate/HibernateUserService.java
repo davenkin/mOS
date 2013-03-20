@@ -3,7 +3,6 @@ package davenkin.opinions.persistence.hibernate;
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,42 +23,41 @@ public class HibernateUserService implements UserService {
     @Override
     @Transactional
     public User getUserById(long userId) {
-        Session session = sessionFactory.getCurrentSession();
-        return (User) session.load(User.class, userId);
+        return (User) sessionFactory.getCurrentSession().load(User.class, userId);
     }
 
     @Override
     @Transactional
     public void updateUserName(long userId, String name) {
+        getUserById(userId).setName(name);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserEmail(long userId, String email) {
+        getUserById(userId).setEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserPassword(long userId, String password) {
+        getUserById(userId).setPassword(DigestUtils.md5Hex(password));
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(long userId, String name, String email, String password) {
         User userById = getUserById(userId);
         userById.setName(name);
-    }
-
-    @Override
-    public void updateUserEmail(long userId, String email) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void updateUserPassword(long userId, String password) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void updateUser(long userId, String name, String email, String password) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        userById.setEmail(email);
+        userById.setPassword(DigestUtils.md5Hex(password));
     }
 
     @Override
     @Transactional
     public long addNewUser(String name, String email, String password) {
-        Session session = sessionFactory.getCurrentSession();
-        User user = new User(name, email, DigestUtils.md5Hex(password), currentTimestamp());
-        return (Long) session.save(user);
-    }
-
-    private Timestamp currentTimestamp() {
-        return new Timestamp(new Date().getTime());
+        User user = new User(name, email, DigestUtils.md5Hex(password), new Timestamp(new Date().getTime()));
+        return (Long) sessionFactory.getCurrentSession().save(user);
     }
 
     @Required
