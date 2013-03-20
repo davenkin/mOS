@@ -4,7 +4,7 @@
 
     <appender name="consoleAppender"
               class="org.apache.log4j.ConsoleAppender">
-        <param name="Threshold" value="INFO"/>
+        <param name="Threshold" value="TRACE"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %3p[%c{1}] %m %n"/>
         </layout>
@@ -21,7 +21,7 @@
     </appender>
 
     <root>
-        <priority value="info"></priority>
+        <priority value="TRACE"></priority>
         <appender-ref ref="consoleAppender"/>
     </root>
 
