@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.hibernate;
 
 import davenkin.opinions.persistence.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class HibernateUserServiceTest {
         assertTrue(1L==id);
         assertEquals(1, jdbcTemplate.queryForInt("SELECT COUNT(*) FROM USER"));
         assertEquals("davenkin", jdbcTemplate.queryForObject("SELECT NAME FROM USER", String.class));
+        assertEquals(DigestUtils.md5Hex("123456"), jdbcTemplate.queryForObject("SELECT PASSWORD FROM USER", String.class));
     }
 
 }

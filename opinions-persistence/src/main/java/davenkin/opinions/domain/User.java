@@ -16,14 +16,17 @@ public class User {
     private String password;
     private Timestamp registerTime;
 
-    public User() {
+    private User() {
     }
 
-    public User(long id) {
-        this.id = id;
+    public User(String name, String email, String password, Timestamp registerTime) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.registerTime = registerTime;
     }
 
-    public void setId(long id) {
+    private void setId(long id) {
         this.id = id;
     }
 

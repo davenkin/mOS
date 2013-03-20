@@ -2,6 +2,7 @@ package davenkin.opinions.persistence.hibernate;
 
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -49,12 +50,12 @@ public class HibernateUserService implements UserService {
     @Transactional
     public long addNewUser(String name, String email, String password) {
         Session session = sessionFactory.getCurrentSession();
-        User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRegisterTime(new Timestamp(new Date().getTime()));
-      return (Long) session.save(user);
+        User user = new User(name, email, DigestUtils.md5Hex(password), currentTimestamp());
+        return (Long) session.save(user);
+    }
+
+    private Timestamp currentTimestamp() {
+        return new Timestamp(new Date().getTime());
     }
 
     @Required
