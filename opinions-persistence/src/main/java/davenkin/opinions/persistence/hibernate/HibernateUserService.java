@@ -22,13 +22,17 @@ public class HibernateUserService implements UserService {
     private SessionFactory sessionFactory;
 
     @Override
+    @Transactional
     public User getUserById(long userId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Session session = sessionFactory.getCurrentSession();
+        return (User) session.load(User.class, userId);
     }
 
     @Override
+    @Transactional
     public void updateUserName(long userId, String name) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        User userById = getUserById(userId);
+        userById.setName(name);
     }
 
     @Override
