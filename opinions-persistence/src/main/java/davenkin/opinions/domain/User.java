@@ -16,7 +16,14 @@ public class User {
     private String password;
     private Timestamp registerTime;
 
+    public User() {
+    }
+
     public User(long id) {
+        this.id = id;
+    }
+
+    public void setId(long id) {
         this.id = id;
     }
 
