@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,7 +30,8 @@ public class HibernateUserServiceTest {
 
     @Test
     public void test(){
-        userService.addNewUser("davenkin","davenkin@163.com","123456");
+        long id = userService.addNewUser("davenkin", "davenkin@163.com", "123456");
+        assertTrue(1L==id);
         assertEquals(1, jdbcTemplate.queryForInt("SELECT COUNT(*) FROM USER"));
         assertEquals("davenkin", jdbcTemplate.queryForObject("SELECT NAME FROM USER", String.class));
     }

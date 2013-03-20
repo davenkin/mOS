@@ -14,6 +14,6 @@ public interface UserService
 
     public void updateUser(long userId, String name, String email, String password);
 
-    public void addNewUser(String name, String email, String password);
+    public long addNewUser(String name, String email, String password);
 
 }

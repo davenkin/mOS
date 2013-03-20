@@ -85,7 +85,7 @@ public class JdbcUserService implements UserService
     }
 
     @Override
-    public void addNewUser(String name, String email, String password)
+    public long addNewUser(String name, String email, String password)
     {
         try
         {
@@ -94,5 +94,6 @@ public class JdbcUserService implements UserService
         {
             throw new RuntimeException(e);
         }
+        return 0L;
     }
 }

@@ -7,6 +7,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: davenkin
@@ -44,13 +47,14 @@ public class HibernateUserService implements UserService {
 
     @Override
     @Transactional
-    public void addNewUser(String name, String email, String password) {
+    public long addNewUser(String name, String email, String password) {
         Session session = sessionFactory.getCurrentSession();
         User user = new User();
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
-        session.save(user);
+        user.setRegisterTime(new Timestamp(new Date().getTime()));
+      return (Long) session.save(user);
     }
 
     @Required
