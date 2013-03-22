@@ -19,7 +19,7 @@
         <property name="dataSource" ref="dataSource" />
         <property name="mappingResources">
             <list>
-                <value>User.hbm.xml</value>
+                <value>davenkin/opinions/domain/User.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

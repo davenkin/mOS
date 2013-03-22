@@ -9,3 +9,18 @@
 The SessionFactory is thread-safe and can be shared; a Ses-
 sion is a single-threaded object.
 
+Hibernate的dirty checking跟领域对象的equals/hashCode没有关系(Hibernate采用自己的方式来检查实体对象的状态是否改变)
+
+从数据库加载的实体对象的主键在不能修改，否则将抛出异常：identifier of an instance of (...) was altered from X to Y
+
+SessionFactory的getCurrentSession并不能保证在没有当前Session的情况下会自动创建一个新的，这取决于CurrentSessionContext的实现，SessionFactory将调用
+CurrentSessionContext的currentSession()方法来获得Session。在Spring从，如果我们在没有配置TransactionManager并且没有事先调用SessionFactory.openSession()的情况
+直接调用getCurrentSession()，那么程序将抛出“No Session found for current thread”异常。如果配置了TranactionManager并且通过@Transactional或者声明的方式配置的事务边界，
+那么Spring会在开始事务之前通过AOP的方式为当前线程创建Session，此时调用getCurrentSession()将得到正确结果。
+
+（？）在Spring中使用Hibernate，如果我们配置了TransactionManager，那么我们就不应该调用SessionFactory的openSession()来获得Sessioin，
+因为这样获得的Session并没有被事务管理。
+
+
+
+
