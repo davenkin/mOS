@@ -15,6 +15,7 @@
         <property name="hibernate.current_session_context_class">thread</property>
 
         <mapping resource="davenkin/opinions/domain/User.hbm.xml" />
+        <mapping resource="davenkin/opinions/domain/Survey.hbm.xml" />
 
 
     </session-factory>

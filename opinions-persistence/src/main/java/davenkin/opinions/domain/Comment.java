@@ -13,7 +13,7 @@ public class Comment
 {
     private long id;
     private String content;
-    private long surveyId;
+    private Survey survey;
     private User user;
     private Timestamp createdTime;
 
@@ -41,14 +41,14 @@ public class Comment
         this.content = content;
     }
 
-    public long getSurveyId()
+    public Survey getSurvey()
     {
-        return surveyId;
+        return survey;
     }
 
-    public void setSurveyId(long surveyId)
+    public void setSurvey(Survey survey)
     {
-        this.surveyId = surveyId;
+        this.survey = survey;
     }
 
     public User getUser()

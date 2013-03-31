@@ -10,7 +10,7 @@ package davenkin.opinions.domain;
 public class Option
 {
     private long id;
-    private long surveyId;
+    private Survey survey;
     private String option;
     private long count;
 
@@ -24,14 +24,14 @@ public class Option
         return id;
     }
 
-    public long getSurveyId()
+    public Survey getSurvey()
     {
-        return surveyId;
+        return survey;
     }
 
-    public void setSurveyId(long surveyId)
+    public void setSurvey(Survey survey)
     {
-        this.surveyId = surveyId;
+        this.survey = survey;
     }
 
     public String getOption()

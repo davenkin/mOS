@@ -20,5 +20,14 @@
         <property name="registerTime" type="timestamp" not-null="true">
             <column name="REGISTER_TIME" not-null="true" />
         </property>
+
+        <set name="surveys" table="SURVEY"
+             inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="USER_ID" not-null="true" />
+            </key>
+            <one-to-many class="davenkin.opinions.domain.Survey" />
+        </set>
+
     </class>
 </hibernate-mapping>

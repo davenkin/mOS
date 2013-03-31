@@ -26,9 +26,8 @@ public class Survey {
         this.id = id;
     }
 
-    public long getId()
-    {
-        return id;
+    public Survey() {
+
     }
 
     public String getContent()
@@ -109,5 +108,13 @@ public class Survey {
     public void setComments(List<Comment> comments)
     {
         this.comments = comments;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

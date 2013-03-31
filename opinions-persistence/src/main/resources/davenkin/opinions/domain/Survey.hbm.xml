@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="davenkin.opinions.domain.Survey" table="SURVEY" lazy="false">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="content" type="string">
+            <column name="CONTENT" not-null="true"/>
+        </property>
+
+        <many-to-one
+                name="creatingUser"
+                class="davenkin.opinions.domain.User"
+                fetch="select">
+            <column name="USER_ID" not-null="true"/>
+        </many-to-one>
+
+        <property name="createdTime" type="timestamp" not-null="true">
+            <column name="CREATED_TIME" not-null="true" />
+        </property>
+
+        <property name="canMultipleChecked" type="yes_no">
+            <column name="CAN_MULTIPLE_CHECKED" not-null="true"/>
+        </property>
+
+    </class>
+</hibernate-mapping>
