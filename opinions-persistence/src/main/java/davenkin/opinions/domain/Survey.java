@@ -2,6 +2,7 @@ package davenkin.opinions.domain;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +18,7 @@ public class Survey {
     private Timestamp createdTime;
     private boolean canMultipleChecked;
     private Category surveyCategory;
-    private List<String> surveyTags;
+    private Set<String> surveyTags;
     private List<Option> options;
     private List<Comment> comments;
 
@@ -80,12 +81,12 @@ public class Survey {
         this.surveyCategory = surveyCategory;
     }
 
-    public List<String> getSurveyTags()
+    public Set<String> getSurveyTags()
     {
         return surveyTags;
     }
 
-    public void setSurveyTags(List<String> surveyTags)
+    protected void setSurveyTags(Set<String> surveyTags)
     {
         this.surveyTags = surveyTags;
     }

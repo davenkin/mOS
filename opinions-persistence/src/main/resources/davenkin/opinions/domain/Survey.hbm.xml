@@ -34,6 +34,11 @@
             </type>
         </property>
 
+        <set name="surveyTags" table="SURVEY_TAG" cascade="delete-orphan">
+            <key column="SURVEY_ID" />
+            <element column="TAG" type="string" />
+        </set>
+
 
     </class>
 </hibernate-mapping>

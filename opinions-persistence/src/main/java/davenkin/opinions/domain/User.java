@@ -73,7 +73,7 @@ public class User {
         return surveys;
     }
 
-    public void setSurveys(Set<Survey> surveys) {
+    protected void setSurveys(Set<Survey> surveys) {
         this.surveys = surveys;
     }
 }
