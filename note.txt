@@ -48,4 +48,7 @@ them for equality (usually in hash-based collections), you need to supply your
 own implementation of the equals() and hashCode() methods for your persis-
 tent classes.
 
+delete-orphan cascading type only works on
+one-to-many associations
+
 

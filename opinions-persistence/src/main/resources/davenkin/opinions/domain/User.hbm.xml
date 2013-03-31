@@ -8,21 +8,25 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
+
         <property name="name" type="string">
             <column name="NAME" not-null="true"/>
         </property>
+
         <property name="email" type="string">
             <column name="EMAIL" not-null="true"/>
         </property>
+
         <property name="password" type="string">
             <column name="PASSWORD" not-null="true"/>
         </property>
+
         <property name="registerTime" type="timestamp" not-null="true">
             <column name="REGISTER_TIME" not-null="true" />
         </property>
 
         <set name="surveys" table="SURVEY"
-             inverse="true" lazy="true" fetch="select">
+             inverse="true" lazy="true" fetch="select" cascade="delete,delete-orphan">
             <key>
                 <column name="USER_ID" not-null="true" />
             </key>
