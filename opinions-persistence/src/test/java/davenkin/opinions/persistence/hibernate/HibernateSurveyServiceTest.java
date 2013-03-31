@@ -75,9 +75,30 @@ public class HibernateSurveyServiceTest {
         Survey surveyById = surveyService.getSurveyById(surveyId);
         assertThat(surveyById.getContent(), is(content));
         assertThat(surveyById.getOptions().size(),is(2));
-
     }
 
+    @Test
+    public void takeSurvey()
+    {
+        long surveyId = createUserAndSurvey();
+        Survey survey = surveyService.getSurveyById(surveyId);
+        long optionId = survey.getOptions().get(0).getId();
+        surveyService.takeSurvey(optionId);
+        assertEquals(1,surveyService.getSurveyById(surveyId).getOptions().get(0).getOptionCount());
+    }
+
+
+
+    private long createUserAndSurvey() {
+        long userId = addNewUser();
+        User user = userService.getUserById(userId);
+        ArrayList<String> optionNames = new ArrayList<String>();
+        optionNames.add("Yes");
+        optionNames.add("No");
+        String content = "Do you like programming?";
+        Survey survey= user.createSurvey(content, false, Category.SCIENCE, optionNames);
+        return surveyService.addSurvey(survey);
+    }
 
 
     private long addNewUser() {

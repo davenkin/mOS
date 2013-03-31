@@ -26,7 +26,7 @@ public interface SurveyService
 
     public long addSurvey(Survey survey);
 
-    public void takeSurvey(long surveyId, long optionId);
+    public void takeSurvey(long optionId);
 
     public void removeSurvey(long surveyId);
 }

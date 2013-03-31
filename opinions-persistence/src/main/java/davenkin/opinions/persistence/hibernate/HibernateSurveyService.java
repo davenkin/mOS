@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.hibernate;
 
 import davenkin.opinions.domain.Category;
+import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.service.SurveyService;
 import org.hibernate.Session;
@@ -55,8 +56,11 @@ public class HibernateSurveyService implements SurveyService {
     }
 
     @Override
-    public void takeSurvey(long surveyId, long optionId) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    @Transactional
+    public void takeSurvey(long optionId) {
+        Session session = sessionFactory.getCurrentSession();
+        Option option = (Option)session.load(Option.class, optionId);
+        option.vote();
     }
 
     @Override
