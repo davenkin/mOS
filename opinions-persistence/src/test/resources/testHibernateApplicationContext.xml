@@ -12,7 +12,6 @@
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/OPINIONS" />
         <property name="username" value="root" />
@@ -30,6 +29,7 @@
                 <value>davenkin/opinions/domain/User.hbm.xml</value>
                 <value>davenkin/opinions/domain/Survey.hbm.xml</value>
                 <value>davenkin/opinions/domain/Option.hbm.xml</value>
+                <value>davenkin/opinions/domain/Comment.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

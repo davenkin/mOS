@@ -26,11 +26,6 @@ public class Comment
         this.id = id;
     }
 
-    public long getId()
-    {
-        return id;
-    }
-
     public String getContent()
     {
         return content;
@@ -69,5 +64,13 @@ public class Comment
     public void setCreatedTime(Timestamp createdTime)
     {
         this.createdTime = createdTime;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

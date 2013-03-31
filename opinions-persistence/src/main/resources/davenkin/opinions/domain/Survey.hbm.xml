@@ -39,12 +39,20 @@
             <element column="TAG" type="string" />
         </set>
 
-        <bag name="options" table="SURVEY_OPTION"
-             inverse="true" lazy="true" fetch="select" cascade="all">
+        <bag name="options"
+             inverse="true" lazy="true" fetch="select" cascade="delete, delete-orphan">
             <key>
                 <column name="SURVEY_ID" not-null="true" />
             </key>
             <one-to-many class="davenkin.opinions.domain.Option" />
+        </bag>
+
+        <bag name="comments"
+             inverse="true" lazy="true" fetch="select" cascade="delete,delete-orphan" order-by="createdTime">
+            <key>
+                <column name="SURVEY_ID" not-null="true" />
+            </key>
+            <one-to-many class="davenkin.opinions.domain.Comment" />
         </bag>
 
 

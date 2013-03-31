@@ -17,6 +17,7 @@
         <mapping resource="davenkin/opinions/domain/User.hbm.xml" />
         <mapping resource="davenkin/opinions/domain/Survey.hbm.xml" />
         <mapping resource="davenkin/opinions/domain/Option.hbm.xml" />
+        <mapping resource="davenkin/opinions/domain/Comment.hbm.xml" />
 
 
     </session-factory>
