@@ -6,8 +6,7 @@
 
 -- when run multi module, we should run mvn install
 
-The SessionFactory is thread-safe and can be shared; a Ses-
-sion is a single-threaded object.
+The SessionFactory is thread-safe and can be shared; a Session is a single-threaded object.
 
 Hibernate的dirty checking跟领域对象的equals/hashCode没有关系(Hibernate采用自己的方式来检查实体对象的状态是否改变)
 
@@ -17,6 +16,7 @@ SessionFactory的getCurrentSession并不能保证在没有当前Session的情况
 CurrentSessionContext的currentSession()方法来获得Session。在Spring中，如果我们在没有配置TransactionManager并且没有事先调用SessionFactory.openSession()的情况
 直接调用getCurrentSession()，那么程序将抛出“No Session found for current thread”异常。如果配置了TranactionManager并且通过@Transactional或者声明的方式配置的事务边界，
 那么Spring会在开始事务之前通过AOP的方式为当前线程创建Session，此时调用getCurrentSession()将得到正确结果。
+
 
 然而，产生以上异常的原因在于Spring提供了自己的CurrentSessionContext实现，如果我们不打算使用Spring，而是自己直接从hibernate.cfg.xml创建SessionFactory，并且为在hibernate.cfg.xml
 中设置current_session_context_class为thread，也即使用了ThreadLocalSessionContext，那么我们在调用getCurrentSession()时，如果当前线程没有Session存在，则会创建一个绑定到当前线程。
@@ -30,7 +30,22 @@ Hibernate在默认情况下会使用JTASessionContext，Spring提供了自己的
 （？）在Spring中使用Hibernate，如果我们配置了TransactionManager，那么我们就不应该调用SessionFactory的openSession()来获得Sessioin，
 因为这样获得的Session并没有被事务管理。
 
+Value objects 的生命周期完全取决于其所属的Entity objects，并且value bojects不能在entity object之间共享。
 
+一种java类型可以映射到多个Hibernate类型，此时我们需要明确指出类型映射。
 
+Hibernate的element标签用于映射value object而不是entity object。
+
+bag是和set相似，是无序的，但是允许重复的元素出现。
+
+由于component映射的类没有id，故需要实现equals和hashcode方法已区别不同的component类。
+
+For value objects, you map a one multiplicity with a simple <property> or as a <component>. The many
+ association multiplicity requires a collection of value types, with <element> or <composite-element> mappings.
+
+Whenever you work with objects in detached state, and especially if you test
+them for equality (usually in hash-based collections), you need to supply your
+own implementation of the equals() and hashCode() methods for your persis-
+tent classes.
 
 
