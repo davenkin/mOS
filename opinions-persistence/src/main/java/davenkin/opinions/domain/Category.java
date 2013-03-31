@@ -9,22 +9,9 @@ package davenkin.opinions.domain;
  */
 public enum Category
 {
-    SCIENCE("001"),
-    ECONOMY("002"),
-    CULTURE("003"),
-    POLITICS("004"),
-    EDUCATION("005");
-
-    private String code;
-
-    Category(String code)
-    {
-        this.code = code;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
+    SCIENCE,
+    ECONOMY,
+    CULTURE,
+    POLITICS,
+    EDUCATION
 }
