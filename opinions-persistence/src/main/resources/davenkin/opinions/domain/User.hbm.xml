@@ -25,13 +25,13 @@
             <column name="REGISTER_TIME" not-null="true" />
         </property>
 
-        <set name="surveys" table="SURVEY"
-             inverse="true" lazy="true" fetch="select" cascade="delete,delete-orphan">
+        <bag name="surveys" table="SURVEY"
+             inverse="true" lazy="true" fetch="select" cascade="delete,delete-orphan" order-by="createdTime">
             <key>
                 <column name="USER_ID" not-null="true" />
             </key>
             <one-to-many class="davenkin.opinions.domain.Survey" />
-        </set>
+        </bag>
 
     </class>
 </hibernate-mapping>

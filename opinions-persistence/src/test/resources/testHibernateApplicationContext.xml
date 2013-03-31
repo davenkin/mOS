@@ -29,6 +29,7 @@
             <list>
                 <value>davenkin/opinions/domain/User.hbm.xml</value>
                 <value>davenkin/opinions/domain/Survey.hbm.xml</value>
+                <value>davenkin/opinions/domain/Option.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

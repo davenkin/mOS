@@ -11,18 +11,15 @@ public class Option
 {
     private long id;
     private Survey survey;
-    private String option;
-    private long count;
+    private String optionName;
+    private long optionCount;
 
     public Option(long id)
     {
         this.id = id;
     }
 
-    public long getId()
-    {
-        return id;
-    }
+    protected Option(){}
 
     public Survey getSurvey()
     {
@@ -34,23 +31,31 @@ public class Option
         this.survey = survey;
     }
 
-    public String getOption()
+    public String getOptionName()
     {
-        return option;
+        return optionName;
     }
 
-    public void setOption(String option)
+    public void setOptionName(String optionName)
     {
-        this.option = option;
+        this.optionName = optionName;
     }
 
-    public long getCount()
+    public long getOptionCount()
     {
-        return count;
+        return optionCount;
     }
 
-    public void setCount(long count)
+    public void setOptionCount(long optionCount)
     {
-        this.count = count;
+        this.optionCount = optionCount;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -1,7 +1,7 @@
 package davenkin.opinions.domain;
 
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +16,7 @@ public class User {
     private String email;
     private String password;
     private Timestamp registerTime;
-    private Set<Survey> surveys;
+    private List<Survey> surveys;
 
     private User() {
     }
@@ -69,11 +69,11 @@ public class User {
         this.registerTime = registerTime;
     }
 
-    public Set<Survey> getSurveys() {
+    public List<Survey> getSurveys() {
         return surveys;
     }
 
-    protected void setSurveys(Set<Survey> surveys) {
+    protected void setSurveys(List<Survey> surveys) {
         this.surveys = surveys;
     }
 }

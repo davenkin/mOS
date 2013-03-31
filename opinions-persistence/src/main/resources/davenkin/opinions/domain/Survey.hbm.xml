@@ -39,6 +39,14 @@
             <element column="TAG" type="string" />
         </set>
 
+        <bag name="options" table="SURVEY_OPTION"
+             inverse="true" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="SURVEY_ID" not-null="true" />
+            </key>
+            <one-to-many class="davenkin.opinions.domain.Option" />
+        </bag>
+
 
     </class>
 </hibernate-mapping>

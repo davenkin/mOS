@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="davenkin.opinions.domain.Option" table="SURVEY_OPTION" lazy="false">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+
+        <property name="optionName" type="string">
+            <column name="OPTION_NAME" not-null="true"/>
+        </property>
+
+        <property name="optionCount" type="string">
+            <column name="OPTION_COUNT" not-null="true"/>
+        </property>
+
+        <many-to-one
+                name="survey"
+                class="davenkin.opinions.domain.Survey"
+                fetch="select">
+            <column name="SURVEY_ID" not-null="true"/>
+        </many-to-one>
+
+
+    </class>
+</hibernate-mapping>
