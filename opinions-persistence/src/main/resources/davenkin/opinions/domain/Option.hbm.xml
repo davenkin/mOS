@@ -13,7 +13,7 @@
             <column name="OPTION_NAME" not-null="true"/>
         </property>
 
-        <property name="optionCount" type="string">
+        <property name="optionCount" type="long">
             <column name="OPTION_COUNT" not-null="true"/>
         </property>
 

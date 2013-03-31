@@ -1,6 +1,7 @@
 package davenkin.opinions.domain;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,5 +76,28 @@ public class User {
 
     protected void setSurveys(List<Survey> surveys) {
         this.surveys = surveys;
+    }
+
+    public void addSurvey(Survey survey) {
+     surveys.add(survey);
+    }
+
+    public Survey createSurvey(String content, boolean multipleChecked, Category category, List<String> optionsNames) {
+        Survey survey = new Survey();
+        survey.setContent(content);
+        survey.setCanMultipleChecked(multipleChecked);
+        survey.setSurveyCategory(category);
+        survey.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+        survey.setCreatingUser(this);
+        ArrayList<Option> options = new ArrayList<Option>();
+        for(String optionName: optionsNames)
+        {
+            Option option = new Option();
+            option.setOptionName(optionName);
+            option.setSurvey(survey);
+            options.add(option);
+        }
+        survey.addOptions(options);
+        return survey;
     }
 }

@@ -14,12 +14,9 @@ public class Option
     private String optionName;
     private long optionCount;
 
-    public Option(long id)
-    {
-        this.id = id;
+    public Option(){
+        optionCount=0;
     }
-
-    protected Option(){}
 
     public Survey getSurvey()
     {

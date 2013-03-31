@@ -1,6 +1,7 @@
 package davenkin.opinions.domain;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class Survey {
     private boolean canMultipleChecked;
     private Category surveyCategory;
     private Set<String> surveyTags;
-    private List<Option> options;
+    private List<Option> options = new ArrayList<Option>();
     private List<Comment> comments;
 
     public Survey(long id)
@@ -117,5 +118,9 @@ public class Survey {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void addOptions(List<Option> options) {
+        this.options.addAll(options);
     }
 }

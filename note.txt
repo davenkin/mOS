@@ -51,4 +51,7 @@ tent classes.
 delete-orphan cascading type only works on
 one-to-many associations
 
+异常：object references an unsaved transient instance - save the transient instance before flushing : 将cascade属性改为save-update或all。
 
+
+异常：failed to lazily initialize a collection of role: davenkin.opinions.domain.Survey.options, could not initialize proxy - no Session， 将lazy="false"
