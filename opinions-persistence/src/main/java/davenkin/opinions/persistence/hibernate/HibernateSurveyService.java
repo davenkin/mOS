@@ -50,34 +50,31 @@ public class HibernateSurveyService implements SurveyService {
 
     @Override
     @Transactional
-    public long addSurvey(Survey survey) {
-        Session session = sessionFactory.getCurrentSession();
-       return (Long) session.save(survey);
+    public long addSurvey(final Survey survey) {
+        final long[] surveyId = new long[1];
+        new CurrentSessionTemplate() {
+            @Override
+            public void doInCurrentSession(Session session) {
+
+        surveyId[0] = (Long) session.save(survey);
+            }
+        }.doInSessionFactory(sessionFactory);
+        return surveyId[0];
     }
 
     @Override
     @Transactional
     public void takeSurvey(final long optionId) {
-        new SessionTemplate() {
+        new CurrentSessionTemplate() {
             @Override
-            void doInSession(Session session) {
+           public void doInCurrentSession(Session session) {
                 Option option = (Option)session.load(Option.class, optionId);
                 option.vote();
 
             }
-        }.doInSession(sessionFactory);
+        }.doInSessionFactory(sessionFactory);
             }
 
-
-
-    abstract class SessionTemplate {
-        void doInSession(SessionFactory sessionFactory)
-       {
-           Session currentSession = sessionFactory.getCurrentSession();
-           doInSession(currentSession);
-       }
-       abstract void doInSession(Session session);
-    }
 
     @Override
     public void removeSurvey(long surveyId) {
