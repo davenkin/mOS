@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.service;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TagService
 {
@@ -8,6 +9,6 @@ public interface TagService
 
     public void removeTagFromSurvey(long surveyId, String tag);
 
-    public List<String> getTagsForSurvey(long surveyId);
+    public Set<String> getTagsForSurvey(long surveyId);
 
 }

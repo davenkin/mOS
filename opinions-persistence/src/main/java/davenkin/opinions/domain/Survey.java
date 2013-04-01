@@ -2,6 +2,7 @@ package davenkin.opinions.domain;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class Survey {
     private Timestamp createdTime;
     private boolean canMultipleChecked;
     private Category surveyCategory;
-    private Set<String> surveyTags;
+    private Set<String> surveyTags = new HashSet<String>();
     private List<Option> options = new ArrayList<Option>();
     private List<Comment> comments;
 
@@ -122,5 +123,13 @@ public class Survey {
 
     public void addOptions(List<Option> options) {
         this.options.addAll(options);
+    }
+
+    public void addTag(String tag) {
+        surveyTags.add(tag);
+    }
+
+    public void removeTag(String tag) {
+        surveyTags.remove(tag);
     }
 }

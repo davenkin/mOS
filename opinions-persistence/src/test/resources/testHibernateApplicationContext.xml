@@ -57,6 +57,9 @@
 <bean id="surveyService" class="davenkin.opinions.persistence.hibernate.HibernateSurveyService">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="tagService" class="davenkin.opinions.persistence.hibernate.HibernateTagService">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 
 </beans>
