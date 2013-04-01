@@ -31,8 +31,11 @@ public class HibernateSurveyService implements SurveyService {
     }
 
     @Override
+    @Transactional
     public List<Survey> getSurveysByTag(String tag) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Survey s where :tag in elements(s.surveyTags)").setParameter("tag",tag);
+        return query.list();
     }
 
     @Override

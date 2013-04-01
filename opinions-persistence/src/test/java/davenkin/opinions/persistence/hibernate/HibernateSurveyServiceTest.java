@@ -4,6 +4,7 @@ import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.SurveyService;
+import davenkin.opinions.persistence.service.TagService;
 import davenkin.opinions.persistence.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +47,10 @@ public class HibernateSurveyServiceTest {
     @Autowired
     public JdbcTemplate jdbcTemplate;
 
+
+    @Autowired
+    public TagService tagService;
+
     @Test
     public void addSurvey()
     {
@@ -76,6 +81,20 @@ public class HibernateSurveyServiceTest {
         Survey surveyById = surveyService.getSurveyById(surveyId);
         assertThat(surveyById.getContent(), is(content));
         assertThat(surveyById.getOptions().size(),is(2));
+    }
+
+    @Test
+    public void findSurveyByTag(){
+        long surveyId = createUserAndSurvey();
+        long surveyId1 = createUserAndSurvey();
+        tagService.addTagToSurvey(surveyId,"TAG");
+        tagService.addTagToSurvey(surveyId,"TAG1");
+        tagService.addTagToSurvey(surveyId1,"TAG1");
+        tagService.addTagToSurvey(surveyId1,"TAG2");
+        List<Survey> surveysByTag = surveyService.getSurveysByTag("TAG1");
+        assertEquals(2,surveysByTag.size());
+        assertEquals(1,surveyService.getSurveysByTag("TAG").size());
+
     }
 
     @Test
