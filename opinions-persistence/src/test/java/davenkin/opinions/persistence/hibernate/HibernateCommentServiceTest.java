@@ -67,6 +67,32 @@ public class HibernateCommentServiceTest {
         assertEquals(2,commentsForSurvey.size());
     }
 
+    @Test
+    public void getCommentsFromUser()
+    {
+        long surveyId = createUserAndSurvey();
+        long userId = addNewUser();
+        commentService.addCommentToSurvey("this is a comment",surveyId,1);
+        commentService.addCommentToSurvey("this is a comment 2", surveyId, userId);
+        List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
+        assertEquals(1, commentsFromUser.size());
+    }
+
+    @Test
+    public void removeComment()
+    {
+        long surveyId = createUserAndSurvey();
+        long userId = addNewUser();
+        commentService.addCommentToSurvey("this is a comment",surveyId,1);
+        commentService.addCommentToSurvey("this is a comment 2", surveyId, userId);
+        List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
+        assertEquals(1, commentsFromUser.size());
+        long id = commentsFromUser.get(0).getId();
+        commentService.removeCommentFromSurvey(id);
+        assertEquals(1,getDbRecordCount("SURVEY_COMMENT"));
+    }
+
+
     private long createUserAndSurvey() {
         long userId = addNewUser();
         User user = userService.getUserById(userId);

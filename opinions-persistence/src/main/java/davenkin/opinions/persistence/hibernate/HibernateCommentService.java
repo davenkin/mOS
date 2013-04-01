@@ -4,6 +4,7 @@ import davenkin.opinions.domain.Comment;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.CommentService;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,12 +42,19 @@ public class HibernateCommentService implements CommentService {
     @Override
     @Transactional
     public List<Comment> getCommentsFromUser(long userId) {
-          return null;
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Comment c where c.user.id = :userId").setParameter("userId", userId);
+        return query.list();
     }
 
     @Override
+    @Transactional
     public void removeCommentFromSurvey(long commentId) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Comment comment = (Comment) session.load(Comment.class, commentId);
+        Survey survey = comment.getSurvey();
+        survey.getComments().remove(comment);
+
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {
