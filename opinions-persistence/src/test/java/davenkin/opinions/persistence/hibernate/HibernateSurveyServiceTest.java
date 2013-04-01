@@ -87,6 +87,16 @@ public class HibernateSurveyServiceTest {
         assertEquals(1,surveyService.getSurveyById(surveyId).getOptions().get(0).getOptionCount());
     }
 
+    @Test
+    public void deleteSurvey(){
+        long surveyId = createUserAndSurvey();
+        assertEquals(1,getDbRecordCount("SURVEY"));
+        assertEquals(2,getDbRecordCount("SURVEY_OPTION"));
+        surveyService.removeSurvey(surveyId);
+        assertEquals(0,getDbRecordCount("SURVEY"));
+        assertEquals(0,getDbRecordCount("SURVEY_OPTION"));
+    }
+
 
 
     private long createUserAndSurvey() {

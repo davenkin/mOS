@@ -77,8 +77,11 @@ public class HibernateSurveyService implements SurveyService {
 
 
     @Override
+    @Transactional
     public void removeSurvey(long surveyId) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Object survey = session.load(Survey.class, surveyId);
+        session.delete(survey);
     }
 
     @Required
