@@ -17,7 +17,7 @@ public class User {
     private String email;
     private String password;
     private Timestamp registerTime;
-    private List<Survey> surveys;
+    private List<Survey> surveys = new ArrayList<Survey>();
 
     private User() {
     }
@@ -98,6 +98,16 @@ public class User {
             options.add(option);
         }
         survey.addOptions(options);
+        surveys.add(survey);
         return survey;
+    }
+
+    public Comment createComment(String content, Survey survey) {
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+        comment.setSurvey(survey);
+        comment.setUser(this);
+        return comment;
     }
 }

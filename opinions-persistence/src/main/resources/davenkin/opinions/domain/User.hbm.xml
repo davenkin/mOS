@@ -26,7 +26,7 @@
         </property>
 
         <bag name="surveys" table="SURVEY"
-             inverse="true" lazy="true" fetch="select" cascade="delete,delete-orphan" order-by="createdTime">
+             inverse="true" lazy="false" fetch="select" cascade="delete,delete-orphan" order-by="createdTime">
             <key>
                 <column name="USER_ID" not-null="true" />
             </key>

@@ -22,7 +22,7 @@ public class Survey {
     private Category surveyCategory;
     private Set<String> surveyTags = new HashSet<String>();
     private List<Option> options = new ArrayList<Option>();
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<Comment>();
 
     public Survey(long id)
     {
@@ -131,5 +131,9 @@ public class Survey {
 
     public void removeTag(String tag) {
         surveyTags.remove(tag);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 }
