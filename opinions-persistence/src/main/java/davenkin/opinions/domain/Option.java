@@ -15,6 +15,7 @@ public class Option
     private long optionCount;
 
     public Option(){
+
         optionCount=0;
     }
 
