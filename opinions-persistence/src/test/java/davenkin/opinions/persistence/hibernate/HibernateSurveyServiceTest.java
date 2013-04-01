@@ -17,6 +17,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.core.Is.is;
@@ -93,8 +94,55 @@ public class HibernateSurveyServiceTest {
         assertEquals(1,getDbRecordCount("SURVEY"));
         assertEquals(2,getDbRecordCount("SURVEY_OPTION"));
         surveyService.removeSurvey(surveyId);
-        assertEquals(0,getDbRecordCount("SURVEY"));
-        assertEquals(0,getDbRecordCount("SURVEY_OPTION"));
+        assertEquals(0, getDbRecordCount("SURVEY"));
+        assertEquals(0, getDbRecordCount("SURVEY_OPTION"));
+    }
+
+    @Test
+    public void getAllSurvey(){
+        createUserAndSurvey();
+        createUserAndSurvey();
+        List<Survey> surveys = surveyService.getAllSurveys();
+        assertEquals(2,surveys.size());
+         }
+
+
+    @Test
+    public void getSurveyByUser()
+    {
+        long userId = addNewUser();
+        User user = userService.getUserById(userId);
+        ArrayList<String> optionNames = new ArrayList<String>();
+        optionNames.add("Yes");
+        optionNames.add("No");
+        String content = "Do you like programming?";
+        Survey survey= user.createSurvey(content, false, Category.SCIENCE, optionNames);
+
+        surveyService.addSurvey(survey);
+        Survey survey1 = user.createSurvey("fakeContent", true, Category.CULTURE, optionNames);
+        surveyService.addSurvey(survey1);
+
+        List<Survey> surveyList = surveyService.getSurveysCreatedByUser(userId);
+        assertEquals(2, surveyList.size());
+    }
+
+    @Test
+    public void getSurveyByCategory()
+    {
+        long userId = addNewUser();
+        User user = userService.getUserById(userId);
+        ArrayList<String> optionNames = new ArrayList<String>();
+        optionNames.add("Yes");
+        optionNames.add("No");
+        String content = "Do you like programming?";
+        Survey survey= user.createSurvey(content, false, Category.SCIENCE, optionNames);
+
+        surveyService.addSurvey(survey);
+        Survey survey1 = user.createSurvey("fakeContent", true, Category.CULTURE, optionNames);
+        surveyService.addSurvey(survey1);
+
+        List<Survey> surveyList = surveyService.getSurveysByCategory(Category.CULTURE);
+        assertEquals(1, surveyList.size());
     }
 
 

@@ -4,6 +4,7 @@ import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.persistence.service.SurveyService;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -22,8 +23,11 @@ public class HibernateSurveyService implements SurveyService {
     private SessionFactory sessionFactory;
 
     @Override
+    @Transactional
     public List<Survey> getAllSurveys() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Survey");
+        return query.list();
     }
 
     @Override
@@ -32,13 +36,19 @@ public class HibernateSurveyService implements SurveyService {
     }
 
     @Override
+    @Transactional
     public List<Survey> getSurveysByCategory(Category category) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Survey s where s.surveyCategory = :category").setParameter("category", category);
+        return query.list();
     }
 
     @Override
+    @Transactional
     public List<Survey> getSurveysCreatedByUser(long userId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Survey s where s.creatingUser.id = :userId").setParameter("userId", userId);
+        return query.list();
     }
 
     @Override
