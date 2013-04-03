@@ -7,17 +7,22 @@ import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.CommentService;
 import davenkin.opinions.persistence.service.SurveyService;
 import davenkin.opinions.persistence.service.UserService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +38,10 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testHibernateApplicationContext.xml"})
 @TestExecutionListeners({DirtiesContextTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class})
+        DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TransactionConfiguration(transactionManager = "transactionManager")
+@Transactional
 public class HibernateCommentServiceTest {
 
     @Autowired
@@ -44,7 +51,7 @@ public class HibernateCommentServiceTest {
     public SurveyService surveyService;
 
     @Autowired
-    public JdbcTemplate jdbcTemplate;
+    SessionFactory sessionFactory;
 
     @Autowired
     public CommentService commentService;
@@ -54,6 +61,7 @@ public class HibernateCommentServiceTest {
     {
         long surveyId = createUserAndSurvey();
         commentService.addCommentToSurvey("this is a comment",surveyId,1);
+        commentService.getCommentsFromUser(1);
         assertEquals(1,getDbRecordCount("SURVEY_COMMENT"));
     }
 
@@ -89,6 +97,7 @@ public class HibernateCommentServiceTest {
         assertEquals(1, commentsFromUser.size());
         long id = commentsFromUser.get(0).getId();
         commentService.removeCommentFromSurvey(id);
+        commentService.getCommentsFromUser(userId);
         assertEquals(1,getDbRecordCount("SURVEY_COMMENT"));
     }
 
@@ -107,7 +116,10 @@ public class HibernateCommentServiceTest {
         return userService.addNewUser("davenkin", "davenkin@163.com", "123456");
     }
 
-    private int getDbRecordCount(String tableName) {
-        return jdbcTemplate.queryForInt("SELECT COUNT(*) FROM " + tableName);
+    private int getDbRecordCount(final String tableName) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        BigInteger num = (BigInteger) currentSession.createSQLQuery("SELECT COUNT(*) FROM " + tableName).uniqueResult();
+        return num.intValue();
     }
+
 }

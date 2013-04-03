@@ -3,7 +3,7 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="davenkin.opinions.domain.User" table="USER" lazy="false">
+    <class name="davenkin.opinions.domain.User" table="USER" lazy="true">
         <id name="id" type="long">
             <column name="ID" />
             <generator class="increment" />
@@ -26,7 +26,7 @@
         </property>
 
         <bag name="surveys" table="SURVEY"
-             inverse="true" lazy="false" fetch="select" cascade="delete,delete-orphan" order-by="createdTime">
+             inverse="true" lazy="true" fetch="select" cascade="delete,delete-orphan" order-by="createdTime">
             <key>
                 <column name="USER_ID" not-null="true" />
             </key>

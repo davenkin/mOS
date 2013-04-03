@@ -6,13 +6,15 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -27,23 +29,21 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testHibernateApplicationContext.xml"})
 @TestExecutionListeners({DirtiesContextTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class})
+        DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TransactionConfiguration(transactionManager = "transactionManager")
+@Transactional
 public class HibernateUserServiceTest {
 
     @Autowired
     public UserService userService;
 
-    @Autowired
-    public JdbcTemplate jdbcTemplate;
-
     @Test
     public void addNewUser() {
         long id = userService.addNewUser("davenkin", "davenkin@163.com", "123456");
         assertTrue(1L == id);
-        assertEquals(1, getDbRecordCount());
-        assertEquals("davenkin", getNameFromDB());
-        assertEquals(DigestUtils.md5Hex("123456"), jdbcTemplate.queryForObject("SELECT PASSWORD FROM USER", String.class));
+        User userById = userService.getUserById(id);
+        assertEquals("davenkin", userById.getName());
     }
 
     @Test
@@ -88,14 +88,6 @@ public class HibernateUserServiceTest {
         assertEquals("newEmail", userById.getEmail());
         assertEquals(DigestUtils.md5Hex("newPassword"), userById.getPassword());
 
-    }
-
-    private String getNameFromDB() {
-        return jdbcTemplate.queryForObject("SELECT NAME FROM USER", String.class);
-    }
-
-    private int getDbRecordCount() {
-        return jdbcTemplate.queryForInt("SELECT COUNT(*) FROM USER");
     }
 
 }

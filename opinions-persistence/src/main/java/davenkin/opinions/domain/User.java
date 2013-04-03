@@ -19,7 +19,7 @@ public class User {
     private Timestamp registerTime;
     private List<Survey> surveys = new ArrayList<Survey>();
 
-    private User() {
+    public User() {
     }
 
     public User(String name, String email, String password, Timestamp registerTime) {
@@ -76,10 +76,6 @@ public class User {
 
     protected void setSurveys(List<Survey> surveys) {
         this.surveys = surveys;
-    }
-
-    public void addSurvey(Survey survey) {
-     surveys.add(survey);
     }
 
     public Survey createSurvey(String content, boolean multipleChecked, Category category, List<String> optionsNames) {

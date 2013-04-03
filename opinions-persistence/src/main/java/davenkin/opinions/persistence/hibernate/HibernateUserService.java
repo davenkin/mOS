@@ -21,7 +21,6 @@ public class HibernateUserService implements UserService {
     private SessionFactory sessionFactory;
 
     @Override
-    @Transactional
     public User getUserById(long userId) {
         return (User) sessionFactory.getCurrentSession().load(User.class, userId);
     }

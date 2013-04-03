@@ -3,7 +3,7 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="davenkin.opinions.domain.Comment" table="SURVEY_COMMENT" lazy="false">
+    <class name="davenkin.opinions.domain.Comment" table="SURVEY_COMMENT" lazy="true">
         <id name="id" type="long">
             <column name="ID" />
             <generator class="increment" />
