@@ -55,3 +55,6 @@ one-to-many associations
 
 
 异常：failed to lazily initialize a collection of role: davenkin.opinions.domain.Survey.options, could not initialize proxy - no Session， 将lazy="false"
+
+Servlet: You use getParameter exactly the same way when the data is sent by
+GET as you do when it is sent by POST.
