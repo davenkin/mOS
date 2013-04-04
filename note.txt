@@ -58,3 +58,11 @@ one-to-many associations
 
 Servlet: You use getParameter exactly the same way when the data is sent by
 GET as you do when it is sent by POST.
+
+Jsp @page include functions at compile time which is good for including static content, jsp:include functions at request time which
+is good for including dynamic content.
+
+JSP tag:The <uri> element in the TLD is a unique name for the tag library. That’s it. It
+        does NOT need to represent any actual location (path or URL, for example). It
+        simply has to be a name­—the same name you use in the taglib directive.
+

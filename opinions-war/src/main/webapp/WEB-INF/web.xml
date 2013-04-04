@@ -4,4 +4,19 @@
 
 <web-app>
   <display-name>opinions</display-name>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>A Protected Page</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+            <role-name>user</role-name>
+            <role-name>moderator</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
 </web-app>
