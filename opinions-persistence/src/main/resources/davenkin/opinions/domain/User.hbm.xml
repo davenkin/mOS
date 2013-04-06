@@ -9,12 +9,12 @@
             <generator class="increment" />
         </id>
 
-        <property name="name" type="string" unique="true">
-            <column name="NAME" not-null="true"/>
+        <property name="name" type="string">
+            <column name="NAME" not-null="true" unique="true"/>
         </property>
 
-        <property name="email" type="string" unique="true">
-            <column name="EMAIL" not-null="true"/>
+        <property name="email" type="string">
+            <column name="EMAIL" not-null="true" unique="true"/>
         </property>
 
         <property name="password" type="string">
