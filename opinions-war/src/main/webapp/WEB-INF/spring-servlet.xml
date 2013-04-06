@@ -17,6 +17,8 @@
         </property>
     </bean>
 
-    <bean id="registerController" class="davenkin.opinions.web.controller.RegisterController"/>
+    <bean id="registerController" class="davenkin.opinions.web.controller.RegisterController">
+        <property name="userService" ref="userService"/>
+    </bean>
 
 </beans>
