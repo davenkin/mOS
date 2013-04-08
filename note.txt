@@ -66,3 +66,6 @@ JSP tag:The <uri> element in the TLD is a unique name for the tag library. That�
         does NOT need to represent any actual location (path or URL, for example). It
         simply has to be a name­—the same name you use in the taglib directive.
 
+
+http://outbottle.com/spring-3-mvc-adding-objects-to-a-list-element-on-the-fly-at-form-submit-generic-method/
+http://www.nvenky.in/2009/10/spring-displaying-dynamic-list-and.html
