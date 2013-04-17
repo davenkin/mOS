@@ -18,6 +18,7 @@ public class User {
     private String password;
     private Timestamp registerTime;
     private List<Survey> surveys = new ArrayList<Survey>();
+    private List<Comment> comments = new ArrayList<Comment>();
 
     public User() {
     }
@@ -86,8 +87,7 @@ public class User {
         survey.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         survey.setCreatingUser(this);
         ArrayList<Option> options = new ArrayList<Option>();
-        for(String optionName: optionsNames)
-        {
+        for (String optionName : optionsNames) {
             Option option = new Option();
             option.setOptionName(optionName);
             option.setSurvey(survey);
@@ -105,5 +105,13 @@ public class User {
         comment.setSurvey(survey);
         comment.setUser(this);
         return comment;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
