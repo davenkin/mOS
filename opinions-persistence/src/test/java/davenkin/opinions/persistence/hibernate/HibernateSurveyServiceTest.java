@@ -40,9 +40,9 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testHibernateApplicationContext.xml"})
 @TestExecutionListeners({DirtiesContextTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
+        DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@TransactionConfiguration(transactionManager = "transactionManager")
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional
 public class HibernateSurveyServiceTest {
 
@@ -59,63 +59,57 @@ public class HibernateSurveyServiceTest {
     public TagService tagService;
 
     @Test
-    public void addSurvey()
-    {
+    public void addSurvey() {
         long userId = addNewUser();
-        User user = userService.getUserById(userId);
         ArrayList<String> optionNames = new ArrayList<String>();
         optionNames.add("Yes");
         optionNames.add("No");
-        Survey survey= user.createSurvey("Do you like programming?", false, Category.SCIENCE,optionNames);
-        surveyService.addSurvey(survey);
-                 assertEquals(1, surveyService.getAllSurveys().size()) ;
+        surveyService.createSurvey(userId, "Do you like programming?", false, Category.SCIENCE, optionNames, null);
+        assertEquals(1, surveyService.getAllSurveys().size());
         assertEquals(2, getDbRecordCount("SURVEY_OPTION")) ;
 
     }
 
     @Test
-    public void loadSurvey()
-    {
+    public void loadSurvey() {
         long userId = addNewUser();
-        User user = userService.getUserById(userId);
         ArrayList<String> optionNames = new ArrayList<String>();
         optionNames.add("Yes");
         optionNames.add("No");
         String content = "Do you like programming?";
-        Survey survey= user.createSurvey(content, false, Category.SCIENCE,optionNames);
-        long surveyId = surveyService.addSurvey(survey);
+        surveyService.createSurvey(userId, content, false, Category.SCIENCE, optionNames, null);
+        long surveyId= surveyService.getAllSurveys().get(0).getId();
         Survey surveyById = surveyService.getSurveyById(surveyId);
         assertThat(surveyById.getContent(), is(content));
-        assertThat(surveyById.getOptions().size(),is(2));
+        assertThat(surveyById.getOptions().size(), is(2));
     }
 
 
     @Test
-    public void findSurveyByTag(){
+    public void findSurveyByTag() {
         long surveyId = createUserAndSurvey();
         long surveyId1 = createUserAndSurvey();
-        tagService.addTagToSurvey(surveyId,"TAG");
-        tagService.addTagToSurvey(surveyId,"TAG1");
-        tagService.addTagToSurvey(surveyId1,"TAG1");
-        tagService.addTagToSurvey(surveyId1,"TAG2");
+        tagService.addTagToSurvey(surveyId, "TAG");
+        tagService.addTagToSurvey(surveyId, "TAG1");
+        tagService.addTagToSurvey(surveyId1, "TAG1");
+        tagService.addTagToSurvey(surveyId1, "TAG2");
         List<Survey> surveysByTag = surveyService.getSurveysByTag("TAG1");
-        assertEquals(2,surveysByTag.size());
-        assertEquals(1,surveyService.getSurveysByTag("TAG").size());
+        assertEquals(2, surveysByTag.size());
+        assertEquals(1, surveyService.getSurveysByTag("TAG").size());
 
     }
 
     @Test
-    public void takeSurvey()
-    {
+    public void takeSurvey() {
         long surveyId = createUserAndSurvey();
         Survey survey = surveyService.getSurveyById(surveyId);
         long optionId = survey.getOptions().get(0).getId();
         surveyService.takeSurvey(optionId);
-        assertEquals(1,surveyService.getSurveyById(surveyId).getOptions().get(0).getOptionCount());
+        assertEquals(1, surveyService.getSurveyById(surveyId).getOptions().get(0).getOptionCount());
     }
 
     @Test
-    public void deleteSurvey(){
+    public void deleteSurvey() {
         long surveyId = createUserAndSurvey();
         surveyService.getAllSurveys().size();
         assertEquals(1, getDbRecordCount("SURVEY"));
@@ -127,28 +121,24 @@ public class HibernateSurveyServiceTest {
     }
 
     @Test
-    public void getAllSurvey(){
+    public void getAllSurvey() {
         createUserAndSurvey();
         createUserAndSurvey();
         List<Survey> surveys = surveyService.getAllSurveys();
-        assertEquals(2,surveys.size());
-         }
+        assertEquals(2, surveys.size());
+    }
 
 
     @Test
-    public void getSurveyByUser()
-    {
+    public void getSurveyByUser() {
         long userId = addNewUser();
-        User user = userService.getUserById(userId);
         ArrayList<String> optionNames = new ArrayList<String>();
         optionNames.add("Yes");
         optionNames.add("No");
         String content = "Do you like programming?";
-        Survey survey= user.createSurvey(content, false, Category.SCIENCE, optionNames);
 
-        surveyService.addSurvey(survey);
-        Survey survey1 = user.createSurvey("fakeContent", true, Category.CULTURE, optionNames);
-        surveyService.addSurvey(survey1);
+        surveyService.createSurvey(userId, content, false, Category.SCIENCE, optionNames, null);
+        surveyService.createSurvey(userId, "fakeContent", true, Category.CULTURE, optionNames, null);
 
         List<Survey> surveyList = surveyService.getSurveysCreatedByUser(userId);
         assertEquals(2, surveyList.size());
@@ -156,19 +146,16 @@ public class HibernateSurveyServiceTest {
 
 
     @Test
-    public void getSurveyByCategory()
-    {
+    public void getSurveyByCategory() {
         long userId = addNewUser();
         User user = userService.getUserById(userId);
         ArrayList<String> optionNames = new ArrayList<String>();
         optionNames.add("Yes");
         optionNames.add("No");
         String content = "Do you like programming?";
-        Survey survey= user.createSurvey(content, false, Category.SCIENCE, optionNames);
 
-        surveyService.addSurvey(survey);
-        Survey survey1 = user.createSurvey("fakeContent", true, Category.CULTURE, optionNames);
-        surveyService.addSurvey(survey1);
+        surveyService.createSurvey(userId, content, false, Category.SCIENCE, optionNames, null);
+        surveyService.createSurvey(userId, "fakeContent", true, Category.CULTURE, optionNames, null);
 
         List<Survey> surveyList = surveyService.getSurveysByCategory(Category.CULTURE);
         assertEquals(1, surveyList.size());
@@ -181,15 +168,14 @@ public class HibernateSurveyServiceTest {
         optionNames.add("Yes");
         optionNames.add("No");
         String content = "Do you like programming?";
-        Survey survey= user.createSurvey(content, false, Category.SCIENCE, optionNames);
-        return surveyService.addSurvey(survey);
+        Survey survey = surveyService.createSurvey(userId,content, false, Category.SCIENCE, optionNames, null);
+        return survey.getId();
     }
-
 
 
     private long addNewUser() {
         return userService.addNewUser("davenkin", "davenkin@163.com", "123456");
-          }
+    }
 
 
     private int getDbRecordCount(final String tableName) {
@@ -197,7 +183,6 @@ public class HibernateSurveyServiceTest {
         BigInteger num = (BigInteger) currentSession.createSQLQuery("SELECT COUNT(*) FROM " + tableName).uniqueResult();
         return num.intValue();
     }
-
 
 
 }

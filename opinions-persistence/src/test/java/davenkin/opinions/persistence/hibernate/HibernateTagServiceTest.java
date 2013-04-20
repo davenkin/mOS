@@ -78,8 +78,7 @@ public class HibernateTagServiceTest {
         optionNames.add("Yes");
         optionNames.add("No");
         String content = "Do you like programming?";
-        Survey survey= user.createSurvey(content, false, Category.SCIENCE, optionNames);
-        return surveyService.addSurvey(survey);
+        return surveyService.createSurvey(userId,content,false,Category.SCIENCE,optionNames,null).getId();
     }
     private long addNewUser() {
         return userService.addNewUser("davenkin", "davenkin@163.com", "123456");

@@ -3,6 +3,7 @@ package davenkin.opinions.persistence.hibernate;
 import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.Survey;
+import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.SurveyService;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +36,7 @@ public class HibernateSurveyService implements SurveyService {
     @Transactional
     public List<Survey> getSurveysByTag(String tag) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Survey s where :tag in elements(s.surveyTags)").setParameter("tag",tag);
+        Query query = session.createQuery("from Survey s where :tag in elements(s.surveyTags)").setParameter("tag", tag);
         return query.list();
     }
 
@@ -58,21 +60,7 @@ public class HibernateSurveyService implements SurveyService {
     @Transactional
     public Survey getSurveyById(long surveyId) {
         Session session = sessionFactory.getCurrentSession();
-     return (Survey) session.load(Survey.class, surveyId);
-    }
-
-    @Override
-    @Transactional
-    public long addSurvey(final Survey survey) {
-        final long[] surveyId = new long[1];
-        new CurrentSessionTemplate() {
-            @Override
-            public void doInCurrentSession(Session session) {
-
-        surveyId[0] = (Long) session.save(survey);
-            }
-        }.doInSessionFactory(sessionFactory);
-        return surveyId[0];
+        return (Survey) session.load(Survey.class, surveyId);
     }
 
     @Override
@@ -80,13 +68,13 @@ public class HibernateSurveyService implements SurveyService {
     public void takeSurvey(final long optionId) {
         new CurrentSessionTemplate() {
             @Override
-           public void doInCurrentSession(Session session) {
-                Option option = (Option)session.load(Option.class, optionId);
+            public void doInCurrentSession(Session session) {
+                Option option = (Option) session.load(Option.class, optionId);
                 option.vote();
 
             }
         }.doInSessionFactory(sessionFactory);
-            }
+    }
 
 
     @Override
@@ -95,6 +83,21 @@ public class HibernateSurveyService implements SurveyService {
         Session session = sessionFactory.getCurrentSession();
         Object survey = session.load(Survey.class, surveyId);
         session.delete(survey);
+    }
+
+
+    @Override
+    @Transactional
+    public Survey createSurvey(long userId, String content, boolean multipleChecked, Category category, List<String> optionsNames, Set<String> tags) {
+        User user = (User) sessionFactory.getCurrentSession().load(User.class, userId);
+        return user.createSurvey(content, multipleChecked, category, optionsNames, tags);
+    }
+
+    @Override
+    @Transactional
+    public void addSurvey(User user, Survey survey) {
+//        user.addSurvey(survey);
+        sessionFactory.getCurrentSession().save(survey);
     }
 
     @Required

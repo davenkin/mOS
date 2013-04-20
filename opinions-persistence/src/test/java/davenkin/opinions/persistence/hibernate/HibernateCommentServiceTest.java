@@ -40,8 +40,6 @@ import static junit.framework.Assert.assertEquals;
 @TestExecutionListeners({DirtiesContextTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@TransactionConfiguration(transactionManager = "transactionManager")
-@Transactional
 public class HibernateCommentServiceTest {
 
     @Autowired
@@ -61,8 +59,8 @@ public class HibernateCommentServiceTest {
     {
         long surveyId = createUserAndSurvey();
         commentService.addCommentToSurvey("this is a comment",surveyId,1);
-        commentService.getCommentsFromUser(1);
-        assertEquals(1,getDbRecordCount("SURVEY_COMMENT"));
+        List<Comment> commentsFromUser = commentService.getCommentsFromUser(1);
+        assertEquals(1,commentsFromUser.size());
     }
 
    @Test
@@ -79,7 +77,7 @@ public class HibernateCommentServiceTest {
     public void getCommentsFromUser()
     {
         long surveyId = createUserAndSurvey();
-        long userId = addNewUser();
+        long userId = addNewUser("davenkin", "davenkin@163.com");
         commentService.addCommentToSurvey("this is a comment",surveyId,1);
         commentService.addCommentToSurvey("this is a comment 2", surveyId, userId);
         List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
@@ -90,30 +88,35 @@ public class HibernateCommentServiceTest {
     public void removeComment()
     {
         long surveyId = createUserAndSurvey();
-        long userId = addNewUser();
+        long userId = addNewUser("davenkin1", "davenkin1@163.com");
         commentService.addCommentToSurvey("this is a comment",surveyId,1);
         commentService.addCommentToSurvey("this is a comment 2", surveyId, userId);
-        List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
-        assertEquals(1, commentsFromUser.size());
-        long id = commentsFromUser.get(0).getId();
-        commentService.removeCommentFromSurvey(id);
-        commentService.getCommentsFromUser(userId);
-        assertEquals(1,getDbRecordCount("SURVEY_COMMENT"));
+        List<Comment> commentsFromUser = getComments(userId);
+        commentService.removeCommentFromSurvey(1l);
+        List<Comment> commentsFromUser1 = commentService.getCommentsFromUser(userId);
+        assertEquals(1,commentsFromUser1.size());
     }
 
+    @Transactional
+    public List<Comment> getComments(long userId) {
+        List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
+        assertEquals(1, commentsFromUser.size());
+        return commentsFromUser;
+    }
 
-    private long createUserAndSurvey() {
-        long userId = addNewUser();
+   @Transactional
+    public long createUserAndSurvey() {
+        long userId = addNewUser("davenkin", "davenkin@163.com");
         User user = userService.getUserById(userId);
         ArrayList<String> optionNames = new ArrayList<String>();
         optionNames.add("Yes");
         optionNames.add("No");
         String content = "Do you like programming?";
-        Survey survey= user.createSurvey(content, false, Category.SCIENCE, optionNames);
-        return surveyService.addSurvey(survey);
+        Survey survey= surveyService.createSurvey(user.getId(), content, false, Category.SCIENCE, optionNames, null);
+       return survey.getId();
     }
-    private long addNewUser() {
-        return userService.addNewUser("davenkin", "davenkin@163.com", "123456");
+    private long addNewUser(String name, String email) {
+        return userService.addNewUser(name, email, "123456");
     }
 
     private int getDbRecordCount(final String tableName) {

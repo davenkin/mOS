@@ -1,8 +1,12 @@
 package davenkin.opinions.domain;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,18 +23,18 @@ public class User {
     private Timestamp registerTime;
     private List<Survey> surveys = new ArrayList<Survey>();
     private List<Comment> comments = new ArrayList<Comment>();
+    private List<Option> options = new ArrayList<Option>();
 
-    public User() {
+    protected User() {
     }
 
-    public User(String name, String email, String password, Timestamp registerTime) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
-        this.password = password;
-        this.registerTime = registerTime;
+        this.password = DigestUtils.md5Hex(password);
     }
 
-    private void setId(long id) {
+    protected void setId(long id) {
         this.id = id;
     }
 
@@ -43,7 +47,7 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
     }
 
@@ -51,7 +55,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+    protected void setEmail(String email) {
         this.email = email;
     }
 
@@ -59,7 +63,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    protected void setPassword(String password) {
         this.password = password;
     }
 
@@ -79,31 +83,15 @@ public class User {
         this.surveys = surveys;
     }
 
-    public Survey createSurvey(String content, boolean multipleChecked, Category category, List<String> optionsNames) {
-        Survey survey = new Survey();
-        survey.setContent(content);
-        survey.setCanMultipleChecked(multipleChecked);
-        survey.setSurveyCategory(category);
-        survey.setCreatedTime(new Timestamp(System.currentTimeMillis()));
-        survey.setCreatingUser(this);
-        ArrayList<Option> options = new ArrayList<Option>();
-        for (String optionName : optionsNames) {
-            Option option = new Option();
-            option.setOptionName(optionName);
-            option.setSurvey(survey);
-            options.add(option);
-        }
-        survey.addOptions(options);
+    public Survey createSurvey(String content, boolean multipleChecked, Category category, List<String> optionsNames, Set<String> tags) {
+        Survey survey = new Survey(content, this, multipleChecked, category, tags, optionsNames);
         surveys.add(survey);
         return survey;
     }
 
     public Comment createComment(String content, Survey survey) {
-        Comment comment = new Comment();
-        comment.setContent(content);
-        comment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
-        comment.setSurvey(survey);
-        comment.setUser(this);
+        Comment comment = new Comment(content, survey, this);
+        comments.add(comment);
         return comment;
     }
 
@@ -111,7 +99,36 @@ public class User {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    protected void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public List<Option> getOptions() {
+        return options;
+    }
+
+    protected void setOptions(List<Option> options) {
+        this.options = options;
+    }
+
+    public void takeSurveyOption(Option option) {
+        option.vote();
+        options.add(option);
+    }
+
+    public void addSurvey(Survey survey) {
+        surveys.add(survey);
     }
 }

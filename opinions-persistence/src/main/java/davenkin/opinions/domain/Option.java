@@ -14,8 +14,14 @@ public class Option
     private String optionName;
     private long optionCount;
 
-    public Option(){
+    protected Option(){
 
+        optionCount=0;
+    }
+
+    public Option(Survey survey, String optionName){
+        this.survey=survey;
+        this.optionName=optionName;
         optionCount=0;
     }
 
@@ -24,7 +30,7 @@ public class Option
         return survey;
     }
 
-    public void setSurvey(Survey survey)
+    protected void setSurvey(Survey survey)
     {
         this.survey = survey;
     }
@@ -34,7 +40,7 @@ public class Option
         return optionName;
     }
 
-    public void setOptionName(String optionName)
+    protected void setOptionName(String optionName)
     {
         this.optionName = optionName;
     }
@@ -44,7 +50,7 @@ public class Option
         return optionCount;
     }
 
-    public void setOptionCount(long optionCount)
+    protected void setOptionCount(long optionCount)
     {
         this.optionCount = optionCount;
     }
@@ -53,7 +59,7 @@ public class Option
         return id;
     }
 
-    public void setId(long id) {
+    protected void setId(long id) {
         this.id = id;
     }
 

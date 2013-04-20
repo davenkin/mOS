@@ -24,6 +24,5 @@
             <column name="SURVEY_ID" not-null="true"/>
         </many-to-one>
 
-
     </class>
 </hibernate-mapping>

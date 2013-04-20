@@ -24,92 +24,77 @@ public class Survey {
     private List<Option> options = new ArrayList<Option>();
     private List<Comment> comments = new ArrayList<Comment>();
 
-    public Survey(long id)
-    {
-        this.id = id;
+    public Survey(String content, User user, boolean canMultipleChecked, Category surveyCategory, Set<String> surveyTags, List<String> optionNames) {
+        this.content = content;
+        this.creatingUser = user;
+        this.canMultipleChecked = canMultipleChecked;
+        this.surveyCategory = surveyCategory;
+        this.surveyTags = surveyTags;
+        this.options = createOptions(optionNames);
+        this.createdTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public Survey() {
-
-    }
-
-    public String getContent()
-    {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(String content)
-    {
+    protected void setContent(String content) {
         this.content = content;
     }
 
-    public User getCreatingUser()
-    {
+    public User getCreatingUser() {
         return creatingUser;
     }
 
-    public void setCreatingUser(User creatingUser)
-    {
+    protected void setCreatingUser(User creatingUser) {
         this.creatingUser = creatingUser;
     }
 
-    public Timestamp getCreatedTime()
-    {
+    public Timestamp getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Timestamp createdTime)
-    {
+    protected void setCreatedTime(Timestamp createdTime) {
         this.createdTime = createdTime;
     }
 
-    public boolean isCanMultipleChecked()
-    {
+    public boolean isCanMultipleChecked() {
         return canMultipleChecked;
     }
 
-    public void setCanMultipleChecked(boolean canMultipleChecked)
-    {
+    protected void setCanMultipleChecked(boolean canMultipleChecked) {
         this.canMultipleChecked = canMultipleChecked;
     }
 
-    public Category getSurveyCategory()
-    {
+    public Category getSurveyCategory() {
         return surveyCategory;
     }
 
-    public void setSurveyCategory(Category surveyCategory)
-    {
+    protected void setSurveyCategory(Category surveyCategory) {
         this.surveyCategory = surveyCategory;
     }
 
-    public Set<String> getSurveyTags()
-    {
+    public Set<String> getSurveyTags() {
         return surveyTags;
     }
 
-    protected void setSurveyTags(Set<String> surveyTags)
-    {
+    protected void setSurveyTags(Set<String> surveyTags) {
         this.surveyTags = surveyTags;
     }
 
-    public List<Option> getOptions()
-    {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(List<Option> options)
-    {
+    protected void setOptions(List<Option> options) {
         this.options = options;
     }
 
-    public List<Comment> getComments()
-    {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments)
-    {
+    protected void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
@@ -117,12 +102,8 @@ public class Survey {
         return id;
     }
 
-    public void setId(long id) {
+    protected void setId(long id) {
         this.id = id;
-    }
-
-    public void addOptions(List<Option> options) {
-        this.options.addAll(options);
     }
 
     public void addTag(String tag) {
@@ -135,5 +116,17 @@ public class Survey {
 
     public void addComment(Comment comment) {
         comments.add(comment);
+    }
+
+    private List<Option> createOptions(List<String> optionNames) {
+        ArrayList<Option> options = new ArrayList<Option>();
+        for (String optionName : optionNames) {
+            options.add(new Option(this, optionName));
+        }
+        return options;
+    }
+
+    protected Survey() {
+
     }
 }

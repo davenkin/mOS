@@ -43,8 +43,8 @@ public class HibernateCommentService implements CommentService {
     @Transactional
     public List<Comment> getCommentsFromUser(long userId) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Comment c where c.user.id = :userId").setParameter("userId", userId);
-        return query.list();
+        User user = (User) session.load(User.class, userId);
+        return user.getComments();
     }
 
     @Override
@@ -52,8 +52,7 @@ public class HibernateCommentService implements CommentService {
     public void removeCommentFromSurvey(long commentId) {
         Session session = sessionFactory.getCurrentSession();
         Comment comment = (Comment) session.load(Comment.class, commentId);
-        Survey survey = comment.getSurvey();
-        survey.getComments().remove(comment);
+        session.delete(comment);
 
     }
 
