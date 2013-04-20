@@ -31,7 +31,7 @@ public class RegisterController {
         String userName = request.getParameter("userName");
         String userEmail = request.getParameter("userEmail");
         String userPassword = request.getParameter("userPassword");
-        userService.addNewUser(userName,userEmail,userPassword);
+//        userService.addNewUser(userName,userEmail,userPassword);
         return "registerSuccess";
     }
 

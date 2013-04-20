@@ -28,8 +28,7 @@ public class HibernateCommentService implements CommentService {
         Survey survey = (Survey) session.load(Survey.class, surveyId);
         Comment comment = user.createComment(content, survey);
         survey.addComment(comment);
-        Serializable save = session.save(comment);
-        return (Long) save;
+        return (Long) session.save(comment);
     }
 
     @Override

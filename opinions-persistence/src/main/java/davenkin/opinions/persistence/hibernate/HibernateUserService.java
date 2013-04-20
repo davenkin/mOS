@@ -73,13 +73,6 @@ public class HibernateUserService implements UserService {
 
     @Override
     @Transactional
-    public long addNewUser(String name, String email, String password) {
-        User user = new User(name, email, DigestUtils.md5Hex(password));
-        return (Long) sessionFactory.getCurrentSession().save(user);
-    }
-
-    @Override
-    @Transactional
     public long addUser(User user) {
         user.setRegisterTime(new Timestamp(System.currentTimeMillis()));
         Serializable save = sessionFactory.getCurrentSession().save(user);
