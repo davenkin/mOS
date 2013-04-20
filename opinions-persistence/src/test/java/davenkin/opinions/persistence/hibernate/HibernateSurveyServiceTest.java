@@ -2,6 +2,7 @@ package davenkin.opinions.persistence.hibernate;
 
 import com.google.common.collect.Lists;
 import davenkin.opinions.domain.Category;
+import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.SurveyService;
@@ -168,6 +169,55 @@ public class HibernateSurveyServiceTest {
 
         List<Survey> surveyList = surveyService.getSurveysByCategory(Category.CULTURE);
         assertEquals(1, surveyList.size());
+    }
+
+    @Test
+    public void voteOptionWithOutUser(){
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        surveyService.addSurvey(user, survey);
+        Option option = survey.getOptions().get(0);
+        surveyService.takeSurvey(option);
+        assertThat(option.getOptionCount(),is(1l));
+    }
+
+    @Test
+    public void voteOptionWithUser(){
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        surveyService.addSurvey(user, survey);
+        Option option = survey.getOptions().get(0);
+        surveyService.takeSurvey(user,option);
+        assertThat(option.getOptionCount(),is(1l));
+        assertThat(user.getVotes().size(),is(1));
+
+    }
+    @Test
+    public void cannotVoteTheSameOptionWithUser(){
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        surveyService.addSurvey(user, survey);
+        Option option = survey.getOptions().get(0);
+        surveyService.takeSurvey(user,option);
+        surveyService.takeSurvey(user,option);
+        assertThat(option.getOptionCount(),is(1l));
+        assertThat(user.getVotes().size(),is(1));
+
     }
 
     private List<String> createOptionNames(String... options) {

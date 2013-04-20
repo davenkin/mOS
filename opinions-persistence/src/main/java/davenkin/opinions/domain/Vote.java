@@ -16,6 +16,26 @@ public class Vote {
     private Option option;
     private Timestamp voteTime;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vote vote = (Vote) o;
+
+        if (!option.equals(vote.option)) return false;
+        if (!user.equals(vote.user)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = user.hashCode();
+        result = 31 * result + option.hashCode();
+        return result;
+    }
+
     public Vote(User user, Option option) {
         this.user = user;
         this.option = option;

@@ -125,8 +125,11 @@ public class User {
     }
 
     public void voteOption(Option option) {
-        option.vote();
-        votes.add(new Vote(this,option));
+        Vote vote = new Vote(this, option);
+        if (!votes.contains(vote)) {
+            option.vote();
+            votes.add(vote);
+        }
     }
 
     @Override
