@@ -24,9 +24,8 @@ public class Survey {
     private List<Option> options = new ArrayList<Option>();
     private List<Comment> comments = new ArrayList<Comment>();
 
-    public Survey(String content, User user, boolean canMultipleChecked, Category surveyCategory, Set<String> surveyTags, List<String> optionNames) {
+    public Survey(String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
         this.content = content;
-        this.creatingUser = user;
         this.canMultipleChecked = canMultipleChecked;
         this.surveyCategory = surveyCategory;
         this.surveyTags = surveyTags;
@@ -128,5 +127,22 @@ public class Survey {
 
     protected Survey() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Survey survey = (Survey) o;
+
+        if (!content.equals(survey.content)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return content.hashCode();
     }
 }

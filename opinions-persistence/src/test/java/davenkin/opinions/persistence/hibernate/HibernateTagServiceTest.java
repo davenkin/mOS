@@ -1,7 +1,6 @@
 package davenkin.opinions.persistence.hibernate;
 
 import davenkin.opinions.domain.Category;
-import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.SurveyService;
 import davenkin.opinions.persistence.service.TagService;
@@ -54,7 +53,7 @@ public class HibernateTagServiceTest {
         long surveyId = createUserAndSurvey();
         tagService.addTagToSurvey(surveyId,"TAG");
         assertEquals(1, tagService.getTagsForSurvey(surveyId).size());
-        surveyService.removeSurvey(surveyId);
+        surveyService.removeSurvey(null, surveyId);
         assertEquals(0,surveyService.getAllSurveys().size() );
     }
 
@@ -78,7 +77,7 @@ public class HibernateTagServiceTest {
         optionNames.add("Yes");
         optionNames.add("No");
         String content = "Do you like programming?";
-        return surveyService.createSurvey(userId,content,false,Category.SCIENCE,optionNames,null).getId();
+        return 1;
     }
     private long addNewUser() {
         return userService.addNewUser("davenkin", "davenkin@163.com", "123456");

@@ -18,7 +18,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +25,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -38,7 +38,7 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testHibernateApplicationContext.xml"})
 @TestExecutionListeners({DirtiesContextTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
+        DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class HibernateCommentServiceTest {
 
@@ -55,46 +55,42 @@ public class HibernateCommentServiceTest {
     public CommentService commentService;
 
     @Test
-    public void addCommentToSurvey()
-    {
+    public void addCommentToSurvey() {
         long surveyId = createUserAndSurvey();
-        commentService.addCommentToSurvey("this is a comment",surveyId,1);
+        commentService.addCommentToSurvey("this is a comment", surveyId, 1);
         List<Comment> commentsFromUser = commentService.getCommentsFromUser(1);
-        assertEquals(1,commentsFromUser.size());
-    }
-
-   @Test
-    public void getCommentsForSurvey()
-    {
-        long surveyId = createUserAndSurvey();
-        commentService.addCommentToSurvey("this is a comment",surveyId,1);
-        commentService.addCommentToSurvey("this is a comment 2", surveyId, 1);
-        List<Comment> commentsForSurvey = commentService.getCommentsForSurvey(surveyId);
-        assertEquals(2,commentsForSurvey.size());
+        assertEquals(1, commentsFromUser.size());
     }
 
     @Test
-    public void getCommentsFromUser()
-    {
+    public void getCommentsForSurvey() {
+        long surveyId = createUserAndSurvey();
+        commentService.addCommentToSurvey("this is a comment", surveyId, 1);
+        commentService.addCommentToSurvey("this is a comment 2", surveyId, 1);
+        List<Comment> commentsForSurvey = commentService.getCommentsForSurvey(surveyId);
+        assertEquals(2, commentsForSurvey.size());
+    }
+
+    @Test
+    public void getCommentsFromUser() {
         long surveyId = createUserAndSurvey();
         long userId = addNewUser("davenkin", "davenkin@163.com");
-        commentService.addCommentToSurvey("this is a comment",surveyId,1);
+        commentService.addCommentToSurvey("this is a comment", surveyId, 1);
         commentService.addCommentToSurvey("this is a comment 2", surveyId, userId);
         List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
         assertEquals(1, commentsFromUser.size());
     }
 
     @Test
-    public void removeComment()
-    {
+    public void removeComment() {
         long surveyId = createUserAndSurvey();
         long userId = addNewUser("davenkin1", "davenkin1@163.com");
-        commentService.addCommentToSurvey("this is a comment",surveyId,1);
+        commentService.addCommentToSurvey("this is a comment", surveyId, 1);
         commentService.addCommentToSurvey("this is a comment 2", surveyId, userId);
         List<Comment> commentsFromUser = getComments(userId);
         commentService.removeCommentFromSurvey(1l);
         List<Comment> commentsFromUser1 = commentService.getCommentsFromUser(userId);
-        assertEquals(1,commentsFromUser1.size());
+        assertEquals(1, commentsFromUser1.size());
     }
 
     @Transactional
@@ -104,7 +100,7 @@ public class HibernateCommentServiceTest {
         return commentsFromUser;
     }
 
-   @Transactional
+    @Transactional
     public long createUserAndSurvey() {
         long userId = addNewUser("davenkin", "davenkin@163.com");
         User user = userService.getUserById(userId);
@@ -112,9 +108,12 @@ public class HibernateCommentServiceTest {
         optionNames.add("Yes");
         optionNames.add("No");
         String content = "Do you like programming?";
-        Survey survey= surveyService.createSurvey(user.getId(), content, false, Category.SCIENCE, optionNames, null);
-       return survey.getId();
+
+        Survey survey1 = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        return surveyService.addSurvey(user, survey1);
+
     }
+
     private long addNewUser(String name, String email) {
         return userService.addNewUser(name, email, "123456");
     }

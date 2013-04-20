@@ -25,13 +25,13 @@
             <column name="REGISTER_TIME" not-null="true" />
         </property>
 
-        <bag name="surveys" table="SURVEY"
+        <set name="surveys" table="SURVEY"
              inverse="true" lazy="true" fetch="select" cascade="all,delete-orphan" order-by="createdTime">
             <key>
                 <column name="USER_ID" not-null="true" />
             </key>
             <one-to-many class="davenkin.opinions.domain.Survey" />
-        </bag>
+        </set>
 
         <bag name="comments"
              inverse="true" lazy="true" fetch="select" cascade="all,delete-orphan" order-by="createdTime">
@@ -42,7 +42,7 @@
         </bag>
 
 
-        <bag name="options" table="USER_OPTION"
+        <set name="options" table="USER_OPTION"
              inverse="false" lazy="true" fetch="select" cascade="all" >
             <key>
                 <column name="USER_ID" not-null="true" />
@@ -50,7 +50,7 @@
             <many-to-many entity-name="davenkin.opinions.domain.Option">
                 <column name="OPTION_ID" not-null="true" />
             </many-to-many>
-        </bag>
+        </set>
 
     </class>
 </hibernate-mapping>

@@ -19,7 +19,7 @@ public class Option
         optionCount=0;
     }
 
-    public Option(Survey survey, String optionName){
+    protected Option(Survey survey, String optionName){
         this.survey=survey;
         this.optionName=optionName;
         optionCount=0;
@@ -65,5 +65,25 @@ public class Option
 
     public void vote() {
         this.optionCount++;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Option option = (Option) o;
+
+        if (!optionName.equals(option.optionName)) return false;
+        if (!survey.equals(option.survey)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = survey.hashCode();
+        result = 31 * result + optionName.hashCode();
+        return result;
     }
 }

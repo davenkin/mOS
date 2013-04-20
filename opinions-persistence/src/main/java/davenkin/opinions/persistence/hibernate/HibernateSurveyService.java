@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,40 +63,33 @@ public class HibernateSurveyService implements SurveyService {
     }
 
     @Override
-    @Transactional
-    public void takeSurvey(final long optionId) {
-        new CurrentSessionTemplate() {
-            @Override
-            public void doInCurrentSession(Session session) {
-                Option option = (Option) session.load(Option.class, optionId);
-                option.vote();
-
-            }
-        }.doInSessionFactory(sessionFactory);
+    public void takeSurvey(Option option) {
+        option.vote();
+        sessionFactory.getCurrentSession().saveOrUpdate(option);
     }
+
+    @Override
+    public void takeSurvey(User user, Option option) {
+        user.voteOption(option);
+        sessionFactory.getCurrentSession().saveOrUpdate(user);
+    }
+
 
 
     @Override
     @Transactional
-    public void removeSurvey(long surveyId) {
+    public void removeSurvey(User user, long surveyId) {
         Session session = sessionFactory.getCurrentSession();
-        Object survey = session.load(Survey.class, surveyId);
-        session.delete(survey);
+        Survey survey = (Survey) session.load(Survey.class, surveyId);
+        user.removeSurvey(survey);
     }
 
 
     @Override
     @Transactional
-    public Survey createSurvey(long userId, String content, boolean multipleChecked, Category category, List<String> optionsNames, Set<String> tags) {
-        User user = (User) sessionFactory.getCurrentSession().load(User.class, userId);
-        return user.createSurvey(content, multipleChecked, category, optionsNames, tags);
-    }
-
-    @Override
-    @Transactional
-    public void addSurvey(User user, Survey survey) {
-//        user.addSurvey(survey);
-        sessionFactory.getCurrentSession().save(survey);
+    public long addSurvey(User user, Survey survey) {
+        user.addSurvey(survey);
+        return (Long) sessionFactory.getCurrentSession().save(survey);
     }
 
     @Required

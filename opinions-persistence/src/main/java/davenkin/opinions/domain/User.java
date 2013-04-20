@@ -1,10 +1,10 @@
 package davenkin.opinions.domain;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,9 +21,9 @@ public class User {
     private String email;
     private String password;
     private Timestamp registerTime;
-    private List<Survey> surveys = new ArrayList<Survey>();
+    private Set<Survey> surveys = new HashSet<Survey>();
     private List<Comment> comments = new ArrayList<Comment>();
-    private List<Option> options = new ArrayList<Option>();
+    private Set<Option> options = new HashSet<Option>();
 
     protected User() {
     }
@@ -32,6 +32,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = DigestUtils.md5Hex(password);
+        this.registerTime = new Timestamp(System.currentTimeMillis());
     }
 
     protected void setId(long id) {
@@ -75,18 +76,12 @@ public class User {
         this.registerTime = registerTime;
     }
 
-    public List<Survey> getSurveys() {
+    public Set<Survey> getSurveys() {
         return surveys;
     }
 
-    protected void setSurveys(List<Survey> surveys) {
+    protected void setSurveys(Set<Survey> surveys) {
         this.surveys = surveys;
-    }
-
-    public Survey createSurvey(String content, boolean multipleChecked, Category category, List<String> optionsNames, Set<String> tags) {
-        Survey survey = new Survey(content, this, multipleChecked, category, tags, optionsNames);
-        surveys.add(survey);
-        return survey;
     }
 
     public Comment createComment(String content, Survey survey) {
@@ -115,11 +110,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Option> getOptions() {
+    public Set<Option> getOptions() {
         return options;
     }
 
-    protected void setOptions(List<Option> options) {
+    protected void setOptions(Set<Option> options) {
         this.options = options;
     }
 
@@ -129,6 +124,37 @@ public class User {
     }
 
     public void addSurvey(Survey survey) {
+        survey.setCreatingUser(this);
         surveys.add(survey);
+    }
+
+    public void voteOption(Option option) {
+        option.vote();
+        options.add(option);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!email.equals(user.email)) return false;
+        if (!name.equals(user.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
+    }
+
+    public void removeSurvey(Survey survey) {
+        surveys.remove(survey);
+        //To change body of created methods use File | Settings | File Templates.
     }
 }

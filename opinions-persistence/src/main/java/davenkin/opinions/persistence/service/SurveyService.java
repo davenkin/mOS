@@ -1,6 +1,7 @@
 package davenkin.opinions.persistence.service;
 
 import davenkin.opinions.domain.Category;
+import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 
@@ -26,13 +27,12 @@ public interface SurveyService
 
     public Survey getSurveyById(long surveyId);
 
-    public void takeSurvey(long optionId);
+    public void takeSurvey(Option option);
 
-    public void removeSurvey(long surveyId);
+    public void takeSurvey(User user, Option option);
 
-    public Survey createSurvey(long userId,String content, boolean multipleChecked, Category category, List<String> optionsNames, Set<String> tags);
+    public void removeSurvey(User user, long surveyId);
 
-
-    public void addSurvey(User user, Survey survey);
+    public long addSurvey(User user, Survey survey);
 
 }
