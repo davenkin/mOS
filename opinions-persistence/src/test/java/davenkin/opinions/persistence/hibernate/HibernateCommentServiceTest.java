@@ -1,5 +1,6 @@
 package davenkin.opinions.persistence.hibernate;
 
+import com.google.common.collect.Lists;
 import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Comment;
 import davenkin.opinions.domain.Survey;
@@ -18,6 +19,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,8 @@ import static junit.framework.Assert.assertEquals;
 @TestExecutionListeners({DirtiesContextTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+@Transactional
 public class HibernateCommentServiceTest {
 
     @Autowired
@@ -49,79 +53,84 @@ public class HibernateCommentServiceTest {
     public SurveyService surveyService;
 
     @Autowired
-    SessionFactory sessionFactory;
-
-    @Autowired
     public CommentService commentService;
 
     @Test
     public void addCommentToSurvey() {
-        long surveyId = createUserAndSurvey();
-        commentService.addCommentToSurvey("this is a comment", surveyId, 1);
+
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        long surveyId = surveyService.addSurvey(user, survey);
+
+
+        commentService.addCommentToSurvey("this is a comment", user, surveyId);
         List<Comment> commentsFromUser = commentService.getCommentsFromUser(1);
         assertEquals(1, commentsFromUser.size());
     }
 
     @Test
     public void getCommentsForSurvey() {
-        long surveyId = createUserAndSurvey();
-        commentService.addCommentToSurvey("this is a comment", surveyId, 1);
-        commentService.addCommentToSurvey("this is a comment 2", surveyId, 1);
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        long surveyId = surveyService.addSurvey(user, survey);
+
+        commentService.addCommentToSurvey("this is a comment", user, surveyId);
+        commentService.addCommentToSurvey("this is a comment 2", user, surveyId);
         List<Comment> commentsForSurvey = commentService.getCommentsForSurvey(surveyId);
         assertEquals(2, commentsForSurvey.size());
     }
 
     @Test
     public void getCommentsFromUser() {
-        long surveyId = createUserAndSurvey();
-        long userId = addNewUser("davenkin", "davenkin@163.com");
-        commentService.addCommentToSurvey("this is a comment", surveyId, 1);
-        commentService.addCommentToSurvey("this is a comment 2", surveyId, userId);
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        long userId = userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        long surveyId = surveyService.addSurvey(user, survey);
+
+        commentService.addCommentToSurvey("this is a comment", user, surveyId);
+        commentService.addCommentToSurvey("this is a comment 2", user, surveyId);
         List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
-        assertEquals(1, commentsFromUser.size());
+        assertEquals(2, commentsFromUser.size());
     }
 
     @Test
     public void removeComment() {
-        long surveyId = createUserAndSurvey();
-        long userId = addNewUser("davenkin1", "davenkin1@163.com");
-        commentService.addCommentToSurvey("this is a comment", surveyId, 1);
-        commentService.addCommentToSurvey("this is a comment 2", surveyId, userId);
-        List<Comment> commentsFromUser = getComments(userId);
-        commentService.removeCommentFromSurvey(1l);
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        long userId = userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        long surveyId = surveyService.addSurvey(user, survey);
+
+        long commentId = commentService.addCommentToSurvey("this is a comment", user, surveyId);
+        commentService.addCommentToSurvey("this is a comment 2", user, surveyId);
+
+        List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
+        assertEquals(2, commentsFromUser.size());
+
+        commentService.removeCommentFromSurvey(surveyId,commentId);
         List<Comment> commentsFromUser1 = commentService.getCommentsFromUser(userId);
         assertEquals(1, commentsFromUser1.size());
     }
 
-    @Transactional
-    public List<Comment> getComments(long userId) {
-        List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
-        assertEquals(1, commentsFromUser.size());
-        return commentsFromUser;
-    }
-
-    @Transactional
-    public long createUserAndSurvey() {
-        long userId = addNewUser("davenkin", "davenkin@163.com");
-        User user = userService.getUserById(userId);
-        ArrayList<String> optionNames = new ArrayList<String>();
-        optionNames.add("Yes");
-        optionNames.add("No");
-        String content = "Do you like programming?";
-
-        Survey survey1 = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
-        return surveyService.addSurvey(user, survey1);
-
-    }
-
-    private long addNewUser(String name, String email) {
-        return userService.addNewUser(name, email, "123456");
-    }
-
-    private int getDbRecordCount(final String tableName) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        BigInteger num = (BigInteger) currentSession.createSQLQuery("SELECT COUNT(*) FROM " + tableName).uniqueResult();
-        return num.intValue();
+    private List<String> createOptionNames(String... options) {
+        return Lists.newArrayList(options);
     }
 
 }
