@@ -23,7 +23,7 @@ public class User {
     private Timestamp registerTime;
     private Set<Survey> surveys = new HashSet<Survey>();
     private List<Comment> comments = new ArrayList<Comment>();
-    private Set<Option> options = new HashSet<Option>();
+    private Set<Vote> votes = new HashSet<Vote>();
 
     protected User() {
     }
@@ -98,6 +98,14 @@ public class User {
         this.comments = comments;
     }
 
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
+    }
+
     public void updateName(String name) {
         this.name = name;
     }
@@ -110,18 +118,6 @@ public class User {
         this.password = password;
     }
 
-    public Set<Option> getOptions() {
-        return options;
-    }
-
-    protected void setOptions(Set<Option> options) {
-        this.options = options;
-    }
-
-    public void takeSurveyOption(Option option) {
-        option.vote();
-        options.add(option);
-    }
 
     public void addSurvey(Survey survey) {
         survey.setCreatingUser(this);
@@ -130,7 +126,7 @@ public class User {
 
     public void voteOption(Option option) {
         option.vote();
-        options.add(option);
+        votes.add(new Vote(this,option));
     }
 
     @Override
@@ -155,6 +151,5 @@ public class User {
 
     public void removeSurvey(Survey survey) {
         surveys.remove(survey);
-        //To change body of created methods use File | Settings | File Templates.
     }
 }

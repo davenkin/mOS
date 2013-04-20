@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="davenkin.opinions.domain.Vote" table="USER_VOTE" lazy="true" select-before-update="true">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+
+        <many-to-one
+                name="user"
+                class="davenkin.opinions.domain.User"
+                fetch="select">
+            <column name="USER_ID" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one
+                name="option"
+                class="davenkin.opinions.domain.Option"
+                fetch="select">
+            <column name="OPTION_ID" not-null="true"/>
+        </many-to-one>
+
+        <property name="voteTime" type="timestamp" not-null="true">
+            <column name="VOTE_TIME" not-null="true" />
+        </property>
+
+    </class>
+</hibernate-mapping>
