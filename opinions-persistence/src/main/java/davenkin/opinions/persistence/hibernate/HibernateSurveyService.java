@@ -75,7 +75,6 @@ public class HibernateSurveyService implements SurveyService {
     }
 
 
-
     @Override
     @Transactional
     public void removeSurvey(User user, long surveyId) {

@@ -1,6 +1,8 @@
 package davenkin.opinions.persistence.hibernate;
 
+import com.google.common.collect.Lists;
 import davenkin.opinions.domain.Category;
+import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 import davenkin.opinions.persistence.service.SurveyService;
 import davenkin.opinions.persistence.service.TagService;
@@ -18,9 +20,10 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -33,7 +36,7 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testHibernateApplicationContext.xml"})
 @TestExecutionListeners({DirtiesContextTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
+        DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @TransactionConfiguration(transactionManager = "transactionManager")
 @Transactional
@@ -49,38 +52,59 @@ public class HibernateTagServiceTest {
     public TagService tagService;
 
     @Test
-    public void addTagToSurvey(){
-        long surveyId = createUserAndSurvey();
-        tagService.addTagToSurvey(surveyId,"TAG");
-        assertEquals(1, tagService.getTagsForSurvey(surveyId).size());
-        surveyService.removeSurvey(null, surveyId);
-        assertEquals(0,surveyService.getAllSurveys().size() );
-    }
+    public void addTagToSurvey() {
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        userService.addUser(user);
 
-
-        @Test
-    public void getTagsForSurvey(){
-        long surveyId = createUserAndSurvey();
-        tagService.addTagToSurvey(surveyId,"TAG");
-        tagService.addTagToSurvey(surveyId, "TAG2");
-            Set<String> tagsForSurvey = tagService.getTagsForSurvey(surveyId);
-            assertEquals(2, tagsForSurvey.size());
-
-    }
-
-
-
-    private long createUserAndSurvey() {
-        long userId = addNewUser();
-        User user = userService.getUserById(userId);
-        ArrayList<String> optionNames = new ArrayList<String>();
-        optionNames.add("Yes");
-        optionNames.add("No");
+        List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
-        return 1;
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        long surveyId = surveyService.addSurvey(user, survey);
+
+        tagService.addTagToSurvey(surveyId, "TAG2");
+        assertEquals(3, tagService.getTagsForSurvey(surveyId).size());
     }
-    private long addNewUser() {
-        return userService.addNewUser("davenkin", "davenkin@163.com", "123456");
+
+
+    @Test
+    public void getTagsForSurvey() {
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        long surveyId = surveyService.addSurvey(user, survey);
+
+        Set<String> tagsForSurvey = tagService.getTagsForSurvey(surveyId);
+        assertEquals(2, tagsForSurvey.size());
+
     }
+
+    @Test
+    public void removeTagFromSurvey() {
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        userService.addUser(user);
+
+        List<String> optionNames = createOptionNames("Yes", "No");
+        String content = "Do you like programming?";
+
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        long surveyId = surveyService.addSurvey(user, survey);
+
+        tagService.removeTagFromSurvey(surveyId, "TAG1");
+        Set<String> tagsForSurvey = tagService.getTagsForSurvey(surveyId);
+        assertEquals(1, tagsForSurvey.size());
+
+
+    }
+
+
+    private List<String> createOptionNames(String... options) {
+        return Lists.newArrayList(options);
+    }
+
 
 }
