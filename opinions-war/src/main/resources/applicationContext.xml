@@ -26,6 +26,7 @@
                 <value>davenkin/opinions/domain/Survey.hbm.xml</value>
                 <value>davenkin/opinions/domain/Option.hbm.xml</value>
                 <value>davenkin/opinions/domain/Comment.hbm.xml</value>
+                <value>davenkin/opinions/domain/Vote.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -46,22 +47,30 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="userService" class="davenkin.opinions.service.DefaultUserService">
+    <bean id="userRepository" class="davenkin.opinions.repository.hibernate.HibernateUserRepository">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="surveyRepository" class="davenkin.opinions.repository.hibernate.HibernateSurveyRepository">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-<bean id="surveyService" class="davenkin.opinions.service.DefaultSurveyService">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="userService" class="davenkin.opinions.service.DefaultUserService">
+        <property name="userRepository" ref="userRepository"/>
+    </bean>
+
+    <bean id="surveyService" class="davenkin.opinions.service.DefaultSurveyService">
+        <property name="userRepository" ref="userRepository"/>
+        <property name="surveyRepository" ref="surveyRepository"/>
     </bean>
 
     <bean id="tagService" class="davenkin.opinions.service.DefaultTagService">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="surveyRepository" ref="surveyRepository"/>
     </bean>
 
 
     <bean id="commentService" class="davenkin.opinions.service.DefaultCommentService">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="userRepository" ref="userRepository"/>
+        <property name="surveyRepository" ref="surveyRepository"/>
     </bean>
-
 
 </beans>
