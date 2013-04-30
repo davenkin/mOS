@@ -13,7 +13,9 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface SurveyRepository {
-    public void saveSurvey(Survey survey);
+    public long addSurvey(Survey survey);
+
+    public void updateSurvey(Survey survey);
 
     public Survey getSurvey(long id);
 

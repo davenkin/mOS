@@ -51,7 +51,7 @@ public class HibernateUserService implements UserService {
     public void updateUserName(long userId, String name) {
         User user = userRepository.getUser(userId);
         user.setName(name);
-        userRepository.saveUser(user);
+        userRepository.updateUser(user);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class HibernateUserService implements UserService {
     public void updateUserEmail(long userId, String email) {
         User user = userRepository.getUser(userId);
         user.setEmail(email);
-        userRepository.saveUser(user);
+        userRepository.updateUser(user);
 
     }
 
@@ -68,7 +68,7 @@ public class HibernateUserService implements UserService {
     public void updateUserPassword(long userId, String password) {
         User user = userRepository.getUser(userId);
         user.setPassword(DigestUtils.md5Hex(password));
-        userRepository.saveUser(user);
+        userRepository.updateUser(user);
     }
 
     @Override
@@ -78,13 +78,13 @@ public class HibernateUserService implements UserService {
         user.setName(name);
         user.setEmail(email);
         user.setPassword(DigestUtils.md5Hex(password));
-        userRepository.saveUser(user);
+        userRepository.updateUser(user);
     }
 
     @Override
     @Transactional
-    public void addUser(User user) {
-        userRepository.saveUser(user);
+    public long addUser(User user) {
+        return userRepository.addUser(user);
     }
 
     @Required

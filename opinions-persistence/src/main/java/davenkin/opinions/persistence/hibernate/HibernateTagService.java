@@ -24,7 +24,7 @@ public class HibernateTagService implements TagService {
     public void addTagToSurvey(long surveyId, String tag) {
         Survey survey = surveyRepository.getSurvey(surveyId);
         survey.addTag(tag);
-        surveyRepository.saveSurvey(survey);
+        surveyRepository.updateSurvey(survey);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class HibernateTagService implements TagService {
     public void removeTagFromSurvey(long surveyId, String tag) {
         Survey survey = surveyRepository.getSurvey(surveyId);
         survey.removeTag(tag);
-        surveyRepository.saveSurvey(survey);
+        surveyRepository.updateSurvey(survey);
     }
 
     @Override

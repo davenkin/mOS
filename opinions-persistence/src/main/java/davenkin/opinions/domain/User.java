@@ -94,4 +94,12 @@ public class User {
         result = 31 * result + email.hashCode();
         return result;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

@@ -58,7 +58,7 @@ public class HibernateSurveyService implements SurveyService {
         Survey survey = surveyRepository.getSurvey(surveyId);
         Option option = survey.getOption(optionId);
         option.vote();
-        surveyRepository.saveSurvey(survey);
+        surveyRepository.updateSurvey(survey);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class HibernateSurveyService implements SurveyService {
         User user = userRepository.getUser(userId);
         Option option = survey.getOption(optionId);
         user.vote(option);
-        userRepository.saveUser(user);
-        surveyRepository.saveSurvey(survey);
+        userRepository.updateUser(user);
+        surveyRepository.updateSurvey(survey);
     }
 
 
@@ -83,7 +83,7 @@ public class HibernateSurveyService implements SurveyService {
     @Override
     @Transactional
     public void addSurvey(Survey survey) {
-        surveyRepository.saveSurvey(survey);
+        surveyRepository.addSurvey(survey);
     }
 
     @Required

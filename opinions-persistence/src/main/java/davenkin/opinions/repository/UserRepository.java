@@ -13,7 +13,12 @@ import java.util.List;
  */
 public interface UserRepository {
     public User getUser(long id);
-    public void saveUser(User user);
+
+    public long addUser(User user);
+
+    public void updateUser(User user);
+
     public List<User> getAllUsers();
+
     public User getUserByEmail(String email);
 }

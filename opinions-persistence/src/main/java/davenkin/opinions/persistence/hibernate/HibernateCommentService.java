@@ -28,8 +28,8 @@ public class HibernateCommentService implements CommentService {
         Survey survey = surveyRepository.getSurvey(surveyId);
         User user = userRepository.getUser(userId);
         user.createComment(content, survey);
-        surveyRepository.saveSurvey(survey);
-        userRepository.saveUser(user);
+        surveyRepository.updateSurvey(survey);
+        userRepository.updateUser(user);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class HibernateCommentService implements CommentService {
     public void removeCommentFromSurvey(long surveyId, long commentId) {
         Survey survey = surveyRepository.getSurvey(surveyId);
         survey.removeComment(commentId);
-        surveyRepository.saveSurvey(survey);
+        surveyRepository.updateSurvey(survey);
     }
 
 

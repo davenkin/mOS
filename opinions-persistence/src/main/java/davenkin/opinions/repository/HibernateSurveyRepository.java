@@ -14,8 +14,13 @@ import java.util.List;
  */
 public class HibernateSurveyRepository extends HibernateRepository implements SurveyRepository {
     @Override
-    public void saveSurvey(Survey survey) {
-        getCurrentSession().saveOrUpdate(survey);
+    public long addSurvey(Survey survey) {
+        return (Long) getCurrentSession().save(survey);
+    }
+
+    @Override
+    public void updateSurvey(Survey survey) {
+        getCurrentSession().update(survey);
     }
 
     @Override

@@ -16,11 +16,6 @@ public class Option
     private String optionName;
     private long optionCount;
 
-    protected Option(){
-
-        optionCount=0;
-    }
-
     protected Option(Survey survey, String optionName){
         this.survey=survey;
         this.optionName=optionName;

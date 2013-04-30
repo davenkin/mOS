@@ -19,8 +19,13 @@ public class HibernateUserRepository extends HibernateRepository implements User
     }
 
     @Override
-    public void saveUser(User user) {
-        getCurrentSession().saveOrUpdate(user);
+    public long addUser(User user) {
+        return (Long) getCurrentSession().save(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        getCurrentSession().update(user);
     }
 
     @Override
