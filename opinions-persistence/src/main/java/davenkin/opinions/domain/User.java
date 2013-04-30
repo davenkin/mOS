@@ -57,7 +57,7 @@ public class User {
     }
 
     public Survey createSurvey(String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
-        return new Survey(this,content, canMultipleChecked, surveyCategory, optionNames, surveyTags);
+        return new Survey(this, content, canMultipleChecked, surveyCategory, optionNames, surveyTags);
     }
 
     public String getName() {
@@ -113,5 +113,9 @@ public class User {
 
     public Set<Vote> getVotes() {
         return votes;
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
     }
 }

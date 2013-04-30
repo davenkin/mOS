@@ -28,8 +28,8 @@ public class Survey {
     private List<Option> options = new ArrayList<Option>();
     private List<Comment> comments = new ArrayList<Comment>();
 
-    protected Survey(User user,String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
-        this.creatingUser=user;
+    protected Survey(User user, String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
+        this.creatingUser = user;
         this.content = content;
         this.canMultipleChecked = canMultipleChecked;
         this.surveyCategory = surveyCategory;
@@ -113,5 +113,18 @@ public class Survey {
 
     public List<Option> getOptions() {
         return options;
+    }
+
+    public Comment getComment(final long commentId) {
+        return from(comments).firstMatch(new Predicate<Comment>() {
+            @Override
+            public boolean apply(davenkin.opinions.domain.Comment input) {
+                return input.getId() == commentId;
+            }
+        }).get();
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
     }
 }

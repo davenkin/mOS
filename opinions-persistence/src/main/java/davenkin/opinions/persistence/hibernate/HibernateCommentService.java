@@ -48,7 +48,11 @@ public class HibernateCommentService implements CommentService {
     @Transactional
     public void removeCommentFromSurvey(long surveyId, long commentId) {
         Survey survey = surveyRepository.getSurvey(surveyId);
-        survey.removeComment(commentId);
+        Comment comment = survey.getComment(commentId);
+        survey.removeComment(comment);
+        User user = comment.getUser();
+        user.removeComment(comment);
+        userRepository.updateUser(user);
         surveyRepository.updateSurvey(survey);
     }
 
