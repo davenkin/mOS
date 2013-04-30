@@ -15,9 +15,9 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <listener>
-        <listener-class>davenkin.opinions.web.listener.RequestAttributeListener</listener-class>
-    </listener>
+    <!--<listener>-->
+        <!--<listener-class>davenkin.opinions.web.listener.RequestAttributeListener</listener-class>-->
+    <!--</listener>-->
 
     <servlet>
         <servlet-name>spring</servlet-name>
