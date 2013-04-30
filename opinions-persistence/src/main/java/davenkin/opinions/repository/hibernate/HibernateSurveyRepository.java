@@ -1,7 +1,9 @@
-package davenkin.opinions.repository;
+package davenkin.opinions.repository.hibernate;
 
 import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Survey;
+import davenkin.opinions.repository.SurveyRepository;
+import davenkin.opinions.repository.hibernate.HibernateRepository;
 
 import java.util.List;
 

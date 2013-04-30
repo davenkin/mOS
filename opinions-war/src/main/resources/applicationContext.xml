@@ -46,20 +46,20 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="userService" class="davenkin.opinions.persistence.hibernate.HibernateUserService">
+    <bean id="userService" class="davenkin.opinions.service.DefaultUserService">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-<bean id="surveyService" class="davenkin.opinions.persistence.hibernate.HibernateSurveyService">
+<bean id="surveyService" class="davenkin.opinions.service.DefaultSurveyService">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="tagService" class="davenkin.opinions.persistence.hibernate.HibernateTagService">
+    <bean id="tagService" class="davenkin.opinions.service.DefaultTagService">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
 
-    <bean id="commentService" class="davenkin.opinions.persistence.hibernate.HibernateCommentService">
+    <bean id="commentService" class="davenkin.opinions.service.DefaultCommentService">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

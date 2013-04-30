@@ -40,7 +40,7 @@ import static junit.framework.Assert.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @TransactionConfiguration(transactionManager = "transactionManager")
 @Transactional
-public class HibernateTagServiceTest {
+public class DefaultTagServiceTest {
 
     @Autowired
     public UserService userService;

@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.hibernate;
+package davenkin.opinions.service;
 
 import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Option;
@@ -19,7 +19,7 @@ import java.util.List;
  * Time: 5:24 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HibernateSurveyService implements SurveyService {
+public class DefaultSurveyService implements SurveyService {
     private SurveyRepository surveyRepository;
     private UserRepository userRepository;
 

@@ -39,7 +39,7 @@ import static org.junit.Assert.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional
-public class HibernateUserServiceTest {
+public class DefaultUserServiceTest {
 
     @Autowired
     public UserService userService;

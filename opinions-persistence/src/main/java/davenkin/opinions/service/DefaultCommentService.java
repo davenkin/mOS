@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.hibernate;
+package davenkin.opinions.service;
 
 import davenkin.opinions.domain.Comment;
 import davenkin.opinions.domain.Survey;
@@ -18,7 +18,7 @@ import java.util.List;
  * Time: 2:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HibernateCommentService implements CommentService {
+public class DefaultCommentService implements CommentService {
     private SurveyRepository surveyRepository;
     private UserRepository userRepository;
 

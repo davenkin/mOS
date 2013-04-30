@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.hibernate;
+package davenkin.opinions.service;
 
 import com.google.common.base.Predicate;
 import davenkin.opinions.domain.User;
@@ -19,7 +19,7 @@ import static com.google.common.collect.FluentIterable.from;
  * Time: 10:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HibernateUserService implements UserService {
+public class DefaultUserService implements UserService {
     private UserRepository userRepository;
 
     @Override

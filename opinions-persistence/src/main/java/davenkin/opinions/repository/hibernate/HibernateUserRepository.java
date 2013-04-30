@@ -1,6 +1,8 @@
-package davenkin.opinions.repository;
+package davenkin.opinions.repository.hibernate;
 
 import davenkin.opinions.domain.User;
+import davenkin.opinions.repository.UserRepository;
+import davenkin.opinions.repository.hibernate.HibernateRepository;
 import org.hibernate.Query;
 
 import java.util.List;

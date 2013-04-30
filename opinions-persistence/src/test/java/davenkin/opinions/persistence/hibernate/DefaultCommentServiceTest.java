@@ -40,7 +40,7 @@ import static junit.framework.Assert.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional
-public class HibernateCommentServiceTest {
+public class DefaultCommentServiceTest {
 
     @Autowired
     public UserService userService;

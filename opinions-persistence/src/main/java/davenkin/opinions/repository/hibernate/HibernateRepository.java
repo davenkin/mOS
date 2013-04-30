@@ -1,4 +1,4 @@
-package davenkin.opinions.repository;
+package davenkin.opinions.repository.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

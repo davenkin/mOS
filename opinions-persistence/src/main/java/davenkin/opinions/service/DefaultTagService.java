@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.hibernate;
+package davenkin.opinions.service;
 
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.repository.SurveyRepository;
@@ -15,7 +15,7 @@ import java.util.Set;
  * Time: 1:33 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HibernateTagService implements TagService {
+public class DefaultTagService implements TagService {
 
     private SurveyRepository surveyRepository;
 
