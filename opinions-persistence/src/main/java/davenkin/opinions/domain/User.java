@@ -17,16 +17,17 @@ import java.util.Set;
  */
 public class User {
     private long id;
+
     private String name;
+
     private String email;
+
     private String password;
+
     private Timestamp registerTime;
-    private Set<Survey> surveys = new HashSet<Survey>();
+
     private List<Comment> comments = new ArrayList<Comment>();
     private Set<Vote> votes = new HashSet<Vote>();
-
-    protected User() {
-    }
 
     public User(String name, String email, String password) {
         this.name = name;
@@ -35,69 +36,43 @@ public class User {
         this.registerTime = new Timestamp(System.currentTimeMillis());
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
-
-    public void setRegisterTime(Timestamp registerTime) {
-        this.registerTime = registerTime;
-    }
-
-    public Set<Survey> getSurveys() {
-        return surveys;
-    }
-
-    public Comment createComment(String content, Survey survey) {
-        Comment comment = new Comment(content, survey, this);
-        comments.add(comment);
-        return comment;
+    public void vote(Option option) {
+        Vote vote = new Vote(this, option);
+        if (!votes.contains(vote)) {
+            option.vote();
+            votes.add(vote);
+        }
     }
 
     public List<Comment> getComments() {
         return comments;
     }
 
+    public Comment createComment(String content, Survey survey) {
+        Comment comment = new Comment(content, survey, this);
+        comments.add(comment);
+        survey.addComment(comment);
+        return comment;
 
-    public Set<Vote> getVotes() {
-        return votes;
     }
 
-    public void updateName(String name) {
+    public String getName() {
+        return name;
+    }
+
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void updateEmail(String email) {
-        this.email = email;
-    }
 
-    public void updatePassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
 
-    public void addSurvey(Survey survey) {
-        survey.setCreatingUser(this);
-        surveys.add(survey);
-    }
-
-    public void voteOption(Option option) {
-        Vote vote = new Vote(this, option);
-        if (!votes.contains(vote)) {
-            option.vote();
-            votes.add(vote);
-        }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -118,9 +93,5 @@ public class User {
         int result = name.hashCode();
         result = 31 * result + email.hashCode();
         return result;
-    }
-
-    public void removeSurvey(Survey survey) {
-        surveys.remove(survey);
     }
 }

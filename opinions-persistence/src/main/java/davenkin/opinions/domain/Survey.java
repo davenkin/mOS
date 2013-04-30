@@ -1,10 +1,14 @@
 package davenkin.opinions.domain;
 
+import com.google.common.base.Predicate;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.google.common.collect.FluentIterable.from;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,21 +37,23 @@ public class Survey {
         this.createdTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public String getContent() {
-        return content;
+    public Option getOption(final long optionId) {
+        return from(options).firstMatch(new Predicate<Option>() {
+            @Override
+            public boolean apply(Option input) {
+                return input.getId() == optionId;
+            }
+        }).get();
     }
 
-
-    protected void setCreatingUser(User creatingUser) {
-        this.creatingUser = creatingUser;
+    public void removeComment(final long commentId) {
+        comments.remove(from(comments).firstMatch(new Predicate<Comment>() {
+            @Override
+            public boolean apply(Comment input) {
+                return input.getId() == commentId;
+            }
+        }).get());
     }
-
-
-
-    public Category getSurveyCategory() {
-        return surveyCategory;
-    }
-
 
 
     public Set<String> getSurveyTags() {
@@ -55,15 +61,9 @@ public class Survey {
     }
 
 
-    public List<Option> getOptions() {
-        return options;
-    }
-
-
     public List<Comment> getComments() {
         return comments;
     }
-
 
     public void addTag(String tag) {
         surveyTags.add(tag);
@@ -83,10 +83,6 @@ public class Survey {
             options.add(new Option(this, optionName));
         }
         return options;
-    }
-
-    protected Survey() {
-
     }
 
     @Override

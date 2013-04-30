@@ -16,20 +16,12 @@ public class Comment {
     private User user;
     private Timestamp createdTime;
 
-    protected Comment(String content, Survey survey, User user) {
+    public Comment(String content, Survey survey, User user) {
         this.content = content;
         this.survey = survey;
         this.user = user;
         this.createdTime = new Timestamp(System.currentTimeMillis());
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    protected Comment() {
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -53,5 +45,9 @@ public class Comment {
         result = 31 * result + user.hashCode();
         result = 31 * result + createdTime.hashCode();
         return result;
+    }
+
+    public long getId() {
+        return id;
     }
 }

@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.service;
+package davenkin.opinions.service;
 
 import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Option;
@@ -6,7 +6,6 @@ import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +14,7 @@ import java.util.Set;
  * Time: 8:15 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface SurveyService
-{
+public interface SurveyService {
     public List<Survey> getAllSurveys();
 
     public List<Survey> getSurveysByTag(String tag);
@@ -27,12 +25,12 @@ public interface SurveyService
 
     public Survey getSurveyById(long surveyId);
 
-    public void takeSurvey(Option option);
+    public void voteSurveyOption(long surveyId, long optionId);
 
-    public void takeSurvey(User user, Option option);
+    public void voteSurveyOption(long userId, long surveyId, long optionId);
 
-    public void removeSurvey(User user, long surveyId);
+    public void removeSurvey(long surveyId);
 
-    public long addSurvey(User user, Survey survey);
+    public void addSurvey(Survey survey);
 
 }

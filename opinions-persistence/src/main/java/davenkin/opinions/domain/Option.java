@@ -58,4 +58,8 @@ public class Option
         result = 31 * result + optionName.hashCode();
         return result;
     }
+
+    public long getId() {
+        return id;
+    }
 }

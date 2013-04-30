@@ -1,4 +1,4 @@
-package davenkin.opinions.persistence.service;
+package davenkin.opinions.service;
 
 import davenkin.opinions.domain.Comment;
 import davenkin.opinions.domain.User;
@@ -6,7 +6,7 @@ import davenkin.opinions.domain.User;
 import java.util.List;
 
 public interface CommentService {
-    public long addCommentToSurvey(String content, User user, long surveyId);
+    public void addCommentToSurvey(String content, long userId, long surveyId);
 
     public List<Comment> getCommentsForSurvey(long surveyId);
 

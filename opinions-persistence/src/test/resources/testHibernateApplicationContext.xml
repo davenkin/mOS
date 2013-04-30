@@ -12,18 +12,20 @@
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/OPINIONS" />
-        <property name="username" value="root" />
-        <property name="password" value="" />
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/OPINIONS"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
     </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" >
-        <constructor-arg type="javax.sql.DataSource"><ref bean="dataSource"/></constructor-arg>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg type="javax.sql.DataSource">
+            <ref bean="dataSource"/>
+        </constructor-arg>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource"/>
         <property name="mappingResources">
             <list>
                 <value>davenkin/opinions/domain/User.hbm.xml</value>
@@ -46,26 +48,35 @@
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="userService" class="davenkin.opinions.persistence.hibernate.HibernateUserService">
+    <bean id="userRepository" class="davenkin.opinions.repository.HibernateUserRepository">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="surveyRepository" class="davenkin.opinions.repository.HibernateSurveyRepository">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-<bean id="surveyService" class="davenkin.opinions.persistence.hibernate.HibernateSurveyService">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="userService" class="davenkin.opinions.persistence.hibernate.HibernateUserService">
+        <property name="userRepository" ref="userRepository"/>
+    </bean>
+
+    <bean id="surveyService" class="davenkin.opinions.persistence.hibernate.HibernateSurveyService">
+        <property name="userRepository" ref="userRepository"/>
+        <property name="surveyRepository" ref="surveyRepository"/>
     </bean>
 
     <bean id="tagService" class="davenkin.opinions.persistence.hibernate.HibernateTagService">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="surveyRepository" ref="surveyRepository"/>
     </bean>
 
 
     <bean id="commentService" class="davenkin.opinions.persistence.hibernate.HibernateCommentService">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="userRepository" ref="userRepository"/>
+        <property name="surveyRepository" ref="surveyRepository"/>
     </bean>
 
 

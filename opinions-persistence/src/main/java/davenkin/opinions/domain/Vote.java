@@ -16,6 +16,12 @@ public class Vote {
     private Option option;
     private Timestamp voteTime;
 
+    public Vote(User user, Option option) {
+        this.user = user;
+        this.option = option;
+        voteTime = new Timestamp(System.currentTimeMillis());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,14 +41,5 @@ public class Vote {
         result = 31 * result + option.hashCode();
         return result;
     }
-
-    public Vote(User user, Option option) {
-        this.user = user;
-        this.option = option;
-        voteTime = new Timestamp(System.currentTimeMillis());
-    }
-
-    protected Vote(){}
-
 
 }

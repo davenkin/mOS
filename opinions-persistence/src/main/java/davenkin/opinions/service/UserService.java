@@ -1,9 +1,9 @@
-package davenkin.opinions.persistence.service;
+package davenkin.opinions.service;
 
 import davenkin.opinions.domain.User;
 
 public interface UserService {
-    public long addUser(User user);
+    public void addUser(User user);
 
     public User getUserById(long userId);
 
@@ -18,5 +18,4 @@ public interface UserService {
     public void updateUserPassword(long userId, String password);
 
     public void updateUser(long userId, String name, String email, String password);
-
 }

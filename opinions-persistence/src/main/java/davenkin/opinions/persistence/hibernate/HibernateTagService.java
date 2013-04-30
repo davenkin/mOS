@@ -1,9 +1,9 @@
 package davenkin.opinions.persistence.hibernate;
 
 import davenkin.opinions.domain.Survey;
-import davenkin.opinions.persistence.service.TagService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import davenkin.opinions.repository.SurveyRepository;
+import davenkin.opinions.service.TagService;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
@@ -16,35 +16,33 @@ import java.util.Set;
  * To change this template use File | Settings | File Templates.
  */
 public class HibernateTagService implements TagService {
-  private   SessionFactory sessionFactory;
 
+    private SurveyRepository surveyRepository;
 
     @Override
     @Transactional
     public void addTagToSurvey(long surveyId, String tag) {
-        Session session = sessionFactory.getCurrentSession();
-      Survey survey= (Survey) session.load(Survey.class,surveyId);
+        Survey survey = surveyRepository.getSurvey(surveyId);
         survey.addTag(tag);
+        surveyRepository.saveSurvey(survey);
     }
 
     @Override
     @Transactional
     public void removeTagFromSurvey(long surveyId, String tag) {
-        Session session = sessionFactory.getCurrentSession();
-        Survey survey= (Survey) session.load(Survey.class,surveyId);
+        Survey survey = surveyRepository.getSurvey(surveyId);
         survey.removeTag(tag);
-
+        surveyRepository.saveSurvey(survey);
     }
 
     @Override
     @Transactional
     public Set<String> getTagsForSurvey(long surveyId) {
-        Session session = sessionFactory.getCurrentSession();
-        Survey survey = (Survey) session.get(Survey.class, surveyId);
-        return survey.getSurveyTags();
+        return surveyRepository.getSurvey(surveyId).getSurveyTags();
     }
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    @Required
+    public void setSurveyRepository(SurveyRepository surveyRepository) {
+        this.surveyRepository = surveyRepository;
     }
 }
