@@ -47,15 +47,6 @@ public class Survey {
         }).get();
     }
 
-    public void removeComment(final long commentId) {
-        comments.remove(from(comments).firstMatch(new Predicate<Comment>() {
-            @Override
-            public boolean apply(Comment input) {
-                return input.getId() == commentId;
-            }
-        }).get());
-    }
-
 
     public Set<String> getSurveyTags() {
         return surveyTags;
@@ -86,23 +77,6 @@ public class Survey {
         return options;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Survey survey = (Survey) o;
-
-        if (!content.equals(survey.content)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return content.hashCode();
-    }
-
     public String getContent() {
         return content;
     }
@@ -126,5 +100,22 @@ public class Survey {
 
     public void removeComment(Comment comment) {
         comments.remove(comment);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Survey survey = (Survey) o;
+
+        if (!content.equals(survey.content)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return content.hashCode();
     }
 }

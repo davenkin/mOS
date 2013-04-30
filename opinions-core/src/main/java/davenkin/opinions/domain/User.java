@@ -79,6 +79,22 @@ public class User {
         this.email = email;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,25 +113,5 @@ public class User {
         int result = name.hashCode();
         result = 31 * result + email.hashCode();
         return result;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public Set<Vote> getVotes() {
-        return votes;
-    }
-
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
     }
 }
