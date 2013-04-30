@@ -1,1 +1,1 @@
-include 'opinions-persistence', 'opinions-war'
+include 'opinions-core', 'opinions-war'
