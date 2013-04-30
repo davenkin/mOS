@@ -35,42 +35,21 @@ public class User {
         this.registerTime = new Timestamp(System.currentTimeMillis());
     }
 
-    protected void setId(long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return id;
-    }
-
 
     public String getName() {
         return name;
     }
 
-    protected void setName(String name) {
-        this.name = name;
-    }
 
     public String getEmail() {
         return email;
     }
 
-    protected void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getPassword() {
         return password;
     }
 
-    protected void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Timestamp getRegisterTime() {
-        return registerTime;
-    }
 
     public void setRegisterTime(Timestamp registerTime) {
         this.registerTime = registerTime;
@@ -78,10 +57,6 @@ public class User {
 
     public Set<Survey> getSurveys() {
         return surveys;
-    }
-
-    protected void setSurveys(Set<Survey> surveys) {
-        this.surveys = surveys;
     }
 
     public Comment createComment(String content, Survey survey) {
@@ -94,16 +69,9 @@ public class User {
         return comments;
     }
 
-    protected void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 
     public Set<Vote> getVotes() {
         return votes;
-    }
-
-    public void setVotes(Set<Vote> votes) {
-        this.votes = votes;
     }
 
     public void updateName(String name) {

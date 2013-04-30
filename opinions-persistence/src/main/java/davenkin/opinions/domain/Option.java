@@ -1,5 +1,7 @@
 package davenkin.opinions.domain;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: davenkin
@@ -25,43 +27,13 @@ public class Option
         optionCount=0;
     }
 
-    public Survey getSurvey()
-    {
-        return survey;
-    }
-
-    protected void setSurvey(Survey survey)
-    {
-        this.survey = survey;
-    }
-
-    public String getOptionName()
-    {
-        return optionName;
-    }
-
-    protected void setOptionName(String optionName)
-    {
-        this.optionName = optionName;
-    }
 
     public long getOptionCount()
     {
         return optionCount;
     }
 
-    protected void setOptionCount(long optionCount)
-    {
-        this.optionCount = optionCount;
-    }
 
-    public long getId() {
-        return id;
-    }
-
-    protected void setId(long id) {
-        this.id = id;
-    }
 
     public void vote() {
         this.optionCount++;

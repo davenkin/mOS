@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping>
+<hibernate-mapping default-access="field">
     <class name="davenkin.opinions.domain.Option" table="SURVEY_OPTION" lazy="true" select-before-update="true">
         <id name="id" type="long">
             <column name="ID" />

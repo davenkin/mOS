@@ -44,35 +44,5 @@ public class Vote {
 
     protected Vote(){}
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Option getOption() {
-        return option;
-    }
-
-    public void setOption(Option option) {
-        this.option = option;
-    }
-
-    public Timestamp getVoteTime() {
-        return voteTime;
-    }
-
-    public void setVoteTime(Timestamp voteTime) {
-        this.voteTime = voteTime;
-    }
 }

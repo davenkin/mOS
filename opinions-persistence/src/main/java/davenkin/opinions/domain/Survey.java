@@ -37,73 +37,33 @@ public class Survey {
         return content;
     }
 
-    protected void setContent(String content) {
-        this.content = content;
-    }
-
-    public User getCreatingUser() {
-        return creatingUser;
-    }
 
     protected void setCreatingUser(User creatingUser) {
         this.creatingUser = creatingUser;
     }
 
-    public Timestamp getCreatedTime() {
-        return createdTime;
-    }
 
-    protected void setCreatedTime(Timestamp createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public boolean isCanMultipleChecked() {
-        return canMultipleChecked;
-    }
-
-    protected void setCanMultipleChecked(boolean canMultipleChecked) {
-        this.canMultipleChecked = canMultipleChecked;
-    }
 
     public Category getSurveyCategory() {
         return surveyCategory;
     }
 
-    protected void setSurveyCategory(Category surveyCategory) {
-        this.surveyCategory = surveyCategory;
-    }
+
 
     public Set<String> getSurveyTags() {
         return surveyTags;
     }
 
-    protected void setSurveyTags(Set<String> surveyTags) {
-        this.surveyTags = surveyTags;
-    }
 
     public List<Option> getOptions() {
         return options;
     }
 
-    protected void setOptions(List<Option> options) {
-        this.options = options;
-    }
 
     public List<Comment> getComments() {
         return comments;
     }
 
-    protected void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    protected void setId(long id) {
-        this.id = id;
-    }
 
     public void addTag(String tag) {
         surveyTags.add(tag);
