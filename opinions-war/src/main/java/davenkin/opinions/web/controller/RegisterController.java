@@ -1,5 +1,6 @@
 package davenkin.opinions.web.controller;
 
+import davenkin.opinions.domain.User;
 import davenkin.opinions.service.UserService;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
@@ -21,20 +22,20 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/register")
 public class RegisterController {
     private UserService userService;
-        @RequestMapping(method = RequestMethod.GET)
-        public String showRegisterForm() {
-            return "register";
-        }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String showRegisterForm() {
+        return "register";
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     public String register(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("userName");
         String userEmail = request.getParameter("userEmail");
         String userPassword = request.getParameter("userPassword");
-//        userService.addNewUser(userName,userEmail,userPassword);
+        userService.addUser(new User(userName, userEmail, userPassword));
         return "registerSuccess";
     }
-
 
     @Required
     public void setUserService(UserService userService) {
