@@ -28,7 +28,8 @@ public class Survey {
     private List<Option> options = new ArrayList<Option>();
     private List<Comment> comments = new ArrayList<Comment>();
 
-    public Survey(String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
+    protected Survey(User user,String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
+        this.creatingUser=user;
         this.content = content;
         this.canMultipleChecked = canMultipleChecked;
         this.surveyCategory = surveyCategory;
@@ -100,5 +101,17 @@ public class Survey {
     @Override
     public int hashCode() {
         return content.hashCode();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Category getSurveyCategory() {
+        return surveyCategory;
+    }
+
+    public List<Option> getOptions() {
+        return options;
     }
 }

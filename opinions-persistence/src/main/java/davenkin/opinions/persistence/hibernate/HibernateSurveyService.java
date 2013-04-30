@@ -82,8 +82,8 @@ public class HibernateSurveyService implements SurveyService {
 
     @Override
     @Transactional
-    public void addSurvey(Survey survey) {
-        surveyRepository.addSurvey(survey);
+    public long addSurvey(Survey survey) {
+        return surveyRepository.addSurvey(survey);
     }
 
     @Required

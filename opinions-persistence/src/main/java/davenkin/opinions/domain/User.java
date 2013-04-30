@@ -56,6 +56,10 @@ public class User {
 
     }
 
+    public Survey createSurvey(String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
+        return new Survey(this,content, canMultipleChecked, surveyCategory, optionNames, surveyTags);
+    }
+
     public String getName() {
         return name;
     }
@@ -101,5 +105,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Set<Vote> getVotes() {
+        return votes;
     }
 }

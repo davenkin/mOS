@@ -31,6 +31,6 @@ public interface SurveyService {
 
     public void removeSurvey(long surveyId);
 
-    public void addSurvey(Survey survey);
+    public long addSurvey(Survey survey);
 
 }
