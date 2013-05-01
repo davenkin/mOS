@@ -93,11 +93,12 @@ public class DefaultSurveyServiceTest extends CommonTestFixture {
         Survey survey2 = new Survey(userId, content2, false, Category.SCIENCE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         surveyService.addSurvey(survey2);
 
-
         List<Survey> originalSurveys = surveyService.getAllSurveys();
         assertThat(originalSurveys.size(), is(2));
 
+
         surveyService.removeSurvey(surveyId1);
+
 
         List<Survey> allSurveys = getAllSurveysFromDb();
         assertThat(allSurveys.size(), is(1));

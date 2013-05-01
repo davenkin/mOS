@@ -1,5 +1,6 @@
 package davenkin.opinions.persistence.hibernate;
 
+import davenkin.opinions.domain.Comment;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 import org.hibernate.Query;
@@ -50,6 +51,11 @@ public class CommonTestFixture {
 
     protected List<Survey> getAllSurveysFromDb() {
         return sessionFactory.getCurrentSession().createQuery("from Survey").list();
+    }
+
+
+    protected List<Comment> getCommentsFromDb() {
+        return sessionFactory.getCurrentSession().createQuery("from Comment").list();
     }
 
 

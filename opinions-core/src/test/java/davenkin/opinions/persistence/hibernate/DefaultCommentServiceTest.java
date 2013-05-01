@@ -8,23 +8,16 @@ import davenkin.opinions.domain.User;
 import davenkin.opinions.service.CommentService;
 import davenkin.opinions.service.SurveyService;
 import davenkin.opinions.service.UserService;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,14 +26,8 @@ import static junit.framework.Assert.assertEquals;
  * Time: 1:34 PM
  * To change this template use File | Settings | File Templates.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:testHibernateApplicationContext.xml"})
-@TestExecutionListeners({DirtiesContextTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
-@Transactional
-public class DefaultCommentServiceTest {
+
+public class DefaultCommentServiceTest extends CommonTestFixture {
 
     @Autowired
     public UserService userService;
@@ -50,34 +37,35 @@ public class DefaultCommentServiceTest {
 
     @Autowired
     public CommentService commentService;
+    private long userId;
+
+    @Before
+    public void setUp() throws Exception {
+        userId = createUser();
+    }
 
     @Test
     public void addCommentToSurvey() {
-
-        User user = new User("davenkin", "davenkin@163.com", "password");
-        long userId = userService.addUser(user);
-
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(userId, content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
 
-        commentService.addComment("this is a comment", userId, surveyId);
-        List<Comment> commentsFromUser = commentService.getCommentsByUser(1);
-        assertEquals(1, commentsFromUser.size());
+        String commentContent = "this is a comment";
+        commentService.addComment(commentContent, userId, surveyId);
+        List<Comment> commentsFromDb = getCommentsFromDb();
+        assertEquals(1, commentsFromDb.size());
+        assertThat(commentsFromDb.get(0).getContent(), is(commentContent));
     }
 
     @Test
     public void getCommentsForSurvey() {
-        User user = new User("davenkin", "davenkin@163.com", "password");
-        long userId = userService.addUser(user);
-
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(userId, content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         commentService.addComment("this is a comment", userId, surveyId);
@@ -88,13 +76,10 @@ public class DefaultCommentServiceTest {
 
     @Test
     public void getCommentsFromUser() {
-        User user = new User("davenkin", "davenkin@163.com", "password");
-        long userId = userService.addUser(user);
-
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(userId, content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         commentService.addComment("this is a comment", userId, surveyId);
@@ -105,13 +90,10 @@ public class DefaultCommentServiceTest {
 
     @Test
     public void removeComment() {
-        User user = new User("davenkin", "davenkin@163.com", "password");
-        long userId = userService.addUser(user);
-
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(userId, content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         commentService.addComment("this is a comment", userId, surveyId);
@@ -127,6 +109,11 @@ public class DefaultCommentServiceTest {
 
     private List<String> createOptionNames(String... options) {
         return Lists.newArrayList(options);
+    }
+
+    private long createUser() {
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        return userService.addUser(user);
     }
 
 }
