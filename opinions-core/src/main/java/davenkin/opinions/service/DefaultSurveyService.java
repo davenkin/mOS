@@ -54,6 +54,7 @@ public class DefaultSurveyService implements SurveyService {
     }
 
     @Override
+    @Transactional
     public void voteSurveyOption(long surveyId, long optionId) {
         Survey survey = surveyRepository.getSurvey(surveyId);
         Option option = survey.getOption(optionId);
@@ -62,6 +63,7 @@ public class DefaultSurveyService implements SurveyService {
     }
 
     @Override
+    @Transactional
     public void voteSurveyOption(long userId, long surveyId, long optionId) {
         Survey survey = surveyRepository.getSurvey(surveyId);
         User user = userRepository.getUser(userId);

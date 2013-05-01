@@ -1,11 +1,7 @@
 package davenkin.opinions.service;
 
 import davenkin.opinions.domain.Comment;
-import davenkin.opinions.domain.Survey;
-import davenkin.opinions.domain.User;
-import davenkin.opinions.repository.SurveyRepository;
-import davenkin.opinions.repository.UserRepository;
-import davenkin.opinions.service.CommentService;
+import davenkin.opinions.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,51 +15,35 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DefaultCommentService implements CommentService {
-    private SurveyRepository surveyRepository;
-    private UserRepository userRepository;
+    private CommentRepository commentRepository;
 
     @Override
     @Transactional
-    public void addCommentToSurvey(String content, long userId, long surveyId) {
-        Survey survey = surveyRepository.getSurvey(surveyId);
-        User user = userRepository.getUser(userId);
-        user.createComment(content, survey);
-        surveyRepository.updateSurvey(survey);
-        userRepository.updateUser(user);
+    public long addComment(String content, long userId, long surveyId) {
+        return commentRepository.addComment(new Comment(content, userId, surveyId));
     }
 
     @Override
     @Transactional
-    public List<Comment> getCommentsForSurvey(long surveyId) {
-        return surveyRepository.getSurvey(surveyId).getComments();
+    public void removeComment(long commentId) {
+        Comment comment = commentRepository.getComment(commentId);
+        commentRepository.deleteComment(comment);
     }
 
     @Override
     @Transactional
-    public List<Comment> getCommentsFromUser(long userId) {
-        return userRepository.getUser(userId).getComments();
+    public List<Comment> getCommentsBySurvey(long surveyId) {
+        return commentRepository.getCommentBySurvey(surveyId);
     }
 
     @Override
     @Transactional
-    public void removeCommentFromSurvey(long surveyId, long commentId) {
-        Survey survey = surveyRepository.getSurvey(surveyId);
-        Comment comment = survey.getComment(commentId);
-        survey.removeComment(comment);
-        User user = comment.getUser();
-        user.removeComment(comment);
-        userRepository.updateUser(user);
-        surveyRepository.updateSurvey(survey);
-    }
-
-
-    @Required
-    public void setSurveyRepository(SurveyRepository surveyRepository) {
-        this.surveyRepository = surveyRepository;
+    public List<Comment> getCommentsByUser(long userId) {
+        return commentRepository.getCommentByUser(userId);
     }
 
     @Required
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void setCommentRepository(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 }

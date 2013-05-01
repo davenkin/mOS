@@ -3,9 +3,7 @@ package davenkin.opinions.domain;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,7 +24,6 @@ public class User {
 
     private Timestamp registerTime;
 
-    private List<Comment> comments = new ArrayList<Comment>();
     private Set<Vote> votes = new HashSet<Vote>();
 
     public User(String name, String email, String password) {
@@ -37,27 +34,11 @@ public class User {
     }
 
     public void vote(Option option) {
-        Vote vote = new Vote(this, option);
+        Vote vote = new Vote(this.getId(), option.getId());
         if (!votes.contains(vote)) {
             option.vote();
             votes.add(vote);
         }
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public Comment createComment(String content, Survey survey) {
-        Comment comment = new Comment(content, survey, this);
-        comments.add(comment);
-        survey.addComment(comment);
-        return comment;
-
-    }
-
-    public Survey createSurvey(String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
-        return new Survey(this, content, canMultipleChecked, surveyCategory, optionNames, surveyTags);
     }
 
     public String getName() {
@@ -91,10 +72,6 @@ public class User {
         return votes;
     }
 
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,5 +90,9 @@ public class User {
         int result = name.hashCode();
         result = 31 * result + email.hashCode();
         return result;
+    }
+
+    public long getId() {
+        return id;
     }
 }

@@ -5,22 +5,19 @@
 <hibernate-mapping default-access="field">
     <class name="davenkin.opinions.domain.Survey" table="SURVEY" lazy="true" select-before-update="true">
         <id name="id" type="long">
-            <column name="ID" />
-            <generator class="increment" />
+            <column name="ID"/>
+            <generator class="increment"/>
         </id>
         <property name="content" type="string">
             <column name="CONTENT" not-null="true"/>
         </property>
 
-        <many-to-one
-                name="creatingUser"
-                class="davenkin.opinions.domain.User"
-                fetch="select">
+        <property name="userId" type="long">
             <column name="USER_ID" not-null="true"/>
-        </many-to-one>
+        </property>
 
         <property name="createdTime" type="timestamp" not-null="true">
-            <column name="CREATED_TIME" not-null="true" />
+            <column name="CREATED_TIME" not-null="true"/>
         </property>
 
         <property name="canMultipleChecked" type="yes_no">
@@ -35,26 +32,17 @@
         </property>
 
         <set name="surveyTags" table="SURVEY_TAG" lazy="true">
-            <key column="SURVEY_ID" />
-            <element column="TAG" type="string" />
+            <key column="SURVEY_ID"/>
+            <element column="TAG" type="string"/>
         </set>
 
         <bag name="options"
              inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
             <key>
-                <column name="SURVEY_ID" not-null="true" />
+                <column name="SURVEY_ID" not-null="true"/>
             </key>
-            <one-to-many class="davenkin.opinions.domain.Option" />
+            <one-to-many class="davenkin.opinions.domain.Option"/>
         </bag>
-
-        <bag name="comments"
-             inverse="true" lazy="true" fetch="select" cascade="all,delete-orphan" order-by="createdTime">
-            <key>
-                <column name="SURVEY_ID" not-null="true" />
-            </key>
-            <one-to-many class="davenkin.opinions.domain.Comment" />
-        </bag>
-
 
     </class>
 </hibernate-mapping>

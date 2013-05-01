@@ -11,15 +11,15 @@
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/OPINIONS" />
-        <property name="username" value="root" />
-        <property name="password" value="" />
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/OPINIONS"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
     </bean>
 
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource"/>
         <property name="mappingResources">
             <list>
                 <value>davenkin/opinions/domain/User.hbm.xml</value>
@@ -42,7 +42,7 @@
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
@@ -50,7 +50,12 @@
     <bean id="userRepository" class="davenkin.opinions.repository.hibernate.HibernateUserRepository">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
     <bean id="surveyRepository" class="davenkin.opinions.repository.hibernate.HibernateSurveyRepository">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="commentRepository" class="davenkin.opinions.repository.hibernate.HibernateCommentRepository">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
@@ -69,8 +74,7 @@
 
 
     <bean id="commentService" class="davenkin.opinions.service.DefaultCommentService">
-        <property name="userRepository" ref="userRepository"/>
-        <property name="surveyRepository" ref="surveyRepository"/>
+        <property name="commentRepository" ref="commentRepository"/>
     </bean>
 
 </beans>

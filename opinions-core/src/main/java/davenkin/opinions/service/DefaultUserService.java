@@ -3,7 +3,6 @@ package davenkin.opinions.service;
 import com.google.common.base.Predicate;
 import davenkin.opinions.domain.User;
 import davenkin.opinions.repository.UserRepository;
-import davenkin.opinions.service.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;

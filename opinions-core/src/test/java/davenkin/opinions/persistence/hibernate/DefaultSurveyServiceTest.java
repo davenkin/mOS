@@ -63,7 +63,7 @@ public class DefaultSurveyServiceTest {
     public void addSurvey() {
         User user = new User("davenkin", "davenkin@163.com", "password");
         long userId = userService.addUser(user);
-        Survey survey = user.createSurvey("Do you like programming?", false, Category.SCIENCE, createOptionNames("Yes", "No"), newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey("Do you like programming?", false, Category.SCIENCE, createOptionNames("Yes", "No"), newHashSet("COMMON_TAG", "TAG1"), user.getId());
         surveyService.addSurvey(survey);
 
         assertEquals(1, surveyService.getSurveysCreatedByUser(userId).size());
@@ -80,7 +80,7 @@ public class DefaultSurveyServiceTest {
         User user = new User("davenkin", "davenkin@163.com", "password");
         userService.addUser(user);
 
-        Survey survey = user.createSurvey("Do you like programming?", false, Category.SCIENCE, createOptionNames("Yes", "No"), newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey("Do you like programming?", false, Category.SCIENCE, createOptionNames("Yes", "No"), newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
 
         Survey surveyById = surveyService.getSurveyById(surveyId);
@@ -98,10 +98,10 @@ public class DefaultSurveyServiceTest {
         Set<String> tags1 = newHashSet("COMMON_TAG", "TAG1");
         Set<String> tags2 = newHashSet("COMMON_TAG", "TAG2");
 
-        Survey survey = user.createSurvey(content, false, Category.SCIENCE, optionNames, tags1);
+        Survey survey = new Survey(content, false, Category.SCIENCE, optionNames, tags1, user.getId());
         surveyService.addSurvey(survey);
 
-        Survey survey2 = user.createSurvey(content, false, Category.SCIENCE, optionNames, tags2);
+        Survey survey2 = new Survey(content, false, Category.SCIENCE, optionNames, tags2, user.getId());
         surveyService.addSurvey(survey2);
 
         assertEquals(1, surveyService.getSurveysByTag("TAG1").size());
@@ -119,10 +119,10 @@ public class DefaultSurveyServiceTest {
         userService.addUser(user);
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
-        Survey survey1 = user.createSurvey(content, false, Category.SCIENCE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey1 = new Survey(content, false, Category.SCIENCE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId1 = surveyService.addSurvey(survey1);
         String content2 = "How do you love China?";
-        Survey survey2 = user.createSurvey(content2, false, Category.SCIENCE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey2 = new Survey(content2, false, Category.SCIENCE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         surveyService.addSurvey(survey2);
 
 
@@ -139,10 +139,10 @@ public class DefaultSurveyServiceTest {
         User user = new User("davenkin", "davenkin@163.com", "password");
         long userId = userService.addUser(user);
         String content = "Do you like programming?";
-        Survey survey = user.createSurvey(content, false, Category.SCIENCE, createOptionNames("Yes", "No"), newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.SCIENCE, createOptionNames("Yes", "No"), newHashSet("COMMON_TAG", "TAG1"), user.getId());
         surveyService.addSurvey(survey);
 
-        Survey survey2 = user.createSurvey("Do you like China?", false, Category.SCIENCE, createOptionNames("Yes", "No"), newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey2 = new Survey("Do you like China?", false, Category.POLITICS, createOptionNames("Yes", "No"), newHashSet("COMMON_TAG", "TAG1"), user.getId());
         surveyService.addSurvey(survey2);
 
         List<Survey> surveyList = surveyService.getSurveysCreatedByUser(userId);
@@ -158,11 +158,11 @@ public class DefaultSurveyServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey1 = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey1 = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         surveyService.addSurvey(survey1);
 
         String content2 = "How do you love China?";
-        Survey survey2 = user.createSurvey(content2, false, Category.SCIENCE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey2 = new Survey(content2, false, Category.SCIENCE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         surveyService.addSurvey(survey2);
 
         List<Survey> surveyList = surveyService.getSurveysByCategory(Category.CULTURE);
@@ -177,7 +177,7 @@ public class DefaultSurveyServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
         Option option = survey.getOptions().get(0);
         surveyService.voteSurveyOption(surveyId, option.getId());
@@ -192,7 +192,7 @@ public class DefaultSurveyServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
         Option option = survey.getOptions().get(0);
         surveyService.voteSurveyOption(userId, surveyId, option.getId());
@@ -209,7 +209,7 @@ public class DefaultSurveyServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
         Option option = survey.getOptions().get(0);
         surveyService.voteSurveyOption(userId, surveyId, option.getId());

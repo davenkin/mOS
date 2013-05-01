@@ -60,12 +60,12 @@ public class DefaultCommentServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
 
 
-        commentService.addCommentToSurvey("this is a comment", userId, surveyId);
-        List<Comment> commentsFromUser = commentService.getCommentsFromUser(1);
+        commentService.addComment("this is a comment", userId, surveyId);
+        List<Comment> commentsFromUser = commentService.getCommentsByUser(1);
         assertEquals(1, commentsFromUser.size());
     }
 
@@ -77,12 +77,12 @@ public class DefaultCommentServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
 
-        commentService.addCommentToSurvey("this is a comment", userId, surveyId);
-        commentService.addCommentToSurvey("this is a comment 2", userId, surveyId);
-        List<Comment> commentsForSurvey = commentService.getCommentsForSurvey(surveyId);
+        commentService.addComment("this is a comment", userId, surveyId);
+        commentService.addComment("this is a comment 2", userId, surveyId);
+        List<Comment> commentsForSurvey = commentService.getCommentsBySurvey(surveyId);
         assertEquals(2, commentsForSurvey.size());
     }
 
@@ -94,12 +94,12 @@ public class DefaultCommentServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
 
-        commentService.addCommentToSurvey("this is a comment", userId, surveyId);
-        commentService.addCommentToSurvey("this is a comment 2", userId, surveyId);
-        List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
+        commentService.addComment("this is a comment", userId, surveyId);
+        commentService.addComment("this is a comment 2", userId, surveyId);
+        List<Comment> commentsFromUser = commentService.getCommentsByUser(userId);
         assertEquals(2, commentsFromUser.size());
     }
 
@@ -111,17 +111,17 @@ public class DefaultCommentServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
 
-        commentService.addCommentToSurvey("this is a comment", userId, surveyId);
-        commentService.addCommentToSurvey("this is a comment 2", userId, surveyId);
+        commentService.addComment("this is a comment", userId, surveyId);
+        commentService.addComment("this is a comment 2", userId, surveyId);
 
-        List<Comment> commentsFromUser = commentService.getCommentsFromUser(userId);
+        List<Comment> commentsFromUser = commentService.getCommentsByUser(userId);
         assertEquals(2, commentsFromUser.size());
 
-        commentService.removeCommentFromSurvey(surveyId, commentsFromUser.get(0).getId());
-        List<Comment> commentsFromUser1 = commentService.getCommentsFromUser(userId);
+        commentService.removeComment(commentsFromUser.get(0).getId());
+        List<Comment> commentsFromUser1 = commentService.getCommentsByUser(userId);
         assertEquals(1, commentsFromUser1.size());
     }
 

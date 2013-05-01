@@ -20,16 +20,15 @@ import static com.google.common.collect.FluentIterable.from;
 public class Survey {
     private long id;
     private String content;
-    private User creatingUser;
+    private long userId;
     private Timestamp createdTime;
     private boolean canMultipleChecked;
     private Category surveyCategory;
     private Set<String> surveyTags = new HashSet<String>();
     private List<Option> options = new ArrayList<Option>();
-    private List<Comment> comments = new ArrayList<Comment>();
 
-    protected Survey(User user, String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
-        this.creatingUser = user;
+    public Survey(String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags, long userId) {
+        this.userId = userId;
         this.content = content;
         this.canMultipleChecked = canMultipleChecked;
         this.surveyCategory = surveyCategory;
@@ -53,20 +52,12 @@ public class Survey {
     }
 
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
     public void addTag(String tag) {
         surveyTags.add(tag);
     }
 
     public void removeTag(String tag) {
         surveyTags.remove(tag);
-    }
-
-    public void addComment(Comment comment) {
-        comments.add(comment);
     }
 
     private List<Option> createOptions(List<String> optionNames) {
@@ -87,19 +78,6 @@ public class Survey {
 
     public List<Option> getOptions() {
         return options;
-    }
-
-    public Comment getComment(final long commentId) {
-        return from(comments).firstMatch(new Predicate<Comment>() {
-            @Override
-            public boolean apply(davenkin.opinions.domain.Comment input) {
-                return input.getId() == commentId;
-            }
-        }).get();
-    }
-
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
     }
 
     @Override

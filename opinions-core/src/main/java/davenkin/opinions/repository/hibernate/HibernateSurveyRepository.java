@@ -52,6 +52,6 @@ public class HibernateSurveyRepository extends HibernateRepository implements Su
 
     @Override
     public List<Survey> findSurveysCreatedByUser(long userId) {
-        return getCurrentSession().createQuery("from Survey s where s.creatingUser.id = :userId").setParameter("userId", userId).list();
+        return getCurrentSession().createQuery("from Survey s where s.userId = :userId").setParameter("userId", userId).list();
     }
 }

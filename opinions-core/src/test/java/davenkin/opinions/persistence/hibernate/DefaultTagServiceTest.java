@@ -59,7 +59,7 @@ public class DefaultTagServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
 
         tagService.addTagToSurvey(surveyId, "TAG2");
@@ -75,7 +75,7 @@ public class DefaultTagServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
 
         Set<String> tagsForSurvey = tagService.getTagsForSurvey(surveyId);
@@ -91,7 +91,7 @@ public class DefaultTagServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = user.createSurvey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
         long surveyId = surveyService.addSurvey(survey);
 
         tagService.removeTagFromSurvey(surveyId, "TAG1");

@@ -12,14 +12,14 @@ import java.sql.Timestamp;
 public class Comment {
     private long id;
     private String content;
-    private Survey survey;
-    private User user;
+    private long surveyId;
+    private long userId;
     private Timestamp createdTime;
 
-    public Comment(String content, Survey survey, User user) {
+    public Comment(String content, long userId, long surveyId) {
         this.content = content;
-        this.survey = survey;
-        this.user = user;
+        this.surveyId = surveyId;
+        this.userId = userId;
         this.createdTime = new Timestamp(System.currentTimeMillis());
     }
 
@@ -30,10 +30,10 @@ public class Comment {
 
         Comment comment = (Comment) o;
 
+        if (surveyId != comment.surveyId) return false;
+        if (userId != comment.userId) return false;
         if (!content.equals(comment.content)) return false;
         if (!createdTime.equals(comment.createdTime)) return false;
-        if (!survey.equals(comment.survey)) return false;
-        if (!user.equals(comment.user)) return false;
 
         return true;
     }
@@ -41,8 +41,8 @@ public class Comment {
     @Override
     public int hashCode() {
         int result = content.hashCode();
-        result = 31 * result + survey.hashCode();
-        result = 31 * result + user.hashCode();
+        result = 31 * result + (int) (surveyId ^ (surveyId >>> 32));
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
         result = 31 * result + createdTime.hashCode();
         return result;
     }
@@ -51,7 +51,4 @@ public class Comment {
         return id;
     }
 
-    public User getUser() {
-        return user;
-    }
 }

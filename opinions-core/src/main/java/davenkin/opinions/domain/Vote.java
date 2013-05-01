@@ -12,13 +12,13 @@ import java.sql.Timestamp;
  */
 public class Vote {
     private long id;
-    private User user;
-    private Option option;
+    private long userId;
+    private long optionId;
     private Timestamp voteTime;
 
-    public Vote(User user, Option option) {
-        this.user = user;
-        this.option = option;
+    public Vote(long userId, long optionId) {
+        this.userId = userId;
+        this.optionId = optionId;
         voteTime = new Timestamp(System.currentTimeMillis());
     }
 
@@ -29,17 +29,16 @@ public class Vote {
 
         Vote vote = (Vote) o;
 
-        if (!option.equals(vote.option)) return false;
-        if (!user.equals(vote.user)) return false;
+        if (optionId != vote.optionId) return false;
+        if (userId != vote.userId) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = user.hashCode();
-        result = 31 * result + option.hashCode();
+        int result = (int) (userId ^ (userId >>> 32));
+        result = 31 * result + (int) (optionId ^ (optionId >>> 32));
         return result;
     }
-
 }
