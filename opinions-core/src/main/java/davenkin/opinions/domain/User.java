@@ -34,7 +34,7 @@ public class User {
     }
 
     public void vote(Option option) {
-        Vote vote = new Vote(this.getId(), option.getId());
+        Vote vote = new Vote(id, option.getId());
         if (!votes.contains(vote)) {
             option.vote();
             votes.add(vote);
