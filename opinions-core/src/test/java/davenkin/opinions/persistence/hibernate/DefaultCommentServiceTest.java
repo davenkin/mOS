@@ -60,7 +60,7 @@ public class DefaultCommentServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
+        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
 
@@ -77,7 +77,7 @@ public class DefaultCommentServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
+        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         commentService.addComment("this is a comment", userId, surveyId);
@@ -94,7 +94,7 @@ public class DefaultCommentServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
+        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         commentService.addComment("this is a comment", userId, surveyId);
@@ -111,7 +111,7 @@ public class DefaultCommentServiceTest {
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"), user.getId());
+        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         commentService.addComment("this is a comment", userId, surveyId);

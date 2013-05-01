@@ -27,7 +27,7 @@ public class Survey {
     private Set<String> surveyTags = new HashSet<String>();
     private List<Option> options = new ArrayList<Option>();
 
-    public Survey(String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags, long userId) {
+    public Survey(long userId, String content, boolean canMultipleChecked, Category surveyCategory, List<String> optionNames, Set<String> surveyTags) {
         this.userId = userId;
         this.content = content;
         this.canMultipleChecked = canMultipleChecked;

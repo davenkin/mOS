@@ -1,5 +1,6 @@
 package davenkin.opinions.persistence.hibernate;
 
+import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -15,6 +16,8 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +39,18 @@ public class CommonTestFixture {
     public SessionFactory sessionFactory;
 
     protected User getUserFromDb(long userId) {
-        Query sqlQuery = sessionFactory.getCurrentSession().createQuery("from User user where user.id=:userId").setParameter("userId",userId);
+        Query sqlQuery = sessionFactory.getCurrentSession().createQuery("from User user where user.id=:userId").setParameter("userId", userId);
         return (User) sqlQuery.uniqueResult();
     }
+
+    protected Survey getSurveyFromDb(long surveyId) {
+        Query sqlQuery = sessionFactory.getCurrentSession().createQuery("from Survey s where s.id=:surveyId").setParameter("surveyId", surveyId);
+        return (Survey) sqlQuery.uniqueResult();
+    }
+
+    protected List<Survey> getAllSurveysFromDb() {
+        return sessionFactory.getCurrentSession().createQuery("from Survey").list();
+    }
+
+
 }
