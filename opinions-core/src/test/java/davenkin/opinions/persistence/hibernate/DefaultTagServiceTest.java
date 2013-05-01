@@ -7,6 +7,7 @@ import davenkin.opinions.domain.User;
 import davenkin.opinions.service.SurveyService;
 import davenkin.opinions.service.TagService;
 import davenkin.opinions.service.UserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +34,8 @@ import static junit.framework.Assert.assertEquals;
  * Time: 1:34 PM
  * To change this template use File | Settings | File Templates.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:testHibernateApplicationContext.xml"})
-@TestExecutionListeners({DirtiesContextTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@TransactionConfiguration(transactionManager = "transactionManager")
-@Transactional
-public class DefaultTagServiceTest {
+
+public class DefaultTagServiceTest extends CommonTestFixture {
 
     @Autowired
     public UserService userService;
@@ -50,32 +45,32 @@ public class DefaultTagServiceTest {
 
     @Autowired
     public TagService tagService;
+    private long userId;
+
+    @Before
+    public void setUp() throws Exception {
+        userId = createUser();
+    }
 
     @Test
     public void addTagToSurvey() {
-        User user = new User("davenkin", "davenkin@163.com", "password");
-        userService.addUser(user);
-
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(userId, content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         tagService.addTagToSurvey(surveyId, "TAG2");
+
         assertEquals(3, tagService.getTagsForSurvey(surveyId).size());
     }
 
-
     @Test
     public void getTagsForSurvey() {
-        User user = new User("davenkin", "davenkin@163.com", "password");
-        userService.addUser(user);
-
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(userId, content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         Set<String> tagsForSurvey = tagService.getTagsForSurvey(surveyId);
@@ -83,15 +78,13 @@ public class DefaultTagServiceTest {
 
     }
 
+
     @Test
     public void removeTagFromSurvey() {
-        User user = new User("davenkin", "davenkin@163.com", "password");
-        userService.addUser(user);
-
         List<String> optionNames = createOptionNames("Yes", "No");
         String content = "Do you like programming?";
 
-        Survey survey = new Survey(user.getId(), content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
+        Survey survey = new Survey(userId, content, false, Category.CULTURE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         long surveyId = surveyService.addSurvey(survey);
 
         tagService.removeTagFromSurvey(surveyId, "TAG1");
@@ -101,9 +94,14 @@ public class DefaultTagServiceTest {
 
     }
 
-
     private List<String> createOptionNames(String... options) {
         return Lists.newArrayList(options);
+    }
+
+
+    private long createUser() {
+        User user = new User("davenkin", "davenkin@163.com", "password");
+        return userService.addUser(user);
     }
 
 
