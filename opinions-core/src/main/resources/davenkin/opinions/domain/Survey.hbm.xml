@@ -31,7 +31,7 @@
             </type>
         </property>
 
-        <set name="surveyTags" table="SURVEY_TAG" lazy="true">
+        <set name="surveyTags" table="SURVEY_TAG" lazy="true" cascade="all, delete-orphan">
             <key column="SURVEY_ID"/>
             <element column="TAG" type="string"/>
         </set>

@@ -2,7 +2,6 @@ package davenkin.opinions.repository.hibernate;
 
 import davenkin.opinions.domain.Comment;
 import davenkin.opinions.repository.CommentRepository;
-import davenkin.opinions.repository.hibernate.HibernateRepository;
 import org.hibernate.Query;
 
 import java.io.Serializable;
@@ -46,8 +45,15 @@ public class HibernateCommentRepository extends HibernateRepository implements C
 
     @Override
     public List<Comment> getCommentBySurvey(long surveyId) {
-        Query query = getCurrentSession().createQuery("from Comment as comment where comment.surveyId = :surveyId");
+        Query query = getCurrentSession().createQuery("from Comment as comment where comment.surveyId=:surveyId");
         query.setLong("surveyId", surveyId);
         return query.list();
+    }
+
+    @Override
+    public void removeCommentForSurvey(long surveyId) {
+        Query query = getCurrentSession().createQuery("delete Comment as comment where comment.surveyId=:surveyId");
+        query.setLong("surveyId", surveyId);
+        query.executeUpdate();
     }
 }

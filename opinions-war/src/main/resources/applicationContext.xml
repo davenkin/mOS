@@ -66,6 +66,7 @@
     <bean id="surveyService" class="davenkin.opinions.service.DefaultSurveyService">
         <property name="userRepository" ref="userRepository"/>
         <property name="surveyRepository" ref="surveyRepository"/>
+        <property name="commentRepository" ref="commentRepository"/>
     </bean>
 
     <bean id="tagService" class="davenkin.opinions.service.DefaultTagService">

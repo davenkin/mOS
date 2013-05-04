@@ -23,4 +23,6 @@ public interface CommentRepository {
     public List<Comment> getCommentByUser(long userId);
 
     public List<Comment> getCommentBySurvey(long surveyId);
+
+    public void removeCommentForSurvey(long surveyId);
 }

@@ -1,10 +1,8 @@
 package davenkin.opinions.persistence.hibernate;
 
 import com.google.common.collect.Lists;
-import davenkin.opinions.domain.Category;
-import davenkin.opinions.domain.Option;
-import davenkin.opinions.domain.Survey;
-import davenkin.opinions.domain.User;
+import davenkin.opinions.domain.*;
+import davenkin.opinions.service.CommentService;
 import davenkin.opinions.service.SurveyService;
 import davenkin.opinions.service.UserService;
 import org.junit.Before;
@@ -34,6 +32,10 @@ public class DefaultSurveyServiceTest extends CommonTestFixture {
 
     @Autowired
     public SurveyService surveyService;
+
+
+    @Autowired
+    public CommentService commentService;
 
     private long userId;
 
@@ -92,13 +94,15 @@ public class DefaultSurveyServiceTest extends CommonTestFixture {
         String content2 = "How do you love China?";
         Survey survey2 = new Survey(userId, content2, false, Category.SCIENCE, optionNames, newHashSet("COMMON_TAG", "TAG1"));
         surveyService.addSurvey(survey2);
+        commentService.addComment("this is a comment", userId, surveyId1);
 
         List<Survey> originalSurveys = surveyService.getAllSurveys();
         assertThat(originalSurveys.size(), is(2));
 
 
         surveyService.removeSurvey(surveyId1);
-
+        List<Comment> commentsBySurvey = getCommentForSurveysFromDb(surveyId1);
+        assertThat(commentsBySurvey.size(),is(0));
 
         List<Survey> allSurveys = getAllSurveysFromDb();
         assertThat(allSurveys.size(), is(1));

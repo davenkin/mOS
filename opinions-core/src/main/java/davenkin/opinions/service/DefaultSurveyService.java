@@ -4,6 +4,7 @@ import davenkin.opinions.domain.Category;
 import davenkin.opinions.domain.Option;
 import davenkin.opinions.domain.Survey;
 import davenkin.opinions.domain.User;
+import davenkin.opinions.repository.CommentRepository;
 import davenkin.opinions.repository.SurveyRepository;
 import davenkin.opinions.repository.UserRepository;
 import davenkin.opinions.service.SurveyService;
@@ -22,6 +23,7 @@ import java.util.List;
 public class DefaultSurveyService implements SurveyService {
     private SurveyRepository surveyRepository;
     private UserRepository userRepository;
+    private CommentRepository commentRepository;
 
     @Override
     @Transactional
@@ -77,6 +79,7 @@ public class DefaultSurveyService implements SurveyService {
     @Override
     @Transactional
     public void removeSurvey(long surveyId) {
+        commentRepository.removeCommentForSurvey(surveyId);
         Survey survey = surveyRepository.getSurvey(surveyId);
         surveyRepository.delete(survey);
     }
@@ -96,5 +99,10 @@ public class DefaultSurveyService implements SurveyService {
     @Required
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Required
+    public void setCommentRepository(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 }

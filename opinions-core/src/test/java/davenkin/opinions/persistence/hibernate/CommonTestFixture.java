@@ -53,6 +53,10 @@ public class CommonTestFixture {
         return sessionFactory.getCurrentSession().createQuery("from Survey").list();
     }
 
+    protected List<Comment> getCommentForSurveysFromDb(long surveyId) {
+        return sessionFactory.getCurrentSession().createQuery("from Comment c where c.surveyId=:surveyId").setParameter("surveyId", surveyId).list();
+    }
+
 
     protected List<Comment> getCommentsFromDb() {
         return sessionFactory.getCurrentSession().createQuery("from Comment").list();
